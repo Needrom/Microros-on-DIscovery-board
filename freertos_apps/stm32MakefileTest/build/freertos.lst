@@ -1,0 +1,834 @@
+ARM GAS  /tmp/ccW4Vuzd.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"freertos.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.rmw_qos_profile_sensor_data,"a"
+  18              		.align	3
+  21              	rmw_qos_profile_sensor_data:
+  22 0000 01       		.byte	1
+  23 0001 000000   		.space	3
+  24 0004 05000000 		.word	5
+  25 0008 02       		.byte	2
+  26 0009 02       		.byte	2
+  27 000a 00000000 		.space	6
+  27      0000
+  28 0010 00000000 		.word	0
+  29 0014 00000000 		.word	0
+  30 0018 00000000 		.word	0
+  31 001c 00000000 		.word	0
+  32 0020 00000000 		.word	0
+  33 0024 00000000 		.word	0
+  34 0028 00000000 		.word	0
+  35 002c 00000000 		.word	0
+  36 0030 00       		.byte	0
+  37 0031 00000000 		.space	7
+  37      000000
+  38 0038 00000000 		.word	0
+  39 003c 00000000 		.word	0
+  40 0040 00000000 		.word	0
+  41 0044 00000000 		.word	0
+  42 0048 00       		.byte	0
+  43 0049 00000000 		.space	7
+  43      000000
+  44              		.section	.rodata.rmw_qos_profile_parameters,"a"
+  45              		.align	3
+  48              	rmw_qos_profile_parameters:
+  49 0000 01       		.byte	1
+  50 0001 000000   		.space	3
+  51 0004 E8030000 		.word	1000
+  52 0008 01       		.byte	1
+  53 0009 02       		.byte	2
+  54 000a 00000000 		.space	6
+  54      0000
+  55 0010 00000000 		.word	0
+  56 0014 00000000 		.word	0
+  57 0018 00000000 		.word	0
+ARM GAS  /tmp/ccW4Vuzd.s 			page 2
+
+
+  58 001c 00000000 		.word	0
+  59 0020 00000000 		.word	0
+  60 0024 00000000 		.word	0
+  61 0028 00000000 		.word	0
+  62 002c 00000000 		.word	0
+  63 0030 00       		.byte	0
+  64 0031 00000000 		.space	7
+  64      000000
+  65 0038 00000000 		.word	0
+  66 003c 00000000 		.word	0
+  67 0040 00000000 		.word	0
+  68 0044 00000000 		.word	0
+  69 0048 00       		.byte	0
+  70 0049 00000000 		.space	7
+  70      000000
+  71              		.section	.rodata.rmw_qos_profile_default,"a"
+  72              		.align	3
+  75              	rmw_qos_profile_default:
+  76 0000 01       		.byte	1
+  77 0001 000000   		.space	3
+  78 0004 0A000000 		.word	10
+  79 0008 01       		.byte	1
+  80 0009 02       		.byte	2
+  81 000a 00000000 		.space	6
+  81      0000
+  82 0010 00000000 		.word	0
+  83 0014 00000000 		.word	0
+  84 0018 00000000 		.word	0
+  85 001c 00000000 		.word	0
+  86 0020 00000000 		.word	0
+  87 0024 00000000 		.word	0
+  88 0028 00000000 		.word	0
+  89 002c 00000000 		.word	0
+  90 0030 00       		.byte	0
+  91 0031 00000000 		.space	7
+  91      000000
+  92 0038 00000000 		.word	0
+  93 003c 00000000 		.word	0
+  94 0040 00000000 		.word	0
+  95 0044 00000000 		.word	0
+  96 0048 00       		.byte	0
+  97 0049 00000000 		.space	7
+  97      000000
+  98              		.section	.rodata.rmw_qos_profile_services_default,"a"
+  99              		.align	3
+ 102              	rmw_qos_profile_services_default:
+ 103 0000 01       		.byte	1
+ 104 0001 000000   		.space	3
+ 105 0004 0A000000 		.word	10
+ 106 0008 01       		.byte	1
+ 107 0009 02       		.byte	2
+ 108 000a 00000000 		.space	6
+ 108      0000
+ 109 0010 00000000 		.word	0
+ 110 0014 00000000 		.word	0
+ 111 0018 00000000 		.word	0
+ 112 001c 00000000 		.word	0
+ARM GAS  /tmp/ccW4Vuzd.s 			page 3
+
+
+ 113 0020 00000000 		.word	0
+ 114 0024 00000000 		.word	0
+ 115 0028 00000000 		.word	0
+ 116 002c 00000000 		.word	0
+ 117 0030 00       		.byte	0
+ 118 0031 00000000 		.space	7
+ 118      000000
+ 119 0038 00000000 		.word	0
+ 120 003c 00000000 		.word	0
+ 121 0040 00000000 		.word	0
+ 122 0044 00000000 		.word	0
+ 123 0048 00       		.byte	0
+ 124 0049 00000000 		.space	7
+ 124      000000
+ 125              		.section	.rodata.rmw_qos_profile_parameter_events,"a"
+ 126              		.align	3
+ 129              	rmw_qos_profile_parameter_events:
+ 130 0000 01       		.byte	1
+ 131 0001 000000   		.space	3
+ 132 0004 E8030000 		.word	1000
+ 133 0008 01       		.byte	1
+ 134 0009 02       		.byte	2
+ 135 000a 00000000 		.space	6
+ 135      0000
+ 136 0010 00000000 		.word	0
+ 137 0014 00000000 		.word	0
+ 138 0018 00000000 		.word	0
+ 139 001c 00000000 		.word	0
+ 140 0020 00000000 		.word	0
+ 141 0024 00000000 		.word	0
+ 142 0028 00000000 		.word	0
+ 143 002c 00000000 		.word	0
+ 144 0030 00       		.byte	0
+ 145 0031 00000000 		.space	7
+ 145      000000
+ 146 0038 00000000 		.word	0
+ 147 003c 00000000 		.word	0
+ 148 0040 00000000 		.word	0
+ 149 0044 00000000 		.word	0
+ 150 0048 00       		.byte	0
+ 151 0049 00000000 		.space	7
+ 151      000000
+ 152              		.section	.rodata.rmw_qos_profile_system_default,"a"
+ 153              		.align	3
+ 156              	rmw_qos_profile_system_default:
+ 157 0000 00000000 		.space	80
+ 157      00000000 
+ 157      00000000 
+ 157      00000000 
+ 157      00000000 
+ 158              		.section	.rodata.rmw_qos_profile_unknown,"a"
+ 159              		.align	3
+ 162              	rmw_qos_profile_unknown:
+ 163 0000 03       		.byte	3
+ 164 0001 000000   		.space	3
+ 165 0004 00000000 		.word	0
+ 166 0008 03       		.byte	3
+ARM GAS  /tmp/ccW4Vuzd.s 			page 4
+
+
+ 167 0009 03       		.byte	3
+ 168 000a 00000000 		.space	6
+ 168      0000
+ 169 0010 00000000 		.word	0
+ 170 0014 00000000 		.word	0
+ 171 0018 00000000 		.word	0
+ 172 001c 00000000 		.word	0
+ 173 0020 00000000 		.word	0
+ 174 0024 00000000 		.word	0
+ 175 0028 00000000 		.word	0
+ 176 002c 00000000 		.word	0
+ 177 0030 04       		.byte	4
+ 178 0031 00000000 		.space	7
+ 178      000000
+ 179 0038 00000000 		.word	0
+ 180 003c 00000000 		.word	0
+ 181 0040 00000000 		.word	0
+ 182 0044 00000000 		.word	0
+ 183 0048 00       		.byte	0
+ 184 0049 00000000 		.space	7
+ 184      000000
+ 185              		.comm	defaultTaskHandle,4,4
+ 186              		.global	defaultTask_attributes
+ 187              		.section	.rodata
+ 188              		.align	2
+ 189              	.LC0:
+ 190 0000 64656661 		.ascii	"defaultTask\000"
+ 190      756C7454 
+ 190      61736B00 
+ 191              		.section	.rodata.defaultTask_attributes,"a"
+ 192              		.align	2
+ 195              	defaultTask_attributes:
+ 196 0000 00000000 		.word	.LC0
+ 197 0004 00000000 		.space	16
+ 197      00000000 
+ 197      00000000 
+ 197      00000000 
+ 198 0014 70170000 		.word	6000
+ 199 0018 18000000 		.word	24
+ 200 001c 00000000 		.space	8
+ 200      00000000 
+ 201              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
+ 202              		.align	1
+ 203              		.global	MX_FREERTOS_Init
+ 204              		.arch armv7e-m
+ 205              		.syntax unified
+ 206              		.thumb
+ 207              		.thumb_func
+ 208              		.fpu fpv4-sp-d16
+ 210              	MX_FREERTOS_Init:
+ 211              	.LFB138:
+ 212              		.file 1 "Core/Src/freertos.c"
+   1:Core/Src/freertos.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/freertos.c **** /**
+   3:Core/Src/freertos.c ****   ******************************************************************************
+   4:Core/Src/freertos.c ****   * File Name          : freertos.c
+   5:Core/Src/freertos.c ****   * Description        : Code for freertos applications
+ARM GAS  /tmp/ccW4Vuzd.s 			page 5
+
+
+   6:Core/Src/freertos.c ****   ******************************************************************************
+   7:Core/Src/freertos.c ****   * @attention
+   8:Core/Src/freertos.c ****   *
+   9:Core/Src/freertos.c ****   * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  10:Core/Src/freertos.c ****   * All rights reserved.</center></h2>
+  11:Core/Src/freertos.c ****   *
+  12:Core/Src/freertos.c ****   * This software component is licensed by ST under Ultimate Liberty license
+  13:Core/Src/freertos.c ****   * SLA0044, the "License"; You may not use this file except in compliance with
+  14:Core/Src/freertos.c ****   * the License. You may obtain a copy of the License at:
+  15:Core/Src/freertos.c ****   *                             www.st.com/SLA0044
+  16:Core/Src/freertos.c ****   *
+  17:Core/Src/freertos.c ****   ******************************************************************************
+  18:Core/Src/freertos.c ****   */
+  19:Core/Src/freertos.c **** /* USER CODE END Header */
+  20:Core/Src/freertos.c **** 
+  21:Core/Src/freertos.c **** /* Includes ------------------------------------------------------------------*/
+  22:Core/Src/freertos.c **** #include "FreeRTOS.h"
+  23:Core/Src/freertos.c **** #include "task.h"
+  24:Core/Src/freertos.c **** #include "main.h"
+  25:Core/Src/freertos.c **** #include "cmsis_os.h"
+  26:Core/Src/freertos.c **** 
+  27:Core/Src/freertos.c **** /* Private includes ----------------------------------------------------------*/
+  28:Core/Src/freertos.c **** /* USER CODE BEGIN Includes */
+  29:Core/Src/freertos.c **** #include <stdbool.h>
+  30:Core/Src/freertos.c **** #include "allocators.h"
+  31:Core/Src/freertos.c **** #include "cmsis_os.h"
+  32:Core/Src/freertos.c **** 
+  33:Core/Src/freertos.c **** #include <rcl/rcl.h>
+  34:Core/Src/freertos.c **** #include <rmw_microxrcedds_c/config.h>
+  35:Core/Src/freertos.c **** #include <ucdr/microcdr.h>
+  36:Core/Src/freertos.c **** #include <uxr/client/client.h>
+  37:Core/Src/freertos.c **** #include <lwip.h>
+  38:Core/Src/freertos.c **** /* USER CODE END Includes */
+  39:Core/Src/freertos.c **** 
+  40:Core/Src/freertos.c **** /* Private typedef -----------------------------------------------------------*/
+  41:Core/Src/freertos.c **** /* USER CODE BEGIN PTD */
+  42:Core/Src/freertos.c **** 
+  43:Core/Src/freertos.c **** /* USER CODE END PTD */
+  44:Core/Src/freertos.c **** 
+  45:Core/Src/freertos.c **** /* Private define ------------------------------------------------------------*/
+  46:Core/Src/freertos.c **** /* USER CODE BEGIN PD */
+  47:Core/Src/freertos.c **** extern struct netif gnetif;
+  48:Core/Src/freertos.c **** /* USER CODE END PD */
+  49:Core/Src/freertos.c **** 
+  50:Core/Src/freertos.c **** /* Private macro -------------------------------------------------------------*/
+  51:Core/Src/freertos.c **** /* USER CODE BEGIN PM */
+  52:Core/Src/freertos.c **** 
+  53:Core/Src/freertos.c **** /* USER CODE END PM */
+  54:Core/Src/freertos.c **** 
+  55:Core/Src/freertos.c **** /* Private variables ---------------------------------------------------------*/
+  56:Core/Src/freertos.c **** /* USER CODE BEGIN Variables */
+  57:Core/Src/freertos.c **** 
+  58:Core/Src/freertos.c **** /* USER CODE END Variables */
+  59:Core/Src/freertos.c **** /* Definitions for defaultTask */
+  60:Core/Src/freertos.c **** osThreadId_t defaultTaskHandle;
+  61:Core/Src/freertos.c **** const osThreadAttr_t defaultTask_attributes = {
+  62:Core/Src/freertos.c ****   .name = "defaultTask",
+ARM GAS  /tmp/ccW4Vuzd.s 			page 6
+
+
+  63:Core/Src/freertos.c ****   .priority = (osPriority_t) osPriorityNormal,
+  64:Core/Src/freertos.c ****   .stack_size = 1500 * 4	//128 * 4 for original
+  65:Core/Src/freertos.c **** };
+  66:Core/Src/freertos.c **** 
+  67:Core/Src/freertos.c **** /* Private function prototypes -----------------------------------------------*/
+  68:Core/Src/freertos.c **** /* USER CODE BEGIN FunctionPrototypes */
+  69:Core/Src/freertos.c **** 
+  70:Core/Src/freertos.c **** /* USER CODE END FunctionPrototypes */
+  71:Core/Src/freertos.c **** 
+  72:Core/Src/freertos.c **** void StartDefaultTask(void *argument);
+  73:Core/Src/freertos.c **** 
+  74:Core/Src/freertos.c **** extern void MX_LWIP_Init(void);
+  75:Core/Src/freertos.c **** void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+  76:Core/Src/freertos.c **** 
+  77:Core/Src/freertos.c **** /**
+  78:Core/Src/freertos.c ****   * @brief  FreeRTOS initialization
+  79:Core/Src/freertos.c ****   * @param  None
+  80:Core/Src/freertos.c ****   * @retval None
+  81:Core/Src/freertos.c ****   */
+  82:Core/Src/freertos.c **** void MX_FREERTOS_Init(void) {
+ 213              		.loc 1 82 29
+ 214              		.cfi_startproc
+ 215              		@ args = 0, pretend = 0, frame = 0
+ 216              		@ frame_needed = 1, uses_anonymous_args = 0
+ 217 0000 80B5     		push	{r7, lr}
+ 218              	.LCFI0:
+ 219              		.cfi_def_cfa_offset 8
+ 220              		.cfi_offset 7, -8
+ 221              		.cfi_offset 14, -4
+ 222 0002 00AF     		add	r7, sp, #0
+ 223              	.LCFI1:
+ 224              		.cfi_def_cfa_register 7
+  83:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
+  84:Core/Src/freertos.c **** 
+  85:Core/Src/freertos.c ****   /* USER CODE END Init */
+  86:Core/Src/freertos.c **** 
+  87:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_MUTEX */
+  88:Core/Src/freertos.c ****   /* add mutexes, ... */
+  89:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+  90:Core/Src/freertos.c **** 
+  91:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_SEMAPHORES */
+  92:Core/Src/freertos.c ****   /* add semaphores, ... */
+  93:Core/Src/freertos.c ****   /* USER CODE END RTOS_SEMAPHORES */
+  94:Core/Src/freertos.c **** 
+  95:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_TIMERS */
+  96:Core/Src/freertos.c ****   /* start timers, add new ones, ... */
+  97:Core/Src/freertos.c ****   /* USER CODE END RTOS_TIMERS */
+  98:Core/Src/freertos.c **** 
+  99:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_QUEUES */
+ 100:Core/Src/freertos.c ****   /* add queues, ... */
+ 101:Core/Src/freertos.c ****   /* USER CODE END RTOS_QUEUES */
+ 102:Core/Src/freertos.c **** 
+ 103:Core/Src/freertos.c ****   /* Create the thread(s) */
+ 104:Core/Src/freertos.c ****   /* creation of defaultTask */
+ 105:Core/Src/freertos.c ****   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+ 225              		.loc 1 105 23
+ 226 0004 044A     		ldr	r2, .L2
+ARM GAS  /tmp/ccW4Vuzd.s 			page 7
+
+
+ 227 0006 0021     		movs	r1, #0
+ 228 0008 0448     		ldr	r0, .L2+4
+ 229 000a FFF7FEFF 		bl	osThreadNew
+ 230 000e 0246     		mov	r2, r0
+ 231              		.loc 1 105 21
+ 232 0010 034B     		ldr	r3, .L2+8
+ 233 0012 1A60     		str	r2, [r3]
+ 106:Core/Src/freertos.c **** 
+ 107:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_THREADS */
+ 108:Core/Src/freertos.c ****   /* add threads, ... */
+ 109:Core/Src/freertos.c ****   /* USER CODE END RTOS_THREADS */
+ 110:Core/Src/freertos.c **** 
+ 111:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_EVENTS */
+ 112:Core/Src/freertos.c ****   /* add events, ... */
+ 113:Core/Src/freertos.c ****   /* USER CODE END RTOS_EVENTS */
+ 114:Core/Src/freertos.c **** 
+ 115:Core/Src/freertos.c **** }
+ 234              		.loc 1 115 1
+ 235 0014 00BF     		nop
+ 236 0016 80BD     		pop	{r7, pc}
+ 237              	.L3:
+ 238              		.align	2
+ 239              	.L2:
+ 240 0018 00000000 		.word	defaultTask_attributes
+ 241 001c 00000000 		.word	StartDefaultTask
+ 242 0020 00000000 		.word	defaultTaskHandle
+ 243              		.cfi_endproc
+ 244              	.LFE138:
+ 246              		.section	.rodata
+ 247              		.align	2
+ 248              	.LC1:
+ 249 000c 4572726F 		.ascii	"Error on default allocators (line %d)\012\000"
+ 249      72206F6E 
+ 249      20646566 
+ 249      61756C74 
+ 249      20616C6C 
+ 250 0033 00       		.align	2
+ 251              	.LC2:
+ 252 0034 2A2A2A2A 		.ascii	"**********************************\000"
+ 252      2A2A2A2A 
+ 252      2A2A2A2A 
+ 252      2A2A2A2A 
+ 252      2A2A2A2A 
+ 253 0057 00       		.align	2
+ 254              	.LC3:
+ 255 0058 5461736B 		.ascii	"Task  State   Prio    Stack    Num\000"
+ 255      20205374 
+ 255      61746520 
+ 255      20205072 
+ 255      696F2020 
+ 256 007b 00       		.align	2
+ 257              	.LC4:
+ 258 007c 6D696372 		.ascii	"microROS_app\000"
+ 258      6F524F53 
+ 258      5F617070 
+ 258      00
+ 259              		.section	.text.StartDefaultTask,"ax",%progbits
+ARM GAS  /tmp/ccW4Vuzd.s 			page 8
+
+
+ 260              		.align	1
+ 261              		.global	StartDefaultTask
+ 262              		.syntax unified
+ 263              		.thumb
+ 264              		.thumb_func
+ 265              		.fpu fpv4-sp-d16
+ 267              	StartDefaultTask:
+ 268              	.LFB139:
+ 116:Core/Src/freertos.c **** 
+ 117:Core/Src/freertos.c **** /* USER CODE BEGIN Header_StartDefaultTask */
+ 118:Core/Src/freertos.c **** /**
+ 119:Core/Src/freertos.c ****   * @brief  Function implementing the defaultTask thread.
+ 120:Core/Src/freertos.c ****   * @param  argument: Not used
+ 121:Core/Src/freertos.c ****   * @retval None
+ 122:Core/Src/freertos.c ****   */
+ 123:Core/Src/freertos.c **** /* USER CODE END Header_StartDefaultTask */
+ 124:Core/Src/freertos.c **** void StartDefaultTask(void *argument)
+ 125:Core/Src/freertos.c **** {
+ 269              		.loc 1 125 1
+ 270              		.cfi_startproc
+ 271              		@ args = 0, pretend = 0, frame = 576
+ 272              		@ frame_needed = 1, uses_anonymous_args = 0
+ 273 0000 80B5     		push	{r7, lr}
+ 274              	.LCFI2:
+ 275              		.cfi_def_cfa_offset 8
+ 276              		.cfi_offset 7, -8
+ 277              		.cfi_offset 14, -4
+ 278 0002 ADF5107D 		sub	sp, sp, #576
+ 279              	.LCFI3:
+ 280              		.cfi_def_cfa_offset 584
+ 281 0006 00AF     		add	r7, sp, #0
+ 282              	.LCFI4:
+ 283              		.cfi_def_cfa_register 7
+ 284 0008 3B1D     		adds	r3, r7, #4
+ 285 000a 1860     		str	r0, [r3]
+ 126:Core/Src/freertos.c ****   /* init code for LWIP */
+ 127:Core/Src/freertos.c ****   MX_LWIP_Init();
+ 286              		.loc 1 127 3
+ 287 000c FFF7FEFF 		bl	MX_LWIP_Init
+ 128:Core/Src/freertos.c ****   /* USER CODE BEGIN StartDefaultTask */
+ 129:Core/Src/freertos.c ****   /* Infinite loop */
+ 130:Core/Src/freertos.c ****   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);
+ 288              		.loc 1 130 3
+ 289 0010 0122     		movs	r2, #1
+ 290 0012 4FF40071 		mov	r1, #512
+ 291 0016 5948     		ldr	r0, .L9
+ 292 0018 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 131:Core/Src/freertos.c ****   bool availableNetwork = false;
+ 293              		.loc 1 131 8
+ 294 001c 0023     		movs	r3, #0
+ 295 001e 87F83F32 		strb	r3, [r7, #575]
+ 132:Core/Src/freertos.c **** 
+ 133:Core/Src/freertos.c **** #ifdef MICRO_XRCEDDS_CUSTOM_SERIAL 
+ 134:Core/Src/freertos.c ****   availableNetwork = true;
+ 135:Core/Src/freertos.c **** #elif defined(MICRO_XRCEDDS_UDP)
+ 136:Core/Src/freertos.c ****   printf("Ethernet Initialization \r\n");
+ 137:Core/Src/freertos.c **** 
+ARM GAS  /tmp/ccW4Vuzd.s 			page 9
+
+
+ 138:Core/Src/freertos.c ****   printf("Waiting for IP \r\n");
+ 139:Core/Src/freertos.c ****   int retries = 0;
+ 140:Core/Src/freertos.c ****   while(gnetif.ip_addr.addr == 0 && retries < 10){
+ 141:Core/Src/freertos.c ****   	osDelay(500);
+ 142:Core/Src/freertos.c **** 	retries++;
+ 143:Core/Src/freertos.c ****   };
+ 144:Core/Src/freertos.c **** 
+ 145:Core/Src/freertos.c ****   availableNetwork = (gnetif.ip_addr.addr != 0);
+ 146:Core/Src/freertos.c ****   if(availableNetwork){
+ 147:Core/Src/freertos.c ****   	printf("IP: %s \r\n", ip4addr_ntoa(&(gnetif.ip_addr)));
+ 148:Core/Src/freertos.c ****   } else {
+ 149:Core/Src/freertos.c ****   	printf("Impossible to retrieve an IP \n");
+ 150:Core/Src/freertos.c ****   }
+ 151:Core/Src/freertos.c **** #endif
+ 152:Core/Src/freertos.c **** 
+ 153:Core/Src/freertos.c ****   rcl_allocator_t freeRTOS_allocator = rcutils_get_zero_initialized_allocator();
+ 296              		.loc 1 153 40
+ 297 0022 07F50973 		add	r3, r7, #548
+ 298 0026 1846     		mov	r0, r3
+ 299 0028 FFF7FEFF 		bl	rcutils_get_zero_initialized_allocator
+ 154:Core/Src/freertos.c ****   freeRTOS_allocator.allocate = __freertos_allocate;
+ 300              		.loc 1 154 31
+ 301 002c 544B     		ldr	r3, .L9+4
+ 302 002e C7F82432 		str	r3, [r7, #548]
+ 155:Core/Src/freertos.c ****   freeRTOS_allocator.deallocate = __freertos_deallocate;
+ 303              		.loc 1 155 33
+ 304 0032 544B     		ldr	r3, .L9+8
+ 305 0034 C7F82832 		str	r3, [r7, #552]
+ 156:Core/Src/freertos.c ****   freeRTOS_allocator.reallocate = __freertos_reallocate;
+ 306              		.loc 1 156 33
+ 307 0038 534B     		ldr	r3, .L9+12
+ 308 003a C7F82C32 		str	r3, [r7, #556]
+ 157:Core/Src/freertos.c ****   freeRTOS_allocator.zero_allocate = __freertos_zero_allocate;
+ 309              		.loc 1 157 36
+ 310 003e 534B     		ldr	r3, .L9+16
+ 311 0040 C7F83032 		str	r3, [r7, #560]
+ 158:Core/Src/freertos.c ****   
+ 159:Core/Src/freertos.c ****   if(!rcutils_set_default_allocator(&freeRTOS_allocator)){
+ 312              		.loc 1 159 7
+ 313 0044 07F50973 		add	r3, r7, #548
+ 314 0048 1846     		mov	r0, r3
+ 315 004a FFF7FEFF 		bl	rcutils_set_default_allocator
+ 316 004e 0346     		mov	r3, r0
+ 317              		.loc 1 159 6
+ 318 0050 83F00103 		eor	r3, r3, #1
+ 319 0054 DBB2     		uxtb	r3, r3
+ 320              		.loc 1 159 5
+ 321 0056 002B     		cmp	r3, #0
+ 322 0058 03D0     		beq	.L5
+ 160:Core/Src/freertos.c ****   	printf("Error on default allocators (line %d)\n", __LINE__);
+ 323              		.loc 1 160 4
+ 324 005a A021     		movs	r1, #160
+ 325 005c 4C48     		ldr	r0, .L9+20
+ 326 005e FFF7FEFF 		bl	printf
+ 327              	.L5:
+ 161:Core/Src/freertos.c ****   }
+ 162:Core/Src/freertos.c **** 
+ARM GAS  /tmp/ccW4Vuzd.s 			page 10
+
+
+ 163:Core/Src/freertos.c ****   osThreadAttr_t attributes;
+ 164:Core/Src/freertos.c ****   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
+ 328              		.loc 1 164 3
+ 329 0062 07F50073 		add	r3, r7, #512
+ 330 0066 2422     		movs	r2, #36
+ 331 0068 0021     		movs	r1, #0
+ 332 006a 1846     		mov	r0, r3
+ 333 006c FFF7FEFF 		bl	memset
+ 165:Core/Src/freertos.c ****   attributes.stack_size = 5 * 3000;
+ 334              		.loc 1 165 25
+ 335 0070 43F69823 		movw	r3, #15000
+ 336 0074 C7F81432 		str	r3, [r7, #532]
+ 166:Core/Src/freertos.c ****   attributes.priority = (osPriority_t)osPriorityNormal1;
+ 337              		.loc 1 166 23
+ 338 0078 1923     		movs	r3, #25
+ 339 007a C7F81832 		str	r3, [r7, #536]
+ 167:Core/Src/freertos.c ****   osThreadNew(appMain, NULL, &attributes);
+ 340              		.loc 1 167 3
+ 341 007e 07F50073 		add	r3, r7, #512
+ 342 0082 1A46     		mov	r2, r3
+ 343 0084 0021     		movs	r1, #0
+ 344 0086 4348     		ldr	r0, .L9+24
+ 345 0088 FFF7FEFF 		bl	osThreadNew
+ 168:Core/Src/freertos.c ****   osDelay(500);
+ 346              		.loc 1 168 3
+ 347 008c 4FF4FA70 		mov	r0, #500
+ 348 0090 FFF7FEFF 		bl	osDelay
+ 169:Core/Src/freertos.c ****   char ptrTaskList[500];
+ 170:Core/Src/freertos.c ****   vTaskList(ptrTaskList);
+ 349              		.loc 1 170 3
+ 350 0094 07F10C03 		add	r3, r7, #12
+ 351 0098 1846     		mov	r0, r3
+ 352 009a FFF7FEFF 		bl	vTaskList
+ 171:Core/Src/freertos.c ****   printf("**********************************\n");
+ 353              		.loc 1 171 3
+ 354 009e 3E48     		ldr	r0, .L9+28
+ 355 00a0 FFF7FEFF 		bl	puts
+ 172:Core/Src/freertos.c ****   printf("Task  State   Prio    Stack    Num\n");
+ 356              		.loc 1 172 3
+ 357 00a4 3D48     		ldr	r0, .L9+32
+ 358 00a6 FFF7FEFF 		bl	puts
+ 173:Core/Src/freertos.c ****   printf("**********************************\n");
+ 359              		.loc 1 173 3
+ 360 00aa 3B48     		ldr	r0, .L9+28
+ 361 00ac FFF7FEFF 		bl	puts
+ 174:Core/Src/freertos.c ****   printf(ptrTaskList);
+ 362              		.loc 1 174 3
+ 363 00b0 07F10C03 		add	r3, r7, #12
+ 364 00b4 1846     		mov	r0, r3
+ 365 00b6 FFF7FEFF 		bl	printf
+ 175:Core/Src/freertos.c ****   printf("**********************************\n");
+ 366              		.loc 1 175 3
+ 367 00ba 3748     		ldr	r0, .L9+28
+ 368 00bc FFF7FEFF 		bl	puts
+ 176:Core/Src/freertos.c **** 
+ 177:Core/Src/freertos.c ****   TaskHandle_t xHandle;
+ 178:Core/Src/freertos.c ****   xHandle = xTaskGetHandle("microROS_app");
+ARM GAS  /tmp/ccW4Vuzd.s 			page 11
+
+
+ 369              		.loc 1 178 13
+ 370 00c0 3748     		ldr	r0, .L9+36
+ 371 00c2 FFF7FEFF 		bl	xTaskGetHandle
+ 372 00c6 C7F83802 		str	r0, [r7, #568]
+ 373              	.L8:
+ 179:Core/Src/freertos.c **** 
+ 180:Core/Src/freertos.c ****   for(;;)
+ 181:Core/Src/freertos.c ****   {
+ 182:Core/Src/freertos.c ****     if (eTaskGetState(xHandle) != eSuspended && availableNetwork)
+ 374              		.loc 1 182 9
+ 375 00ca D7F83802 		ldr	r0, [r7, #568]
+ 376 00ce FFF7FEFF 		bl	eTaskGetState
+ 377 00d2 0346     		mov	r3, r0
+ 378              		.loc 1 182 8
+ 379 00d4 032B     		cmp	r3, #3
+ 380 00d6 28D0     		beq	.L6
+ 381              		.loc 1 182 46 discriminator 1
+ 382 00d8 97F83F32 		ldrb	r3, [r7, #575]	@ zero_extendqisi2
+ 383 00dc 002B     		cmp	r3, #0
+ 384 00de 24D0     		beq	.L6
+ 183:Core/Src/freertos.c ****     {
+ 184:Core/Src/freertos.c ****     	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+ 385              		.loc 1 184 6
+ 386 00e0 0122     		movs	r2, #1
+ 387 00e2 4FF48061 		mov	r1, #1024
+ 388 00e6 2548     		ldr	r0, .L9
+ 389 00e8 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 185:Core/Src/freertos.c **** 	osDelay(150);
+ 390              		.loc 1 185 2
+ 391 00ec 9620     		movs	r0, #150
+ 392 00ee FFF7FEFF 		bl	osDelay
+ 186:Core/Src/freertos.c **** 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+ 393              		.loc 1 186 2
+ 394 00f2 0022     		movs	r2, #0
+ 395 00f4 4FF48061 		mov	r1, #1024
+ 396 00f8 2048     		ldr	r0, .L9
+ 397 00fa FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 187:Core/Src/freertos.c **** 	osDelay(150);	
+ 398              		.loc 1 187 2
+ 399 00fe 9620     		movs	r0, #150
+ 400 0100 FFF7FEFF 		bl	osDelay
+ 188:Core/Src/freertos.c **** 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+ 401              		.loc 1 188 2
+ 402 0104 0122     		movs	r2, #1
+ 403 0106 4FF40071 		mov	r1, #512
+ 404 010a 1C48     		ldr	r0, .L9
+ 405 010c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 189:Core/Src/freertos.c **** 	osDelay(150);
+ 406              		.loc 1 189 2
+ 407 0110 9620     		movs	r0, #150
+ 408 0112 FFF7FEFF 		bl	osDelay
+ 190:Core/Src/freertos.c **** 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+ 409              		.loc 1 190 2
+ 410 0116 0022     		movs	r2, #0
+ 411 0118 4FF40071 		mov	r1, #512
+ 412 011c 1748     		ldr	r0, .L9
+ 413 011e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ARM GAS  /tmp/ccW4Vuzd.s 			page 12
+
+
+ 191:Core/Src/freertos.c **** 	osDelay(150);
+ 414              		.loc 1 191 2
+ 415 0122 9620     		movs	r0, #150
+ 416 0124 FFF7FEFF 		bl	osDelay
+ 417 0128 27E0     		b	.L7
+ 418              	.L6:
+ 192:Core/Src/freertos.c ****     }
+ 193:Core/Src/freertos.c ****     else {
+ 194:Core/Src/freertos.c ****         HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+ 419              		.loc 1 194 9
+ 420 012a 0122     		movs	r2, #1
+ 421 012c 4FF48061 		mov	r1, #1024
+ 422 0130 1248     		ldr	r0, .L9
+ 423 0132 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 195:Core/Src/freertos.c **** 	osDelay(1000);
+ 424              		.loc 1 195 2
+ 425 0136 4FF47A70 		mov	r0, #1000
+ 426 013a FFF7FEFF 		bl	osDelay
+ 196:Core/Src/freertos.c **** 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+ 427              		.loc 1 196 2
+ 428 013e 0022     		movs	r2, #0
+ 429 0140 4FF48061 		mov	r1, #1024
+ 430 0144 0D48     		ldr	r0, .L9
+ 431 0146 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 197:Core/Src/freertos.c **** 	osDelay(1000);	
+ 432              		.loc 1 197 2
+ 433 014a 4FF47A70 		mov	r0, #1000
+ 434 014e FFF7FEFF 		bl	osDelay
+ 198:Core/Src/freertos.c **** 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+ 435              		.loc 1 198 2
+ 436 0152 0122     		movs	r2, #1
+ 437 0154 4FF40071 		mov	r1, #512
+ 438 0158 0848     		ldr	r0, .L9
+ 439 015a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 199:Core/Src/freertos.c **** 	osDelay(1000);
+ 440              		.loc 1 199 2
+ 441 015e 4FF47A70 		mov	r0, #1000
+ 442 0162 FFF7FEFF 		bl	osDelay
+ 200:Core/Src/freertos.c **** 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+ 443              		.loc 1 200 2
+ 444 0166 0022     		movs	r2, #0
+ 445 0168 4FF40071 		mov	r1, #512
+ 446 016c 0348     		ldr	r0, .L9
+ 447 016e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 201:Core/Src/freertos.c **** 	osDelay(1000);
+ 448              		.loc 1 201 2
+ 449 0172 4FF47A70 		mov	r0, #1000
+ 450 0176 FFF7FEFF 		bl	osDelay
+ 451              	.L7:
+ 182:Core/Src/freertos.c ****     {
+ 452              		.loc 1 182 8
+ 453 017a A6E7     		b	.L8
+ 454              	.L10:
+ 455              		.align	2
+ 456              	.L9:
+ 457 017c 00140240 		.word	1073878016
+ 458 0180 00000000 		.word	__freertos_allocate
+ARM GAS  /tmp/ccW4Vuzd.s 			page 13
+
+
+ 459 0184 00000000 		.word	__freertos_deallocate
+ 460 0188 00000000 		.word	__freertos_reallocate
+ 461 018c 00000000 		.word	__freertos_zero_allocate
+ 462 0190 0C000000 		.word	.LC1
+ 463 0194 00000000 		.word	appMain
+ 464 0198 34000000 		.word	.LC2
+ 465 019c 58000000 		.word	.LC3
+ 466 01a0 7C000000 		.word	.LC4
+ 467              		.cfi_endproc
+ 468              	.LFE139:
+ 470              		.text
+ 471              	.Letext0:
+ 472              		.file 2 "/home/mego-ros2/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stddef
+ 473              		.file 3 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_typ
+ 474              		.file 4 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 475              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 476              		.file 6 "Core/Inc/FreeRTOSConfig.h"
+ 477              		.file 7 "Drivers/CMSIS/Include/core_cm4.h"
+ 478              		.file 8 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 479              		.file 9 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 480              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 481              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 482              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 483              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_eth.h"
+ 484              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 485              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 486              		.file 16 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 487              		.file 17 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_types.h"
+ 488              		.file 18 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/reent.h"
+ 489              		.file 19 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/lock.h"
+ 490              		.file 20 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/stdlib.h"
+ 491              		.file 21 "Core/Inc/allocators.h"
+ 492              		.file 22 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 493              		.file 23 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 494              		.file 24 "/home/mego-ros2/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stdar
+ 495              		.file 25 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 496              		.file 26 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 497              		.file 27 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 498              		.file 28 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 499              		.file 29 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 500              		.file 30 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 501              		.file 31 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 502              		.file 32 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/ctype.h"
+ 503              		.file 33 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 504              		.file 34 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 505              		.file 35 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 506              		.file 36 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 507              		.file 37 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 508              		.file 38 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 509              		.file 39 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
+ 510              		.file 40 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
+ 511              		.file 41 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ethernet.h"
+ 512              		.file 42 "Middlewares/Third_Party/LwIP/src/include/netif/ethernet.h"
+ 513              		.file 43 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
+ 514              		.file 44 "Middlewares/Third_Party/LwIP/src/include/lwip/udp.h"
+ 515              		.file 45 "Middlewares/Third_Party/LwIP/system/arch/sys_arch.h"
+ 516              		.file 46 "Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h"
+ARM GAS  /tmp/ccW4Vuzd.s 			page 14
+
+
+ 517              		.file 47 "Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h"
+ 518              		.file 48 "LWIP/App/lwip.h"
+ 519              		.file 49 "<built-in>"
+ARM GAS  /tmp/ccW4Vuzd.s 			page 15
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 freertos.c
+     /tmp/ccW4Vuzd.s:18     .rodata.rmw_qos_profile_sensor_data:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:21     .rodata.rmw_qos_profile_sensor_data:0000000000000000 rmw_qos_profile_sensor_data
+     /tmp/ccW4Vuzd.s:45     .rodata.rmw_qos_profile_parameters:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:48     .rodata.rmw_qos_profile_parameters:0000000000000000 rmw_qos_profile_parameters
+     /tmp/ccW4Vuzd.s:72     .rodata.rmw_qos_profile_default:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:75     .rodata.rmw_qos_profile_default:0000000000000000 rmw_qos_profile_default
+     /tmp/ccW4Vuzd.s:99     .rodata.rmw_qos_profile_services_default:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:102    .rodata.rmw_qos_profile_services_default:0000000000000000 rmw_qos_profile_services_default
+     /tmp/ccW4Vuzd.s:126    .rodata.rmw_qos_profile_parameter_events:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:129    .rodata.rmw_qos_profile_parameter_events:0000000000000000 rmw_qos_profile_parameter_events
+     /tmp/ccW4Vuzd.s:153    .rodata.rmw_qos_profile_system_default:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:156    .rodata.rmw_qos_profile_system_default:0000000000000000 rmw_qos_profile_system_default
+     /tmp/ccW4Vuzd.s:159    .rodata.rmw_qos_profile_unknown:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:162    .rodata.rmw_qos_profile_unknown:0000000000000000 rmw_qos_profile_unknown
+                            *COM*:0000000000000004 defaultTaskHandle
+     /tmp/ccW4Vuzd.s:195    .rodata.defaultTask_attributes:0000000000000000 defaultTask_attributes
+     /tmp/ccW4Vuzd.s:188    .rodata:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:192    .rodata.defaultTask_attributes:0000000000000000 $d
+     /tmp/ccW4Vuzd.s:202    .text.MX_FREERTOS_Init:0000000000000000 $t
+     /tmp/ccW4Vuzd.s:210    .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
+     /tmp/ccW4Vuzd.s:240    .text.MX_FREERTOS_Init:0000000000000018 $d
+     /tmp/ccW4Vuzd.s:267    .text.StartDefaultTask:0000000000000000 StartDefaultTask
+     /tmp/ccW4Vuzd.s:260    .text.StartDefaultTask:0000000000000000 $t
+     /tmp/ccW4Vuzd.s:457    .text.StartDefaultTask:000000000000017c $d
+
+UNDEFINED SYMBOLS
+osThreadNew
+MX_LWIP_Init
+HAL_GPIO_WritePin
+rcutils_get_zero_initialized_allocator
+rcutils_set_default_allocator
+printf
+memset
+osDelay
+vTaskList
+puts
+xTaskGetHandle
+eTaskGetState
+__freertos_allocate
+__freertos_deallocate
+__freertos_reallocate
+__freertos_zero_allocate
+appMain

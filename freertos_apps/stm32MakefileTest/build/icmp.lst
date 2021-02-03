@@ -1,0 +1,1165 @@
+ARM GAS  /tmp/ccHmiYHH.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"icmp.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata
+  18              		.align	2
+  19              	.LC0:
+  20 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c\000"
+  20      6C657761 
+  20      7265732F 
+  20      54686972 
+  20      645F5061 
+  21 0032 0000     		.align	2
+  22              	.LC1:
+  23 0034 69636D70 		.ascii	"icmp_input: moving r->payload to icmp header failed"
+  23      5F696E70 
+  23      75743A20 
+  23      6D6F7669 
+  23      6E672072 
+  24 0067 0A00     		.ascii	"\012\000"
+  25 0069 000000   		.align	2
+  26              	.LC2:
+  27 006c 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+  27      7274696F 
+  27      6E202225 
+  27      73222066 
+  27      61696C65 
+  28              		.align	2
+  29              	.LC3:
+  30 0094 69636D70 		.ascii	"icmp_input: restoring original p->payload failed\012"
+  30      5F696E70 
+  30      75743A20 
+  30      72657374 
+  30      6F72696E 
+  31 00c5 00       		.ascii	"\000"
+  32              		.section	.text.icmp_input,"ax",%progbits
+  33              		.align	1
+  34              		.global	icmp_input
+  35              		.arch armv7e-m
+  36              		.syntax unified
+  37              		.thumb
+  38              		.thumb_func
+  39              		.fpu fpv4-sp-d16
+  41              	icmp_input:
+  42              	.LFB133:
+ARM GAS  /tmp/ccHmiYHH.s 			page 2
+
+
+  43              		.file 1 "Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c"
+   1:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /**
+   2:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @file
+   3:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * ICMP - Internet Control Message Protocol
+   4:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+   5:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  */
+   6:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+   7:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /*
+   8:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+   9:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * All rights reserved.
+  10:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  11:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  12:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * are permitted provided that the following conditions are met:
+  13:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  14:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  15:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *    this list of conditions and the following disclaimer.
+  16:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  17:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *    this list of conditions and the following disclaimer in the documentation
+  18:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *    and/or other materials provided with the distribution.
+  19:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * 3. The name of the author may not be used to endorse or promote products
+  20:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *    derived from this software without specific prior written permission.
+  21:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  22:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  23:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  24:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  25:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  26:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  27:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  30:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  31:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * OF SUCH DAMAGE.
+  32:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  33:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * This file is part of the lwIP TCP/IP stack.
+  34:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  35:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Author: Adam Dunkels <adam@sics.se>
+  36:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  37:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  */
+  38:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  39:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /* Some ICMP messages should be passed to the transport protocols. This
+  40:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****    is not implemented. */
+  41:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  42:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include "lwip/opt.h"
+  43:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  44:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if LWIP_IPV4 && LWIP_ICMP /* don't build if not configured for use in lwipopts.h */
+  45:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  46:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include "lwip/icmp.h"
+  47:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include "lwip/inet_chksum.h"
+  48:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include "lwip/ip.h"
+  49:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include "lwip/def.h"
+  50:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include "lwip/stats.h"
+  51:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  52:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include <string.h>
+  53:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  54:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #ifdef LWIP_HOOK_FILENAME
+  55:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #include LWIP_HOOK_FILENAME
+  56:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif
+ARM GAS  /tmp/ccHmiYHH.s 			page 3
+
+
+  57:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  58:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /** Small optimization: set to 0 if incoming PBUF_POOL pbuf always can be
+  59:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * used to modify and send a response packet (and to 1 if this is not the case,
+  60:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * e.g. when link header is stripped off when receiving) */
+  61:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #ifndef LWIP_ICMP_ECHO_CHECK_INPUT_PBUF_LEN
+  62:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #define LWIP_ICMP_ECHO_CHECK_INPUT_PBUF_LEN 1
+  63:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_ICMP_ECHO_CHECK_INPUT_PBUF_LEN */
+  64:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  65:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /* The amount of data from the original packet to return in a dest-unreachable */
+  66:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #define ICMP_DEST_UNREACH_DATASIZE 8
+  67:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  68:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** static void icmp_send_response(struct pbuf *p, u8_t type, u8_t code);
+  69:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  70:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /**
+  71:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Processes ICMP input packets, called from ip_input().
+  72:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  73:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Currently only processes icmp echo requests and sends
+  74:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * out the echo response.
+  75:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+  76:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param p the icmp echo request packet, p->payload pointing to the icmp header
+  77:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param inp the netif on which this packet was received
+  78:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  */
+  79:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** void
+  80:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** icmp_input(struct pbuf *p, struct netif *inp)
+  81:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** {
+  44              		.loc 1 81 1
+  45              		.cfi_startproc
+  46              		@ args = 0, pretend = 0, frame = 40
+  47              		@ frame_needed = 1, uses_anonymous_args = 0
+  48 0000 80B5     		push	{r7, lr}
+  49              	.LCFI0:
+  50              		.cfi_def_cfa_offset 8
+  51              		.cfi_offset 7, -8
+  52              		.cfi_offset 14, -4
+  53 0002 8EB0     		sub	sp, sp, #56
+  54              	.LCFI1:
+  55              		.cfi_def_cfa_offset 64
+  56 0004 04AF     		add	r7, sp, #16
+  57              	.LCFI2:
+  58              		.cfi_def_cfa 7, 48
+  59 0006 7860     		str	r0, [r7, #4]
+  60 0008 3960     		str	r1, [r7]
+  82:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   u8_t type;
+  83:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #ifdef LWIP_DEBUG
+  84:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   u8_t code;
+  85:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_DEBUG */
+  86:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   struct icmp_echo_hdr *iecho;
+  87:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   const struct ip_hdr *iphdr_in;
+  88:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   u16_t hlen;
+  89:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   const ip4_addr_t *src;
+  90:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  91:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   ICMP_STATS_INC(icmp.recv);
+  92:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   MIB2_STATS_INC(mib2.icmpinmsgs);
+  93:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+  94:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   iphdr_in = ip4_current_header();
+  61              		.loc 1 94 12
+  62 000a 794B     		ldr	r3, .L31
+ARM GAS  /tmp/ccHmiYHH.s 			page 4
+
+
+  63 000c 9B68     		ldr	r3, [r3, #8]
+  64 000e 7B62     		str	r3, [r7, #36]
+  95:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   hlen = IPH_HL_BYTES(iphdr_in);
+  65              		.loc 1 95 10
+  66 0010 7B6A     		ldr	r3, [r7, #36]
+  67 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  68 0014 03F00F03 		and	r3, r3, #15
+  69 0018 DBB2     		uxtb	r3, r3
+  70 001a 9B00     		lsls	r3, r3, #2
+  71 001c DBB2     		uxtb	r3, r3
+  72              		.loc 1 95 8
+  73 001e 7B84     		strh	r3, [r7, #34]	@ movhi
+  96:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   if (hlen < IP_HLEN) {
+  74              		.loc 1 96 6
+  75 0020 7B8C     		ldrh	r3, [r7, #34]
+  76 0022 132B     		cmp	r3, #19
+  77 0024 40F2CD80 		bls	.L22
+  97:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: short IP header (%"S16_F" bytes) received\n", hlen));
+  98:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     goto lenerr;
+  99:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 100:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   if (p->len < sizeof(u16_t) * 2) {
+  78              		.loc 1 100 8
+  79 0028 7B68     		ldr	r3, [r7, #4]
+  80 002a 5B89     		ldrh	r3, [r3, #10]
+  81              		.loc 1 100 6
+  82 002c 032B     		cmp	r3, #3
+  83 002e 40F2CA80 		bls	.L23
+ 101:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: short ICMP (%"U16_F" bytes) received\n", p->tot_len));
+ 102:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     goto lenerr;
+ 103:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 104:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 105:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   type = *((u8_t *)p->payload);
+  84              		.loc 1 105 21
+  85 0032 7B68     		ldr	r3, [r7, #4]
+  86 0034 5B68     		ldr	r3, [r3, #4]
+  87              		.loc 1 105 8
+  88 0036 1B78     		ldrb	r3, [r3]
+  89 0038 87F82130 		strb	r3, [r7, #33]
+ 106:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #ifdef LWIP_DEBUG
+ 107:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   code = *(((u8_t *)p->payload) + 1);
+ 108:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   /* if debug is enabled but debug statement below is somehow disabled: */
+ 109:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   LWIP_UNUSED_ARG(code);
+ 110:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_DEBUG */
+ 111:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   switch (type) {
+  90              		.loc 1 111 3
+  91 003c 97F82130 		ldrb	r3, [r7, #33]	@ zero_extendqisi2
+  92 0040 002B     		cmp	r3, #0
+  93 0042 00F0B780 		beq	.L24
+  94 0046 082B     		cmp	r3, #8
+  95 0048 40F0B780 		bne	.L8
+ 112:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     case ICMP_ER:
+ 113:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       /* This is OK, echo reply might have been parsed by a raw PCB
+ 114:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****          (as obviously, an echo request has been sent, too). */
+ 115:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       MIB2_STATS_INC(mib2.icmpinechoreps);
+ 116:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       break;
+ 117:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     case ICMP_ECHO:
+ 118:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       MIB2_STATS_INC(mib2.icmpinechos);
+ARM GAS  /tmp/ccHmiYHH.s 			page 5
+
+
+ 119:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       src = ip4_current_dest_addr();
+  96              		.loc 1 119 11
+  97 004c 694B     		ldr	r3, .L31+4
+  98 004e FB61     		str	r3, [r7, #28]
+ 120:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       /* multicast destination address? */
+ 121:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       if (ip4_addr_ismulticast(ip4_current_dest_addr())) {
+  99              		.loc 1 121 11
+ 100 0050 674B     		ldr	r3, .L31
+ 101 0052 5B69     		ldr	r3, [r3, #20]
+ 102 0054 03F0F003 		and	r3, r3, #240
+ 103              		.loc 1 121 10
+ 104 0058 E02B     		cmp	r3, #224
+ 105 005a 00F0BB80 		beq	.L25
+ 122:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if LWIP_MULTICAST_PING
+ 123:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* For multicast, use address of receiving interface as source address */
+ 124:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         src = netif_ip4_addr(inp);
+ 125:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #else /* LWIP_MULTICAST_PING */
+ 126:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: Not echoing to multicast pings\n"));
+ 127:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         goto icmperr;
+ 128:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_MULTICAST_PING */
+ 129:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 130:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       /* broadcast destination address? */
+ 131:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       if (ip4_addr_isbroadcast(ip4_current_dest_addr(), ip_current_netif())) {
+ 106              		.loc 1 131 11
+ 107 005e 644B     		ldr	r3, .L31
+ 108 0060 5A69     		ldr	r2, [r3, #20]
+ 109 0062 634B     		ldr	r3, .L31
+ 110 0064 1B68     		ldr	r3, [r3]
+ 111 0066 1946     		mov	r1, r3
+ 112 0068 1046     		mov	r0, r2
+ 113 006a FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
+ 114 006e 0346     		mov	r3, r0
+ 115              		.loc 1 131 10
+ 116 0070 002B     		cmp	r3, #0
+ 117 0072 40F0B180 		bne	.L26
+ 132:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if LWIP_BROADCAST_PING
+ 133:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* For broadcast, use address of receiving interface as source address */
+ 134:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         src = netif_ip4_addr(inp);
+ 135:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #else /* LWIP_BROADCAST_PING */
+ 136:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: Not echoing to broadcast pings\n"));
+ 137:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         goto icmperr;
+ 138:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_BROADCAST_PING */
+ 139:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 140:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: ping\n"));
+ 141:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       if (p->tot_len < sizeof(struct icmp_echo_hdr)) {
+ 118              		.loc 1 141 12
+ 119 0076 7B68     		ldr	r3, [r7, #4]
+ 120 0078 1B89     		ldrh	r3, [r3, #8]
+ 121              		.loc 1 141 10
+ 122 007a 072B     		cmp	r3, #7
+ 123 007c 40F2A580 		bls	.L27
+ 142:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: bad ICMP echo received\n"));
+ 143:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         goto lenerr;
+ 144:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 145:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if CHECKSUM_CHECK_ICMP
+ 146:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       IF__NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_CHECK_ICMP) {
+ 147:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (inet_chksum_pbuf(p) != 0) {
+ARM GAS  /tmp/ccHmiYHH.s 			page 6
+
+
+ 148:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: checksum failed for received ICMP echo\n"));
+ 149:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           pbuf_free(p);
+ 150:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           ICMP_STATS_INC(icmp.chkerr);
+ 151:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           MIB2_STATS_INC(mib2.icmpinerrors);
+ 152:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           return;
+ 153:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 154:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 155:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif
+ 156:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if LWIP_ICMP_ECHO_CHECK_INPUT_PBUF_LEN
+ 157:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       if (pbuf_add_header(p, hlen + PBUF_LINK_HLEN + PBUF_LINK_ENCAPSULATION_HLEN)) {
+ 124              		.loc 1 157 52
+ 125 0080 7B8C     		ldrh	r3, [r7, #34]
+ 126 0082 0E33     		adds	r3, r3, #14
+ 127              		.loc 1 157 11
+ 128 0084 1946     		mov	r1, r3
+ 129 0086 7868     		ldr	r0, [r7, #4]
+ 130 0088 FFF7FEFF 		bl	pbuf_add_header
+ 131 008c 0346     		mov	r3, r0
+ 132              		.loc 1 157 10
+ 133 008e 002B     		cmp	r3, #0
+ 134 0090 4BD0     		beq	.L13
+ 135              	.LBB2:
+ 158:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* p is not big enough to contain link headers
+ 159:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****          * allocate a new one and copy p into it
+ 160:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****          */
+ 161:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         struct pbuf *r;
+ 162:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         u16_t alloc_len = (u16_t)(p->tot_len + hlen);
+ 136              		.loc 1 162 36
+ 137 0092 7B68     		ldr	r3, [r7, #4]
+ 138 0094 1A89     		ldrh	r2, [r3, #8]
+ 139              		.loc 1 162 15
+ 140 0096 7B8C     		ldrh	r3, [r7, #34]	@ movhi
+ 141 0098 1344     		add	r3, r3, r2
+ 142 009a 7B83     		strh	r3, [r7, #26]	@ movhi
+ 163:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (alloc_len < p->tot_len) {
+ 143              		.loc 1 163 26
+ 144 009c 7B68     		ldr	r3, [r7, #4]
+ 145 009e 1B89     		ldrh	r3, [r3, #8]
+ 146              		.loc 1 163 12
+ 147 00a0 7A8B     		ldrh	r2, [r7, #26]
+ 148 00a2 9A42     		cmp	r2, r3
+ 149 00a4 C0F09A80 		bcc	.L28
+ 164:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: allocating new pbuf failed (tot_len overflow)\n"));
+ 165:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           goto icmperr;
+ 166:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 167:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* allocate new packet buffer with space for link headers */
+ 168:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         r = pbuf_alloc(PBUF_LINK, alloc_len, PBUF_RAM);
+ 150              		.loc 1 168 13
+ 151 00a8 7B8B     		ldrh	r3, [r7, #26]
+ 152 00aa 4FF42072 		mov	r2, #640
+ 153 00ae 1946     		mov	r1, r3
+ 154 00b0 0E20     		movs	r0, #14
+ 155 00b2 FFF7FEFF 		bl	pbuf_alloc
+ 156 00b6 7861     		str	r0, [r7, #20]
+ 169:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (r == NULL) {
+ 157              		.loc 1 169 12
+ 158 00b8 7B69     		ldr	r3, [r7, #20]
+ARM GAS  /tmp/ccHmiYHH.s 			page 7
+
+
+ 159 00ba 002B     		cmp	r3, #0
+ 160 00bc 00F09080 		beq	.L29
+ 170:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: allocating new pbuf failed\n"));
+ 171:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           goto icmperr;
+ 172:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 173:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (r->len < hlen + sizeof(struct icmp_echo_hdr)) {
+ 161              		.loc 1 173 14
+ 162 00c0 7B69     		ldr	r3, [r7, #20]
+ 163 00c2 5B89     		ldrh	r3, [r3, #10]
+ 164 00c4 1A46     		mov	r2, r3
+ 165              		.loc 1 173 27
+ 166 00c6 7B8C     		ldrh	r3, [r7, #34]
+ 167 00c8 0833     		adds	r3, r3, #8
+ 168              		.loc 1 173 12
+ 169 00ca 9A42     		cmp	r2, r3
+ 170 00cc 03D2     		bcs	.L16
+ 174:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_DEBUGF(ICMP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("first pbuf cannot hold the ICMP header
+ 175:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           pbuf_free(r);
+ 171              		.loc 1 175 11
+ 172 00ce 7869     		ldr	r0, [r7, #20]
+ 173 00d0 FFF7FEFF 		bl	pbuf_free
+ 176:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           goto icmperr;
+ 174              		.loc 1 176 11
+ 175 00d4 85E0     		b	.L10
+ 176              	.L16:
+ 177:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 178:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* copy the ip header */
+ 179:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MEMCPY(r->payload, iphdr_in, hlen);
+ 177              		.loc 1 179 9
+ 178 00d6 7B69     		ldr	r3, [r7, #20]
+ 179 00d8 5B68     		ldr	r3, [r3, #4]
+ 180 00da 7A8C     		ldrh	r2, [r7, #34]
+ 181 00dc 796A     		ldr	r1, [r7, #36]
+ 182 00de 1846     		mov	r0, r3
+ 183 00e0 FFF7FEFF 		bl	memcpy
+ 180:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* switch r->payload back to icmp header (cannot fail) */
+ 181:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (pbuf_remove_header(r, hlen)) {
+ 184              		.loc 1 181 13
+ 185 00e4 7B8C     		ldrh	r3, [r7, #34]
+ 186 00e6 1946     		mov	r1, r3
+ 187 00e8 7869     		ldr	r0, [r7, #20]
+ 188 00ea FFF7FEFF 		bl	pbuf_remove_header
+ 189 00ee 0346     		mov	r3, r0
+ 190              		.loc 1 181 12
+ 191 00f0 002B     		cmp	r3, #0
+ 192 00f2 09D0     		beq	.L17
+ 182:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_ASSERT("icmp_input: moving r->payload to icmp header failed\n", 0);
+ 193              		.loc 1 182 11 discriminator 1
+ 194 00f4 404B     		ldr	r3, .L31+8
+ 195 00f6 B622     		movs	r2, #182
+ 196 00f8 4049     		ldr	r1, .L31+12
+ 197 00fa 4148     		ldr	r0, .L31+16
+ 198 00fc FFF7FEFF 		bl	printf
+ 183:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           pbuf_free(r);
+ 199              		.loc 1 183 11 discriminator 1
+ 200 0100 7869     		ldr	r0, [r7, #20]
+ 201 0102 FFF7FEFF 		bl	pbuf_free
+ARM GAS  /tmp/ccHmiYHH.s 			page 8
+
+
+ 184:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           goto icmperr;
+ 202              		.loc 1 184 11 discriminator 1
+ 203 0106 6CE0     		b	.L10
+ 204              	.L17:
+ 185:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 186:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* copy the rest of the packet without ip header */
+ 187:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (pbuf_copy(r, p) != ERR_OK) {
+ 205              		.loc 1 187 13
+ 206 0108 7968     		ldr	r1, [r7, #4]
+ 207 010a 7869     		ldr	r0, [r7, #20]
+ 208 010c FFF7FEFF 		bl	pbuf_copy
+ 209 0110 0346     		mov	r3, r0
+ 210              		.loc 1 187 12
+ 211 0112 002B     		cmp	r3, #0
+ 212 0114 03D0     		beq	.L18
+ 188:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_DEBUGF(ICMP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("icmp_input: copying to new pbuf failed
+ 189:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           pbuf_free(r);
+ 213              		.loc 1 189 11
+ 214 0116 7869     		ldr	r0, [r7, #20]
+ 215 0118 FFF7FEFF 		bl	pbuf_free
+ 190:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           goto icmperr;
+ 216              		.loc 1 190 11
+ 217 011c 61E0     		b	.L10
+ 218              	.L18:
+ 191:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 192:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* free the original p */
+ 193:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         pbuf_free(p);
+ 219              		.loc 1 193 9
+ 220 011e 7868     		ldr	r0, [r7, #4]
+ 221 0120 FFF7FEFF 		bl	pbuf_free
+ 194:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* we now have an identical copy of p that has room for link headers */
+ 195:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         p = r;
+ 222              		.loc 1 195 11
+ 223 0124 7B69     		ldr	r3, [r7, #20]
+ 224 0126 7B60     		str	r3, [r7, #4]
+ 225              	.LBE2:
+ 226 0128 0FE0     		b	.L19
+ 227              	.L13:
+ 196:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else {
+ 197:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* restore p->payload to point to icmp header (cannot fail) */
+ 198:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (pbuf_remove_header(p, hlen + PBUF_LINK_HLEN + PBUF_LINK_ENCAPSULATION_HLEN)) {
+ 228              		.loc 1 198 57
+ 229 012a 7B8C     		ldrh	r3, [r7, #34]
+ 230 012c 0E33     		adds	r3, r3, #14
+ 231              		.loc 1 198 13
+ 232 012e 1946     		mov	r1, r3
+ 233 0130 7868     		ldr	r0, [r7, #4]
+ 234 0132 FFF7FEFF 		bl	pbuf_remove_header
+ 235 0136 0346     		mov	r3, r0
+ 236              		.loc 1 198 12
+ 237 0138 002B     		cmp	r3, #0
+ 238 013a 06D0     		beq	.L19
+ 199:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_ASSERT("icmp_input: restoring original p->payload failed\n", 0);
+ 239              		.loc 1 199 11 discriminator 1
+ 240 013c 2E4B     		ldr	r3, .L31+8
+ 241 013e C722     		movs	r2, #199
+ 242 0140 3049     		ldr	r1, .L31+20
+ARM GAS  /tmp/ccHmiYHH.s 			page 9
+
+
+ 243 0142 2F48     		ldr	r0, .L31+16
+ 244 0144 FFF7FEFF 		bl	printf
+ 200:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           goto icmperr;
+ 245              		.loc 1 200 11 discriminator 1
+ 246 0148 4BE0     		b	.L10
+ 247              	.L19:
+ 201:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 202:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 203:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_ICMP_ECHO_CHECK_INPUT_PBUF_LEN */
+ 204:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       /* At this point, all checks are OK. */
+ 205:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       /* We generate an answer by switching the dest and src ip addresses,
+ 206:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****        * setting the icmp type to ECHO_RESPONSE and updating the checksum. */
+ 207:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       iecho = (struct icmp_echo_hdr *)p->payload;
+ 248              		.loc 1 207 13
+ 249 014a 7B68     		ldr	r3, [r7, #4]
+ 250 014c 5B68     		ldr	r3, [r3, #4]
+ 251 014e 3B61     		str	r3, [r7, #16]
+ 208:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       if (pbuf_add_header(p, hlen)) {
+ 252              		.loc 1 208 11
+ 253 0150 7B8C     		ldrh	r3, [r7, #34]
+ 254 0152 1946     		mov	r1, r3
+ 255 0154 7868     		ldr	r0, [r7, #4]
+ 256 0156 FFF7FEFF 		bl	pbuf_add_header
+ 257 015a 0346     		mov	r3, r0
+ 258              		.loc 1 208 10
+ 259 015c 002B     		cmp	r3, #0
+ 260 015e 2BD1     		bne	.L30
+ 261              	.LBB3:
+ 209:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         LWIP_DEBUGF(ICMP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("Can't move over header in packet"));
+ 210:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else {
+ 211:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         err_t ret;
+ 212:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         struct ip_hdr *iphdr = (struct ip_hdr *)p->payload;
+ 262              		.loc 1 212 24
+ 263 0160 7B68     		ldr	r3, [r7, #4]
+ 264 0162 5B68     		ldr	r3, [r3, #4]
+ 265 0164 FB60     		str	r3, [r7, #12]
+ 213:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         ip4_addr_copy(iphdr->src, *src);
+ 266              		.loc 1 213 9
+ 267 0166 FB69     		ldr	r3, [r7, #28]
+ 268 0168 1A68     		ldr	r2, [r3]
+ 269 016a FB68     		ldr	r3, [r7, #12]
+ 270 016c DA60     		str	r2, [r3, #12]	@ unaligned
+ 214:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         ip4_addr_copy(iphdr->dest, *ip4_current_src_addr());
+ 271              		.loc 1 214 9
+ 272 016e 204B     		ldr	r3, .L31
+ 273 0170 1A69     		ldr	r2, [r3, #16]
+ 274 0172 FB68     		ldr	r3, [r7, #12]
+ 275 0174 1A61     		str	r2, [r3, #16]	@ unaligned
+ 215:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         ICMPH_TYPE_SET(iecho, ICMP_ER);
+ 276              		.loc 1 215 9
+ 277 0176 3B69     		ldr	r3, [r7, #16]
+ 278 0178 0022     		movs	r2, #0
+ 279 017a 1A70     		strb	r2, [r3]
+ 216:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if CHECKSUM_GEN_ICMP
+ 217:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         IF__NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_ICMP) {
+ 218:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           /* adjust the checksum */
+ 219:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           if (iecho->chksum > PP_HTONS(0xffffU - (ICMP_ECHO << 8))) {
+ARM GAS  /tmp/ccHmiYHH.s 			page 10
+
+
+ 220:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****             iecho->chksum = (u16_t)(iecho->chksum + PP_HTONS((u16_t)(ICMP_ECHO << 8)) + 1);
+ 221:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           } else {
+ 222:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****             iecho->chksum = (u16_t)(iecho->chksum + PP_HTONS(ICMP_ECHO << 8));
+ 223:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           }
+ 224:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 225:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if LWIP_CHECKSUM_CTRL_PER_NETIF
+ 226:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         else {
+ 227:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           iecho->chksum = 0;
+ 228:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 229:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_CHECKSUM_CTRL_PER_NETIF */
+ 230:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #else /* CHECKSUM_GEN_ICMP */
+ 231:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         iecho->chksum = 0;
+ 280              		.loc 1 231 23
+ 281 017c 3B69     		ldr	r3, [r7, #16]
+ 282 017e 0022     		movs	r2, #0
+ 283 0180 9A70     		strb	r2, [r3, #2]
+ 284 0182 0022     		movs	r2, #0
+ 285 0184 DA70     		strb	r2, [r3, #3]
+ 232:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* CHECKSUM_GEN_ICMP */
+ 233:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 234:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* Set the correct TTL and recalculate the header checksum. */
+ 235:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         IPH_TTL_SET(iphdr, ICMP_TTL);
+ 286              		.loc 1 235 9
+ 287 0186 FB68     		ldr	r3, [r7, #12]
+ 288 0188 FF22     		movs	r2, #255
+ 289 018a 1A72     		strb	r2, [r3, #8]
+ 236:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         IPH_CHKSUM_SET(iphdr, 0);
+ 290              		.loc 1 236 9
+ 291 018c FB68     		ldr	r3, [r7, #12]
+ 292 018e 0022     		movs	r2, #0
+ 293 0190 9A72     		strb	r2, [r3, #10]
+ 294 0192 0022     		movs	r2, #0
+ 295 0194 DA72     		strb	r2, [r3, #11]
+ 237:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if CHECKSUM_GEN_IP
+ 238:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         IF__NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_IP) {
+ 239:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           IPH_CHKSUM_SET(iphdr, inet_chksum(iphdr, hlen));
+ 240:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 241:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* CHECKSUM_GEN_IP */
+ 242:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 243:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         ICMP_STATS_INC(icmp.xmit);
+ 244:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* increase number of messages attempted to send */
+ 245:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpoutmsgs);
+ 246:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* increase number of echo replies attempted to send */
+ 247:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpoutechoreps);
+ 248:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 249:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         /* send an ICMP packet */
+ 250:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         ret = ip4_output_if(p, src, LWIP_IP_HDRINCL,
+ 296              		.loc 1 250 15
+ 297 0196 3B68     		ldr	r3, [r7]
+ 298 0198 0293     		str	r3, [sp, #8]
+ 299 019a 0123     		movs	r3, #1
+ 300 019c 0193     		str	r3, [sp, #4]
+ 301 019e 0023     		movs	r3, #0
+ 302 01a0 0093     		str	r3, [sp]
+ 303 01a2 FF23     		movs	r3, #255
+ 304 01a4 0022     		movs	r2, #0
+ 305 01a6 F969     		ldr	r1, [r7, #28]
+ARM GAS  /tmp/ccHmiYHH.s 			page 11
+
+
+ 306 01a8 7868     		ldr	r0, [r7, #4]
+ 307 01aa FFF7FEFF 		bl	ip4_output_if
+ 308 01ae 0346     		mov	r3, r0
+ 309 01b0 FB72     		strb	r3, [r7, #11]
+ 310              	.LBE3:
+ 251:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****                             ICMP_TTL, 0, IP_PROTO_ICMP, inp);
+ 252:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         if (ret != ERR_OK) {
+ 253:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: ip_output_if returned an error: %s\n", lwip_strerr(
+ 254:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 255:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 256:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       break;
+ 311              		.loc 1 256 7
+ 312 01b2 01E0     		b	.L30
+ 313              	.L24:
+ 116:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     case ICMP_ECHO:
+ 314              		.loc 1 116 7
+ 315 01b4 00BF     		nop
+ 316 01b6 00E0     		b	.L8
+ 317              	.L30:
+ 318              		.loc 1 256 7
+ 319 01b8 00BF     		nop
+ 320              	.L8:
+ 257:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     default:
+ 258:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       if (type == ICMP_DUR) {
+ 259:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpindestunreachs);
+ 260:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_TE) {
+ 261:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpintimeexcds);
+ 262:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_PP) {
+ 263:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpinparmprobs);
+ 264:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_SQ) {
+ 265:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpinsrcquenchs);
+ 266:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_RD) {
+ 267:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpinredirects);
+ 268:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_TS) {
+ 269:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpintimestamps);
+ 270:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_TSR) {
+ 271:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpintimestampreps);
+ 272:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_AM) {
+ 273:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpinaddrmasks);
+ 274:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       } else if (type == ICMP_AMR) {
+ 275:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         MIB2_STATS_INC(mib2.icmpinaddrmaskreps);
+ 276:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 277:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: ICMP type %"S16_F" code %"S16_F" not supported.\n",
+ 278:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****                                (s16_t)type, (s16_t)code));
+ 279:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       ICMP_STATS_INC(icmp.proterr);
+ 280:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       ICMP_STATS_INC(icmp.drop);
+ 281:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 282:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   pbuf_free(p);
+ 321              		.loc 1 282 3
+ 322 01ba 7868     		ldr	r0, [r7, #4]
+ 323 01bc FFF7FEFF 		bl	pbuf_free
+ 283:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   return;
+ 324              		.loc 1 283 3
+ 325 01c0 13E0     		b	.L1
+ 326              	.L22:
+  98:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 327              		.loc 1 98 5
+ARM GAS  /tmp/ccHmiYHH.s 			page 12
+
+
+ 328 01c2 00BF     		nop
+ 329 01c4 02E0     		b	.L3
+ 330              	.L23:
+ 102:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 331              		.loc 1 102 5
+ 332 01c6 00BF     		nop
+ 333 01c8 00E0     		b	.L3
+ 334              	.L27:
+ 143:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       }
+ 335              		.loc 1 143 9
+ 336 01ca 00BF     		nop
+ 337              	.L3:
+ 284:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** lenerr:
+ 285:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   pbuf_free(p);
+ 338              		.loc 1 285 3
+ 339 01cc 7868     		ldr	r0, [r7, #4]
+ 340 01ce FFF7FEFF 		bl	pbuf_free
+ 286:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   ICMP_STATS_INC(icmp.lenerr);
+ 287:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   MIB2_STATS_INC(mib2.icmpinerrors);
+ 288:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   return;
+ 341              		.loc 1 288 3
+ 342 01d2 0AE0     		b	.L1
+ 343              	.L25:
+ 127:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_MULTICAST_PING */
+ 344              		.loc 1 127 9
+ 345 01d4 00BF     		nop
+ 346 01d6 04E0     		b	.L10
+ 347              	.L26:
+ 137:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_BROADCAST_PING */
+ 348              		.loc 1 137 9
+ 349 01d8 00BF     		nop
+ 350 01da 02E0     		b	.L10
+ 351              	.L28:
+ 352              	.LBB4:
+ 165:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 353              		.loc 1 165 11
+ 354 01dc 00BF     		nop
+ 355 01de 00E0     		b	.L10
+ 356              	.L29:
+ 171:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****         }
+ 357              		.loc 1 171 11
+ 358 01e0 00BF     		nop
+ 359              	.L10:
+ 360              	.LBE4:
+ 289:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if LWIP_ICMP_ECHO_CHECK_INPUT_PBUF_LEN || !LWIP_MULTICAST_PING || !LWIP_BROADCAST_PING
+ 290:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** icmperr:
+ 291:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   pbuf_free(p);
+ 361              		.loc 1 291 3
+ 362 01e2 7868     		ldr	r0, [r7, #4]
+ 363 01e4 FFF7FEFF 		bl	pbuf_free
+ 292:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   ICMP_STATS_INC(icmp.err);
+ 293:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   MIB2_STATS_INC(mib2.icmpinerrors);
+ 294:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   return;
+ 364              		.loc 1 294 3
+ 365 01e8 00BF     		nop
+ 366              	.L1:
+ 295:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* LWIP_ICMP_ECHO_CHECK_INPUT_PBUF_LEN || !LWIP_MULTICAST_PING || !LWIP_BROADCAST_PING */
+ARM GAS  /tmp/ccHmiYHH.s 			page 13
+
+
+ 296:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** }
+ 367              		.loc 1 296 1
+ 368 01ea 2837     		adds	r7, r7, #40
+ 369              	.LCFI3:
+ 370              		.cfi_def_cfa_offset 8
+ 371 01ec BD46     		mov	sp, r7
+ 372              	.LCFI4:
+ 373              		.cfi_def_cfa_register 13
+ 374              		@ sp needed
+ 375 01ee 80BD     		pop	{r7, pc}
+ 376              	.L32:
+ 377              		.align	2
+ 378              	.L31:
+ 379 01f0 00000000 		.word	ip_data
+ 380 01f4 14000000 		.word	ip_data+20
+ 381 01f8 00000000 		.word	.LC0
+ 382 01fc 34000000 		.word	.LC1
+ 383 0200 6C000000 		.word	.LC2
+ 384 0204 94000000 		.word	.LC3
+ 385              		.cfi_endproc
+ 386              	.LFE133:
+ 388              		.section	.text.icmp_dest_unreach,"ax",%progbits
+ 389              		.align	1
+ 390              		.global	icmp_dest_unreach
+ 391              		.syntax unified
+ 392              		.thumb
+ 393              		.thumb_func
+ 394              		.fpu fpv4-sp-d16
+ 396              	icmp_dest_unreach:
+ 397              	.LFB134:
+ 297:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 298:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /**
+ 299:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Send an icmp 'destination unreachable' packet, called from ip_input() if
+ 300:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * the transport layer protocol is unknown and from udp_input() if the local
+ 301:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * port is not bound.
+ 302:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+ 303:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param p the input packet for which the 'unreachable' should be sent,
+ 304:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *          p->payload pointing to the IP header
+ 305:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param t type of the 'unreachable' packet
+ 306:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  */
+ 307:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** void
+ 308:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** icmp_dest_unreach(struct pbuf *p, enum icmp_dur_type t)
+ 309:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** {
+ 398              		.loc 1 309 1
+ 399              		.cfi_startproc
+ 400              		@ args = 0, pretend = 0, frame = 8
+ 401              		@ frame_needed = 1, uses_anonymous_args = 0
+ 402 0000 80B5     		push	{r7, lr}
+ 403              	.LCFI5:
+ 404              		.cfi_def_cfa_offset 8
+ 405              		.cfi_offset 7, -8
+ 406              		.cfi_offset 14, -4
+ 407 0002 82B0     		sub	sp, sp, #8
+ 408              	.LCFI6:
+ 409              		.cfi_def_cfa_offset 16
+ 410 0004 00AF     		add	r7, sp, #0
+ 411              	.LCFI7:
+ARM GAS  /tmp/ccHmiYHH.s 			page 14
+
+
+ 412              		.cfi_def_cfa_register 7
+ 413 0006 7860     		str	r0, [r7, #4]
+ 414 0008 0B46     		mov	r3, r1
+ 415 000a FB70     		strb	r3, [r7, #3]
+ 310:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   MIB2_STATS_INC(mib2.icmpoutdestunreachs);
+ 311:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   icmp_send_response(p, ICMP_DUR, t);
+ 416              		.loc 1 311 3
+ 417 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 418 000e 1A46     		mov	r2, r3
+ 419 0010 0321     		movs	r1, #3
+ 420 0012 7868     		ldr	r0, [r7, #4]
+ 421 0014 FFF7FEFF 		bl	icmp_send_response
+ 312:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** }
+ 422              		.loc 1 312 1
+ 423 0018 00BF     		nop
+ 424 001a 0837     		adds	r7, r7, #8
+ 425              	.LCFI8:
+ 426              		.cfi_def_cfa_offset 8
+ 427 001c BD46     		mov	sp, r7
+ 428              	.LCFI9:
+ 429              		.cfi_def_cfa_register 13
+ 430              		@ sp needed
+ 431 001e 80BD     		pop	{r7, pc}
+ 432              		.cfi_endproc
+ 433              	.LFE134:
+ 435              		.section	.text.icmp_time_exceeded,"ax",%progbits
+ 436              		.align	1
+ 437              		.global	icmp_time_exceeded
+ 438              		.syntax unified
+ 439              		.thumb
+ 440              		.thumb_func
+ 441              		.fpu fpv4-sp-d16
+ 443              	icmp_time_exceeded:
+ 444              	.LFB135:
+ 313:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 314:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if IP_FORWARD || IP_REASSEMBLY
+ 315:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /**
+ 316:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Send a 'time exceeded' packet, called from ip_forward() if TTL is 0.
+ 317:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+ 318:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param p the input packet for which the 'time exceeded' should be sent,
+ 319:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *          p->payload pointing to the IP header
+ 320:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param t type of the 'time exceeded' packet
+ 321:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  */
+ 322:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** void
+ 323:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** icmp_time_exceeded(struct pbuf *p, enum icmp_te_type t)
+ 324:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** {
+ 445              		.loc 1 324 1
+ 446              		.cfi_startproc
+ 447              		@ args = 0, pretend = 0, frame = 8
+ 448              		@ frame_needed = 1, uses_anonymous_args = 0
+ 449 0000 80B5     		push	{r7, lr}
+ 450              	.LCFI10:
+ 451              		.cfi_def_cfa_offset 8
+ 452              		.cfi_offset 7, -8
+ 453              		.cfi_offset 14, -4
+ 454 0002 82B0     		sub	sp, sp, #8
+ 455              	.LCFI11:
+ARM GAS  /tmp/ccHmiYHH.s 			page 15
+
+
+ 456              		.cfi_def_cfa_offset 16
+ 457 0004 00AF     		add	r7, sp, #0
+ 458              	.LCFI12:
+ 459              		.cfi_def_cfa_register 7
+ 460 0006 7860     		str	r0, [r7, #4]
+ 461 0008 0B46     		mov	r3, r1
+ 462 000a FB70     		strb	r3, [r7, #3]
+ 325:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   MIB2_STATS_INC(mib2.icmpouttimeexcds);
+ 326:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   icmp_send_response(p, ICMP_TE, t);
+ 463              		.loc 1 326 3
+ 464 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 465 000e 1A46     		mov	r2, r3
+ 466 0010 0B21     		movs	r1, #11
+ 467 0012 7868     		ldr	r0, [r7, #4]
+ 468 0014 FFF7FEFF 		bl	icmp_send_response
+ 327:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** }
+ 469              		.loc 1 327 1
+ 470 0018 00BF     		nop
+ 471 001a 0837     		adds	r7, r7, #8
+ 472              	.LCFI13:
+ 473              		.cfi_def_cfa_offset 8
+ 474 001c BD46     		mov	sp, r7
+ 475              	.LCFI14:
+ 476              		.cfi_def_cfa_register 13
+ 477              		@ sp needed
+ 478 001e 80BD     		pop	{r7, pc}
+ 479              		.cfi_endproc
+ 480              	.LFE135:
+ 482              		.section	.rodata
+ 483 00c6 0000     		.align	2
+ 484              	.LC4:
+ 485 00c8 63686563 		.ascii	"check that first pbuf can hold icmp message\000"
+ 485      6B207468 
+ 485      61742066 
+ 485      69727374 
+ 485      20706275 
+ 486              		.section	.text.icmp_send_response,"ax",%progbits
+ 487              		.align	1
+ 488              		.syntax unified
+ 489              		.thumb
+ 490              		.thumb_func
+ 491              		.fpu fpv4-sp-d16
+ 493              	icmp_send_response:
+ 494              	.LFB136:
+ 328:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 329:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif /* IP_FORWARD || IP_REASSEMBLY */
+ 330:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 331:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** /**
+ 332:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * Send an icmp packet in response to an incoming packet.
+ 333:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *
+ 334:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param p the input packet for which the 'unreachable' should be sent,
+ 335:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  *          p->payload pointing to the IP header
+ 336:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param type Type of the ICMP header
+ 337:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  * @param code Code of the ICMP header
+ 338:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****  */
+ 339:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** static void
+ 340:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** icmp_send_response(struct pbuf *p, u8_t type, u8_t code)
+ARM GAS  /tmp/ccHmiYHH.s 			page 16
+
+
+ 341:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** {
+ 495              		.loc 1 341 1
+ 496              		.cfi_startproc
+ 497              		@ args = 0, pretend = 0, frame = 32
+ 498              		@ frame_needed = 1, uses_anonymous_args = 0
+ 499 0000 80B5     		push	{r7, lr}
+ 500              	.LCFI15:
+ 501              		.cfi_def_cfa_offset 8
+ 502              		.cfi_offset 7, -8
+ 503              		.cfi_offset 14, -4
+ 504 0002 8CB0     		sub	sp, sp, #48
+ 505              	.LCFI16:
+ 506              		.cfi_def_cfa_offset 56
+ 507 0004 04AF     		add	r7, sp, #16
+ 508              	.LCFI17:
+ 509              		.cfi_def_cfa 7, 40
+ 510 0006 7860     		str	r0, [r7, #4]
+ 511 0008 0B46     		mov	r3, r1
+ 512 000a FB70     		strb	r3, [r7, #3]
+ 513 000c 1346     		mov	r3, r2
+ 514 000e BB70     		strb	r3, [r7, #2]
+ 342:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   struct pbuf *q;
+ 343:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   struct ip_hdr *iphdr;
+ 344:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   /* we can use the echo header here */
+ 345:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   struct icmp_echo_hdr *icmphdr;
+ 346:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   ip4_addr_t iphdr_src;
+ 347:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   struct netif *netif;
+ 348:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 349:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   /* increase number of messages attempted to send */
+ 350:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   MIB2_STATS_INC(mib2.icmpoutmsgs);
+ 351:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 352:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   /* ICMP header + IP header + 8 bytes of data */
+ 353:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   q = pbuf_alloc(PBUF_IP, sizeof(struct icmp_echo_hdr) + IP_HLEN + ICMP_DEST_UNREACH_DATASIZE,
+ 515              		.loc 1 353 7
+ 516 0010 4FF42072 		mov	r2, #640
+ 517 0014 2421     		movs	r1, #36
+ 518 0016 2220     		movs	r0, #34
+ 519 0018 FFF7FEFF 		bl	pbuf_alloc
+ 520 001c F861     		str	r0, [r7, #28]
+ 354:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****                  PBUF_RAM);
+ 355:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   if (q == NULL) {
+ 521              		.loc 1 355 6
+ 522 001e FB69     		ldr	r3, [r7, #28]
+ 523 0020 002B     		cmp	r3, #0
+ 524 0022 4CD0     		beq	.L40
+ 356:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     LWIP_DEBUGF(ICMP_DEBUG, ("icmp_time_exceeded: failed to allocate pbuf for ICMP packet.\n"));
+ 357:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     MIB2_STATS_INC(mib2.icmpouterrors);
+ 358:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     return;
+ 359:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 360:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   LWIP_ASSERT("check that first pbuf can hold icmp message",
+ 525              		.loc 1 360 3
+ 526 0024 FB69     		ldr	r3, [r7, #28]
+ 527 0026 5B89     		ldrh	r3, [r3, #10]
+ 528 0028 232B     		cmp	r3, #35
+ 529 002a 06D8     		bhi	.L38
+ 530              		.loc 1 360 3 is_stmt 0 discriminator 1
+ 531 002c 264B     		ldr	r3, .L41
+ARM GAS  /tmp/ccHmiYHH.s 			page 17
+
+
+ 532 002e 40F26912 		movw	r2, #361
+ 533 0032 2649     		ldr	r1, .L41+4
+ 534 0034 2648     		ldr	r0, .L41+8
+ 535 0036 FFF7FEFF 		bl	printf
+ 536              	.L38:
+ 361:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****               (q->len >= (sizeof(struct icmp_echo_hdr) + IP_HLEN + ICMP_DEST_UNREACH_DATASIZE)));
+ 362:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 363:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   iphdr = (struct ip_hdr *)p->payload;
+ 537              		.loc 1 363 9 is_stmt 1
+ 538 003a 7B68     		ldr	r3, [r7, #4]
+ 539 003c 5B68     		ldr	r3, [r3, #4]
+ 540 003e BB61     		str	r3, [r7, #24]
+ 364:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   LWIP_DEBUGF(ICMP_DEBUG, ("icmp_time_exceeded from "));
+ 365:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   ip4_addr_debug_print_val(ICMP_DEBUG, iphdr->src);
+ 366:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   LWIP_DEBUGF(ICMP_DEBUG, (" to "));
+ 367:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   ip4_addr_debug_print_val(ICMP_DEBUG, iphdr->dest);
+ 368:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   LWIP_DEBUGF(ICMP_DEBUG, ("\n"));
+ 369:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 370:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   icmphdr = (struct icmp_echo_hdr *)q->payload;
+ 541              		.loc 1 370 11
+ 542 0040 FB69     		ldr	r3, [r7, #28]
+ 543 0042 5B68     		ldr	r3, [r3, #4]
+ 544 0044 7B61     		str	r3, [r7, #20]
+ 371:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   icmphdr->type = type;
+ 545              		.loc 1 371 17
+ 546 0046 7B69     		ldr	r3, [r7, #20]
+ 547 0048 FA78     		ldrb	r2, [r7, #3]
+ 548 004a 1A70     		strb	r2, [r3]
+ 372:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   icmphdr->code = code;
+ 549              		.loc 1 372 17
+ 550 004c 7B69     		ldr	r3, [r7, #20]
+ 551 004e BA78     		ldrb	r2, [r7, #2]
+ 552 0050 5A70     		strb	r2, [r3, #1]
+ 373:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   icmphdr->id = 0;
+ 553              		.loc 1 373 15
+ 554 0052 7B69     		ldr	r3, [r7, #20]
+ 555 0054 0022     		movs	r2, #0
+ 556 0056 1A71     		strb	r2, [r3, #4]
+ 557 0058 0022     		movs	r2, #0
+ 558 005a 5A71     		strb	r2, [r3, #5]
+ 374:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   icmphdr->seqno = 0;
+ 559              		.loc 1 374 18
+ 560 005c 7B69     		ldr	r3, [r7, #20]
+ 561 005e 0022     		movs	r2, #0
+ 562 0060 9A71     		strb	r2, [r3, #6]
+ 563 0062 0022     		movs	r2, #0
+ 564 0064 DA71     		strb	r2, [r3, #7]
+ 375:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 376:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   /* copy fields from original packet */
+ 377:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   SMEMCPY((u8_t *)q->payload + sizeof(struct icmp_echo_hdr), (u8_t *)p->payload,
+ 565              		.loc 1 377 3
+ 566 0066 FB69     		ldr	r3, [r7, #28]
+ 567 0068 5B68     		ldr	r3, [r3, #4]
+ 568 006a 03F10800 		add	r0, r3, #8
+ 569 006e 7B68     		ldr	r3, [r7, #4]
+ 570 0070 5B68     		ldr	r3, [r3, #4]
+ 571 0072 1C22     		movs	r2, #28
+ARM GAS  /tmp/ccHmiYHH.s 			page 18
+
+
+ 572 0074 1946     		mov	r1, r3
+ 573 0076 FFF7FEFF 		bl	memcpy
+ 378:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****           IP_HLEN + ICMP_DEST_UNREACH_DATASIZE);
+ 379:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** 
+ 380:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   ip4_addr_copy(iphdr_src, iphdr->src);
+ 574              		.loc 1 380 3
+ 575 007a BB69     		ldr	r3, [r7, #24]
+ 576 007c DB68     		ldr	r3, [r3, #12]	@ unaligned
+ 577 007e FB60     		str	r3, [r7, #12]
+ 381:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #ifdef LWIP_HOOK_IP4_ROUTE_SRC
+ 382:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   {
+ 383:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     ip4_addr_t iphdr_dst;
+ 384:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     ip4_addr_copy(iphdr_dst, iphdr->dest);
+ 385:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     netif = ip4_route_src(&iphdr_dst, &iphdr_src);
+ 386:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 387:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #else
+ 388:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   netif = ip4_route(&iphdr_src);
+ 578              		.loc 1 388 11
+ 579 0080 07F10C03 		add	r3, r7, #12
+ 580 0084 1846     		mov	r0, r3
+ 581 0086 FFF7FEFF 		bl	ip4_route
+ 582 008a 3861     		str	r0, [r7, #16]
+ 389:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif
+ 390:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   if (netif != NULL) {
+ 583              		.loc 1 390 6
+ 584 008c 3B69     		ldr	r3, [r7, #16]
+ 585 008e 002B     		cmp	r3, #0
+ 586 0090 11D0     		beq	.L39
+ 391:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     /* calculate checksum */
+ 392:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     icmphdr->chksum = 0;
+ 587              		.loc 1 392 21
+ 588 0092 7B69     		ldr	r3, [r7, #20]
+ 589 0094 0022     		movs	r2, #0
+ 590 0096 9A70     		strb	r2, [r3, #2]
+ 591 0098 0022     		movs	r2, #0
+ 592 009a DA70     		strb	r2, [r3, #3]
+ 393:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #if CHECKSUM_GEN_ICMP
+ 394:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     IF__NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_ICMP) {
+ 395:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****       icmphdr->chksum = inet_chksum(icmphdr, q->len);
+ 396:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     }
+ 397:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** #endif
+ 398:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     ICMP_STATS_INC(icmp.xmit);
+ 399:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****     ip4_output_if(q, NULL, &iphdr_src, ICMP_TTL, 0, IP_PROTO_ICMP, netif);
+ 593              		.loc 1 399 5
+ 594 009c 07F10C02 		add	r2, r7, #12
+ 595 00a0 3B69     		ldr	r3, [r7, #16]
+ 596 00a2 0293     		str	r3, [sp, #8]
+ 597 00a4 0123     		movs	r3, #1
+ 598 00a6 0193     		str	r3, [sp, #4]
+ 599 00a8 0023     		movs	r3, #0
+ 600 00aa 0093     		str	r3, [sp]
+ 601 00ac FF23     		movs	r3, #255
+ 602 00ae 0021     		movs	r1, #0
+ 603 00b0 F869     		ldr	r0, [r7, #28]
+ 604 00b2 FFF7FEFF 		bl	ip4_output_if
+ 605              	.L39:
+ 400:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ARM GAS  /tmp/ccHmiYHH.s 			page 19
+
+
+ 401:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   pbuf_free(q);
+ 606              		.loc 1 401 3
+ 607 00b6 F869     		ldr	r0, [r7, #28]
+ 608 00b8 FFF7FEFF 		bl	pbuf_free
+ 609 00bc 00E0     		b	.L35
+ 610              	.L40:
+ 358:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c ****   }
+ 611              		.loc 1 358 5
+ 612 00be 00BF     		nop
+ 613              	.L35:
+ 402:Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c **** }
+ 614              		.loc 1 402 1
+ 615 00c0 2037     		adds	r7, r7, #32
+ 616              	.LCFI18:
+ 617              		.cfi_def_cfa_offset 8
+ 618 00c2 BD46     		mov	sp, r7
+ 619              	.LCFI19:
+ 620              		.cfi_def_cfa_register 13
+ 621              		@ sp needed
+ 622 00c4 80BD     		pop	{r7, pc}
+ 623              	.L42:
+ 624 00c6 00BF     		.align	2
+ 625              	.L41:
+ 626 00c8 00000000 		.word	.LC0
+ 627 00cc C8000000 		.word	.LC4
+ 628 00d0 6C000000 		.word	.LC2
+ 629              		.cfi_endproc
+ 630              	.LFE136:
+ 632              		.text
+ 633              	.Letext0:
+ 634              		.file 2 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_typ
+ 635              		.file 3 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 636              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 637              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 638              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 639              		.file 7 "/home/mego-ros2/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stddef
+ 640              		.file 8 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_types.h"
+ 641              		.file 9 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/reent.h"
+ 642              		.file 10 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/lock.h"
+ 643              		.file 11 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/stdlib.h"
+ 644              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 645              		.file 13 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/ctype.h"
+ 646              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 647              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 648              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 649              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 650              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 651              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 652              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
+ 653              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/icmp.h"
+ 654              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/icmp.h"
+ 655              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
+ 656              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
+ARM GAS  /tmp/ccHmiYHH.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 icmp.c
+     /tmp/ccHmiYHH.s:18     .rodata:0000000000000000 $d
+     /tmp/ccHmiYHH.s:33     .text.icmp_input:0000000000000000 $t
+     /tmp/ccHmiYHH.s:41     .text.icmp_input:0000000000000000 icmp_input
+     /tmp/ccHmiYHH.s:379    .text.icmp_input:00000000000001f0 $d
+     /tmp/ccHmiYHH.s:389    .text.icmp_dest_unreach:0000000000000000 $t
+     /tmp/ccHmiYHH.s:396    .text.icmp_dest_unreach:0000000000000000 icmp_dest_unreach
+     /tmp/ccHmiYHH.s:493    .text.icmp_send_response:0000000000000000 icmp_send_response
+     /tmp/ccHmiYHH.s:436    .text.icmp_time_exceeded:0000000000000000 $t
+     /tmp/ccHmiYHH.s:443    .text.icmp_time_exceeded:0000000000000000 icmp_time_exceeded
+     /tmp/ccHmiYHH.s:487    .text.icmp_send_response:0000000000000000 $t
+     /tmp/ccHmiYHH.s:626    .text.icmp_send_response:00000000000000c8 $d
+
+UNDEFINED SYMBOLS
+ip4_addr_isbroadcast_u32
+pbuf_add_header
+pbuf_alloc
+pbuf_free
+memcpy
+pbuf_remove_header
+printf
+pbuf_copy
+ip4_output_if
+ip_data
+ip4_route
