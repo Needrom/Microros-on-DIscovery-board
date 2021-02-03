@@ -164,6 +164,11 @@ Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c \
 Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c \
 Middlewares/Third_Party/LwIP/system/OS/sys_arch.c \
 Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c \
+lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c \
+lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c \
+lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_sched.c \
+lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_unistd.c \
+lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread.c \
 Core/Src/FreeRTOS-openocd.c \
 $(wildcard $(UROS_APP_FOLDER)/*.c)
 

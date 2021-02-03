@@ -17,12 +17,6 @@ bool uxr_init_serial_platform(struct uxrSerialPlatform* platform, int fd, uint8_
       case 1:
         platform->uart = &huart1;
         break;
-      case 3:
-        platform->uart = &huart3;
-        break;
-      case 6:
-        platform->uart = &huart6;
-        break;
       default:
         return false;
   }
