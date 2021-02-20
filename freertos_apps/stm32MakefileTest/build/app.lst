@@ -1,0 +1,1305 @@
+ARM GAS  /tmp/cc949nXl.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"app.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.rmw_qos_profile_sensor_data,"a"
+  18              		.align	3
+  21              	rmw_qos_profile_sensor_data:
+  22 0000 01       		.byte	1
+  23 0001 000000   		.space	3
+  24 0004 05000000 		.word	5
+  25 0008 02       		.byte	2
+  26 0009 02       		.byte	2
+  27 000a 00000000 		.space	6
+  27      0000
+  28 0010 00000000 		.word	0
+  29 0014 00000000 		.word	0
+  30 0018 00000000 		.word	0
+  31 001c 00000000 		.word	0
+  32 0020 00000000 		.word	0
+  33 0024 00000000 		.word	0
+  34 0028 00000000 		.word	0
+  35 002c 00000000 		.word	0
+  36 0030 00       		.byte	0
+  37 0031 00000000 		.space	7
+  37      000000
+  38 0038 00000000 		.word	0
+  39 003c 00000000 		.word	0
+  40 0040 00000000 		.word	0
+  41 0044 00000000 		.word	0
+  42 0048 00       		.byte	0
+  43 0049 00000000 		.space	7
+  43      000000
+  44              		.section	.rodata.rmw_qos_profile_parameters,"a"
+  45              		.align	3
+  48              	rmw_qos_profile_parameters:
+  49 0000 01       		.byte	1
+  50 0001 000000   		.space	3
+  51 0004 E8030000 		.word	1000
+  52 0008 01       		.byte	1
+  53 0009 02       		.byte	2
+  54 000a 00000000 		.space	6
+  54      0000
+  55 0010 00000000 		.word	0
+  56 0014 00000000 		.word	0
+  57 0018 00000000 		.word	0
+ARM GAS  /tmp/cc949nXl.s 			page 2
+
+
+  58 001c 00000000 		.word	0
+  59 0020 00000000 		.word	0
+  60 0024 00000000 		.word	0
+  61 0028 00000000 		.word	0
+  62 002c 00000000 		.word	0
+  63 0030 00       		.byte	0
+  64 0031 00000000 		.space	7
+  64      000000
+  65 0038 00000000 		.word	0
+  66 003c 00000000 		.word	0
+  67 0040 00000000 		.word	0
+  68 0044 00000000 		.word	0
+  69 0048 00       		.byte	0
+  70 0049 00000000 		.space	7
+  70      000000
+  71              		.section	.rodata.rmw_qos_profile_default,"a"
+  72              		.align	3
+  75              	rmw_qos_profile_default:
+  76 0000 01       		.byte	1
+  77 0001 000000   		.space	3
+  78 0004 0A000000 		.word	10
+  79 0008 01       		.byte	1
+  80 0009 02       		.byte	2
+  81 000a 00000000 		.space	6
+  81      0000
+  82 0010 00000000 		.word	0
+  83 0014 00000000 		.word	0
+  84 0018 00000000 		.word	0
+  85 001c 00000000 		.word	0
+  86 0020 00000000 		.word	0
+  87 0024 00000000 		.word	0
+  88 0028 00000000 		.word	0
+  89 002c 00000000 		.word	0
+  90 0030 00       		.byte	0
+  91 0031 00000000 		.space	7
+  91      000000
+  92 0038 00000000 		.word	0
+  93 003c 00000000 		.word	0
+  94 0040 00000000 		.word	0
+  95 0044 00000000 		.word	0
+  96 0048 00       		.byte	0
+  97 0049 00000000 		.space	7
+  97      000000
+  98              		.section	.rodata.rmw_qos_profile_services_default,"a"
+  99              		.align	3
+ 102              	rmw_qos_profile_services_default:
+ 103 0000 01       		.byte	1
+ 104 0001 000000   		.space	3
+ 105 0004 0A000000 		.word	10
+ 106 0008 01       		.byte	1
+ 107 0009 02       		.byte	2
+ 108 000a 00000000 		.space	6
+ 108      0000
+ 109 0010 00000000 		.word	0
+ 110 0014 00000000 		.word	0
+ 111 0018 00000000 		.word	0
+ 112 001c 00000000 		.word	0
+ARM GAS  /tmp/cc949nXl.s 			page 3
+
+
+ 113 0020 00000000 		.word	0
+ 114 0024 00000000 		.word	0
+ 115 0028 00000000 		.word	0
+ 116 002c 00000000 		.word	0
+ 117 0030 00       		.byte	0
+ 118 0031 00000000 		.space	7
+ 118      000000
+ 119 0038 00000000 		.word	0
+ 120 003c 00000000 		.word	0
+ 121 0040 00000000 		.word	0
+ 122 0044 00000000 		.word	0
+ 123 0048 00       		.byte	0
+ 124 0049 00000000 		.space	7
+ 124      000000
+ 125              		.section	.rodata.rmw_qos_profile_parameter_events,"a"
+ 126              		.align	3
+ 129              	rmw_qos_profile_parameter_events:
+ 130 0000 01       		.byte	1
+ 131 0001 000000   		.space	3
+ 132 0004 E8030000 		.word	1000
+ 133 0008 01       		.byte	1
+ 134 0009 02       		.byte	2
+ 135 000a 00000000 		.space	6
+ 135      0000
+ 136 0010 00000000 		.word	0
+ 137 0014 00000000 		.word	0
+ 138 0018 00000000 		.word	0
+ 139 001c 00000000 		.word	0
+ 140 0020 00000000 		.word	0
+ 141 0024 00000000 		.word	0
+ 142 0028 00000000 		.word	0
+ 143 002c 00000000 		.word	0
+ 144 0030 00       		.byte	0
+ 145 0031 00000000 		.space	7
+ 145      000000
+ 146 0038 00000000 		.word	0
+ 147 003c 00000000 		.word	0
+ 148 0040 00000000 		.word	0
+ 149 0044 00000000 		.word	0
+ 150 0048 00       		.byte	0
+ 151 0049 00000000 		.space	7
+ 151      000000
+ 152              		.section	.rodata.rmw_qos_profile_system_default,"a"
+ 153              		.align	3
+ 156              	rmw_qos_profile_system_default:
+ 157 0000 00000000 		.space	80
+ 157      00000000 
+ 157      00000000 
+ 157      00000000 
+ 157      00000000 
+ 158              		.section	.rodata.rmw_qos_profile_unknown,"a"
+ 159              		.align	3
+ 162              	rmw_qos_profile_unknown:
+ 163 0000 03       		.byte	3
+ 164 0001 000000   		.space	3
+ 165 0004 00000000 		.word	0
+ 166 0008 03       		.byte	3
+ARM GAS  /tmp/cc949nXl.s 			page 4
+
+
+ 167 0009 03       		.byte	3
+ 168 000a 00000000 		.space	6
+ 168      0000
+ 169 0010 00000000 		.word	0
+ 170 0014 00000000 		.word	0
+ 171 0018 00000000 		.word	0
+ 172 001c 00000000 		.word	0
+ 173 0020 00000000 		.word	0
+ 174 0024 00000000 		.word	0
+ 175 0028 00000000 		.word	0
+ 176 002c 00000000 		.word	0
+ 177 0030 04       		.byte	4
+ 178 0031 00000000 		.space	7
+ 178      000000
+ 179 0038 00000000 		.word	0
+ 180 003c 00000000 		.word	0
+ 181 0040 00000000 		.word	0
+ 182 0044 00000000 		.word	0
+ 183 0048 00       		.byte	0
+ 184 0049 00000000 		.space	7
+ 184      000000
+ 185              		.comm	ping_publisher,4,4
+ 186              		.comm	pong_publisher,4,4
+ 187              		.comm	ping_subscriber,4,4
+ 188              		.comm	pong_subscriber,4,4
+ 189              		.comm	incoming_ping,20,4
+ 190              		.comm	outcoming_ping,20,4
+ 191              		.comm	incoming_pong,20,4
+ 192              		.comm	device_id,4,4
+ 193              		.comm	seq_no,4,4
+ 194              		.comm	pong_count,4,4
+ 195              		.section	.rodata
+ 196              		.align	2
+ 197              	.LC0:
+ 198 0000 25645F25 		.ascii	"%d_%d\000"
+ 198      6400
+ 199 0006 0000     		.align	2
+ 200              	.LC1:
+ 201 0008 50696E67 		.ascii	"Ping send seq %s\012\000"
+ 201      2073656E 
+ 201      64207365 
+ 201      71202573 
+ 201      0A00
+ 202              		.section	.text.ping_timer_callback,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	ping_timer_callback
+ 205              		.arch armv7e-m
+ 206              		.syntax unified
+ 207              		.thumb
+ 208              		.thumb_func
+ 209              		.fpu fpv4-sp-d16
+ 211              	ping_timer_callback:
+ 212              	.LFB4:
+ 213              		.file 1 "/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c"
+   1:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <rcl/rcl.h>
+   2:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <rcl/error_handling.h>
+   3:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <rclc/rclc.h>
+ARM GAS  /tmp/cc949nXl.s 			page 5
+
+
+   4:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <rclc/executor.h>
+   5:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+   6:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <std_msgs/msg/header.h>
+   7:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+   8:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <stdio.h>
+   9:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <unistd.h>
+  10:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include <time.h>
+  11:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  12:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #ifdef ESP_PLATFORM
+  13:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include "freertos/FreeRTOS.h"
+  14:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #include "freertos/task.h"
+  15:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #endif
+  16:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  17:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #define STRING_BUFFER_LEN 50
+  18:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  19:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on 
+  20:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status
+  21:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  22:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** rcl_publisher_t ping_publisher;
+  23:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** rcl_publisher_t pong_publisher;
+  24:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** rcl_subscription_t ping_subscriber;
+  25:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** rcl_subscription_t pong_subscriber;
+  26:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  27:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** std_msgs__msg__Header incoming_ping;
+  28:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** std_msgs__msg__Header outcoming_ping;
+  29:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** std_msgs__msg__Header incoming_pong;
+  30:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  31:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** int device_id;
+  32:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** int seq_no;
+  33:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** int pong_count;
+  34:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  35:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+  36:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** {
+ 214              		.loc 1 36 1
+ 215              		.cfi_startproc
+ 216              		@ args = 0, pretend = 0, frame = 32
+ 217              		@ frame_needed = 1, uses_anonymous_args = 0
+ 218 0000 90B5     		push	{r4, r7, lr}
+ 219              	.LCFI0:
+ 220              		.cfi_def_cfa_offset 12
+ 221              		.cfi_offset 4, -12
+ 222              		.cfi_offset 7, -8
+ 223              		.cfi_offset 14, -4
+ 224 0002 89B0     		sub	sp, sp, #36
+ 225              	.LCFI1:
+ 226              		.cfi_def_cfa_offset 48
+ 227 0004 00AF     		add	r7, sp, #0
+ 228              	.LCFI2:
+ 229              		.cfi_def_cfa_register 7
+ 230 0006 F860     		str	r0, [r7, #12]
+ 231 0008 C7E90023 		strd	r2, [r7]
+  37:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCLC_UNUSED(last_call_time);
+  38:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  39:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	if (timer != NULL) {
+ 232              		.loc 1 39 5
+ 233 000c FB68     		ldr	r3, [r7, #12]
+ 234 000e 002B     		cmp	r3, #0
+ARM GAS  /tmp/cc949nXl.s 			page 6
+
+
+ 235 0010 32D0     		beq	.L3
+ 236              	.LBB2:
+  40:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  41:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		seq_no = rand();
+ 237              		.loc 1 41 12
+ 238 0012 FFF7FEFF 		bl	rand
+ 239 0016 0246     		mov	r2, r0
+ 240              		.loc 1 41 10
+ 241 0018 194B     		ldr	r3, .L4
+ 242 001a 1A60     		str	r2, [r3]
+  42:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		sprintf(outcoming_ping.frame_id.data, "%d_%d", seq_no, device_id);
+ 243              		.loc 1 42 3
+ 244 001c 194B     		ldr	r3, .L4+4
+ 245 001e 9868     		ldr	r0, [r3, #8]
+ 246 0020 174B     		ldr	r3, .L4
+ 247 0022 1A68     		ldr	r2, [r3]
+ 248 0024 184B     		ldr	r3, .L4+8
+ 249 0026 1B68     		ldr	r3, [r3]
+ 250 0028 1849     		ldr	r1, .L4+12
+ 251 002a FFF7FEFF 		bl	sprintf
+  43:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		outcoming_ping.frame_id.size = strlen(outcoming_ping.frame_id.data);
+ 252              		.loc 1 43 64
+ 253 002e 154B     		ldr	r3, .L4+4
+ 254 0030 9B68     		ldr	r3, [r3, #8]
+ 255              		.loc 1 43 34
+ 256 0032 1846     		mov	r0, r3
+ 257 0034 FFF7FEFF 		bl	strlen
+ 258 0038 0246     		mov	r2, r0
+ 259              		.loc 1 43 32
+ 260 003a 124B     		ldr	r3, .L4+4
+ 261 003c DA60     		str	r2, [r3, #12]
+  44:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  45:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		// Fill the message timestamp
+  46:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		struct timespec ts;
+  47:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		clock_gettime(CLOCK_REALTIME, &ts);
+ 262              		.loc 1 47 3
+ 263 003e 07F11003 		add	r3, r7, #16
+ 264 0042 1946     		mov	r1, r3
+ 265 0044 0020     		movs	r0, #0
+ 266 0046 FFF7FEFF 		bl	clock_gettime
+  48:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		outcoming_ping.stamp.sec = ts.tv_sec;
+ 267              		.loc 1 48 32
+ 268 004a D7E90434 		ldrd	r3, [r7, #16]
+ 269              		.loc 1 48 28
+ 270 004e 1A46     		mov	r2, r3
+ 271 0050 0C4B     		ldr	r3, .L4+4
+ 272 0052 1A60     		str	r2, [r3]
+  49:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		outcoming_ping.stamp.nanosec = ts.tv_nsec;
+ 273              		.loc 1 49 36
+ 274 0054 BB69     		ldr	r3, [r7, #24]
+ 275 0056 1A46     		mov	r2, r3
+ 276              		.loc 1 49 32
+ 277 0058 0A4B     		ldr	r3, .L4+4
+ 278 005a 5A60     		str	r2, [r3, #4]
+  50:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  51:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		// Reset the pong count and publish the ping message
+  52:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		pong_count = 0;
+ARM GAS  /tmp/cc949nXl.s 			page 7
+
+
+ 279              		.loc 1 52 14
+ 280 005c 0C4B     		ldr	r3, .L4+16
+ 281 005e 0022     		movs	r2, #0
+ 282 0060 1A60     		str	r2, [r3]
+  53:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		rcl_publish(&ping_publisher, (const void*)&outcoming_ping, NULL);
+ 283              		.loc 1 53 3
+ 284 0062 0022     		movs	r2, #0
+ 285 0064 0749     		ldr	r1, .L4+4
+ 286 0066 0B48     		ldr	r0, .L4+20
+ 287 0068 FFF7FEFF 		bl	rcl_publish
+  54:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		printf("Ping send seq %s\n", outcoming_ping.frame_id.data);
+ 288              		.loc 1 54 3
+ 289 006c 054B     		ldr	r3, .L4+4
+ 290 006e 9B68     		ldr	r3, [r3, #8]
+ 291 0070 1946     		mov	r1, r3
+ 292 0072 0948     		ldr	r0, .L4+24
+ 293 0074 FFF7FEFF 		bl	printf
+ 294              	.L3:
+ 295              	.LBE2:
+  55:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	}
+  56:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** }
+ 296              		.loc 1 56 1
+ 297 0078 00BF     		nop
+ 298 007a 2437     		adds	r7, r7, #36
+ 299              	.LCFI3:
+ 300              		.cfi_def_cfa_offset 12
+ 301 007c BD46     		mov	sp, r7
+ 302              	.LCFI4:
+ 303              		.cfi_def_cfa_register 13
+ 304              		@ sp needed
+ 305 007e 90BD     		pop	{r4, r7, pc}
+ 306              	.L5:
+ 307              		.align	2
+ 308              	.L4:
+ 309 0080 00000000 		.word	seq_no
+ 310 0084 00000000 		.word	outcoming_ping
+ 311 0088 00000000 		.word	device_id
+ 312 008c 00000000 		.word	.LC0
+ 313 0090 00000000 		.word	pong_count
+ 314 0094 00000000 		.word	ping_publisher
+ 315 0098 08000000 		.word	.LC1
+ 316              		.cfi_endproc
+ 317              	.LFE4:
+ 319              		.section	.rodata
+ 320 001a 0000     		.align	2
+ 321              	.LC2:
+ 322 001c 50696E67 		.ascii	"Ping received with seq %s. Answering.\012\000"
+ 322      20726563 
+ 322      65697665 
+ 322      64207769 
+ 322      74682073 
+ 323              		.section	.text.ping_subscription_callback,"ax",%progbits
+ 324              		.align	1
+ 325              		.global	ping_subscription_callback
+ 326              		.syntax unified
+ 327              		.thumb
+ 328              		.thumb_func
+ARM GAS  /tmp/cc949nXl.s 			page 8
+
+
+ 329              		.fpu fpv4-sp-d16
+ 331              	ping_subscription_callback:
+ 332              	.LFB5:
+  57:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  58:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** void ping_subscription_callback(const void * msgin)
+  59:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** {
+ 333              		.loc 1 59 1
+ 334              		.cfi_startproc
+ 335              		@ args = 0, pretend = 0, frame = 16
+ 336              		@ frame_needed = 1, uses_anonymous_args = 0
+ 337 0000 80B5     		push	{r7, lr}
+ 338              	.LCFI5:
+ 339              		.cfi_def_cfa_offset 8
+ 340              		.cfi_offset 7, -8
+ 341              		.cfi_offset 14, -4
+ 342 0002 84B0     		sub	sp, sp, #16
+ 343              	.LCFI6:
+ 344              		.cfi_def_cfa_offset 24
+ 345 0004 00AF     		add	r7, sp, #0
+ 346              	.LCFI7:
+ 347              		.cfi_def_cfa_register 7
+ 348 0006 7860     		str	r0, [r7, #4]
+  60:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
+ 349              		.loc 1 60 32
+ 350 0008 7B68     		ldr	r3, [r7, #4]
+ 351 000a FB60     		str	r3, [r7, #12]
+  61:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  62:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	// Dont pong my own pings
+  63:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	if(strcmp(outcoming_ping.frame_id.data, msg->frame_id.data) != 0){
+ 352              		.loc 1 63 35
+ 353 000c 0C4B     		ldr	r3, .L9
+ 354 000e 9A68     		ldr	r2, [r3, #8]
+ 355              		.loc 1 63 55
+ 356 0010 FB68     		ldr	r3, [r7, #12]
+ 357 0012 9B68     		ldr	r3, [r3, #8]
+ 358              		.loc 1 63 5
+ 359 0014 1946     		mov	r1, r3
+ 360 0016 1046     		mov	r0, r2
+ 361 0018 FFF7FEFF 		bl	strcmp
+ 362 001c 0346     		mov	r3, r0
+ 363              		.loc 1 63 4
+ 364 001e 002B     		cmp	r3, #0
+ 365 0020 0AD0     		beq	.L8
+  64:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		printf("Ping received with seq %s. Answering.\n", msg->frame_id.data);
+ 366              		.loc 1 64 3
+ 367 0022 FB68     		ldr	r3, [r7, #12]
+ 368 0024 9B68     		ldr	r3, [r3, #8]
+ 369 0026 1946     		mov	r1, r3
+ 370 0028 0648     		ldr	r0, .L9+4
+ 371 002a FFF7FEFF 		bl	printf
+  65:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		rcl_publish(&pong_publisher, (const void*)msg, NULL);
+ 372              		.loc 1 65 3
+ 373 002e 0022     		movs	r2, #0
+ 374 0030 F968     		ldr	r1, [r7, #12]
+ 375 0032 0548     		ldr	r0, .L9+8
+ 376 0034 FFF7FEFF 		bl	rcl_publish
+ 377              	.L8:
+ARM GAS  /tmp/cc949nXl.s 			page 9
+
+
+  66:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	}
+  67:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** }
+ 378              		.loc 1 67 1
+ 379 0038 00BF     		nop
+ 380 003a 1037     		adds	r7, r7, #16
+ 381              	.LCFI8:
+ 382              		.cfi_def_cfa_offset 8
+ 383 003c BD46     		mov	sp, r7
+ 384              	.LCFI9:
+ 385              		.cfi_def_cfa_register 13
+ 386              		@ sp needed
+ 387 003e 80BD     		pop	{r7, pc}
+ 388              	.L10:
+ 389              		.align	2
+ 390              	.L9:
+ 391 0040 00000000 		.word	outcoming_ping
+ 392 0044 1C000000 		.word	.LC2
+ 393 0048 00000000 		.word	pong_publisher
+ 394              		.cfi_endproc
+ 395              	.LFE5:
+ 397              		.section	.rodata
+ 398 0043 00       		.align	2
+ 399              	.LC3:
+ 400 0044 506F6E67 		.ascii	"Pong for seq %s (%d)\012\000"
+ 400      20666F72 
+ 400      20736571 
+ 400      20257320 
+ 400      28256429 
+ 401              		.section	.text.pong_subscription_callback,"ax",%progbits
+ 402              		.align	1
+ 403              		.global	pong_subscription_callback
+ 404              		.syntax unified
+ 405              		.thumb
+ 406              		.thumb_func
+ 407              		.fpu fpv4-sp-d16
+ 409              	pong_subscription_callback:
+ 410              	.LFB6:
+  68:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  69:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  70:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** void pong_subscription_callback(const void * msgin)
+  71:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** {
+ 411              		.loc 1 71 1
+ 412              		.cfi_startproc
+ 413              		@ args = 0, pretend = 0, frame = 16
+ 414              		@ frame_needed = 1, uses_anonymous_args = 0
+ 415 0000 80B5     		push	{r7, lr}
+ 416              	.LCFI10:
+ 417              		.cfi_def_cfa_offset 8
+ 418              		.cfi_offset 7, -8
+ 419              		.cfi_offset 14, -4
+ 420 0002 84B0     		sub	sp, sp, #16
+ 421              	.LCFI11:
+ 422              		.cfi_def_cfa_offset 24
+ 423 0004 00AF     		add	r7, sp, #0
+ 424              	.LCFI12:
+ 425              		.cfi_def_cfa_register 7
+ 426 0006 7860     		str	r0, [r7, #4]
+ARM GAS  /tmp/cc949nXl.s 			page 10
+
+
+  72:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
+ 427              		.loc 1 72 32
+ 428 0008 7B68     		ldr	r3, [r7, #4]
+ 429 000a FB60     		str	r3, [r7, #12]
+  73:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  74:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	if(strcmp(outcoming_ping.frame_id.data, msg->frame_id.data) == 0) {
+ 430              		.loc 1 74 35
+ 431 000c 0D4B     		ldr	r3, .L14
+ 432 000e 9A68     		ldr	r2, [r3, #8]
+ 433              		.loc 1 74 55
+ 434 0010 FB68     		ldr	r3, [r7, #12]
+ 435 0012 9B68     		ldr	r3, [r3, #8]
+ 436              		.loc 1 74 5
+ 437 0014 1946     		mov	r1, r3
+ 438 0016 1046     		mov	r0, r2
+ 439 0018 FFF7FEFF 		bl	strcmp
+ 440 001c 0346     		mov	r3, r0
+ 441              		.loc 1 74 4
+ 442 001e 002B     		cmp	r3, #0
+ 443 0020 0CD1     		bne	.L13
+  75:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		pong_count++;
+ 444              		.loc 1 75 13
+ 445 0022 094B     		ldr	r3, .L14+4
+ 446 0024 1B68     		ldr	r3, [r3]
+ 447 0026 0133     		adds	r3, r3, #1
+ 448 0028 074A     		ldr	r2, .L14+4
+ 449 002a 1360     		str	r3, [r2]
+  76:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		printf("Pong for seq %s (%d)\n", msg->frame_id.data, pong_count);
+ 450              		.loc 1 76 3
+ 451 002c FB68     		ldr	r3, [r7, #12]
+ 452 002e 9968     		ldr	r1, [r3, #8]
+ 453 0030 054B     		ldr	r3, .L14+4
+ 454 0032 1B68     		ldr	r3, [r3]
+ 455 0034 1A46     		mov	r2, r3
+ 456 0036 0548     		ldr	r0, .L14+8
+ 457 0038 FFF7FEFF 		bl	printf
+ 458              	.L13:
+  77:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	}
+  78:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** }
+ 459              		.loc 1 78 1
+ 460 003c 00BF     		nop
+ 461 003e 1037     		adds	r7, r7, #16
+ 462              	.LCFI13:
+ 463              		.cfi_def_cfa_offset 8
+ 464 0040 BD46     		mov	sp, r7
+ 465              	.LCFI14:
+ 466              		.cfi_def_cfa_register 13
+ 467              		@ sp needed
+ 468 0042 80BD     		pop	{r7, pc}
+ 469              	.L15:
+ 470              		.align	2
+ 471              	.L14:
+ 472 0044 00000000 		.word	outcoming_ping
+ 473 0048 00000000 		.word	pong_count
+ 474 004c 44000000 		.word	.LC3
+ 475              		.cfi_endproc
+ 476              	.LFE6:
+ARM GAS  /tmp/cc949nXl.s 			page 11
+
+
+ 478              		.section	.rodata
+ 479 005a 0000     		.align	2
+ 480              	.LC4:
+ 481 005c 496E746F 		.ascii	"Into %s \015\012\000"
+ 481      20257320 
+ 481      0D0A00
+ 482 0067 00       		.align	2
+ 483              	.LC5:
+ 484 0068 74657374 		.ascii	"test printf %d \015\012\000"
+ 484      20707269 
+ 484      6E746620 
+ 484      2564200D 
+ 484      0A00
+ 485 007a 0000     		.align	2
+ 486              	.LC6:
+ 487 007c 4661696C 		.ascii	"Failed status on line %d: %d. Aborting.\012\000"
+ 487      65642073 
+ 487      74617475 
+ 487      73206F6E 
+ 487      206C696E 
+ 488 00a5 000000   		.align	2
+ 489              	.LC7:
+ 490 00a8 00       		.ascii	"\000"
+ 491 00a9 000000   		.align	2
+ 492              	.LC8:
+ 493 00ac 70696E67 		.ascii	"pingpong_node\000"
+ 493      706F6E67 
+ 493      5F6E6F64 
+ 493      6500
+ 494 00ba 0000     		.align	2
+ 495              	.LC9:
+ 496 00bc 2F6D6963 		.ascii	"/microROS/ping\000"
+ 496      726F524F 
+ 496      532F7069 
+ 496      6E6700
+ 497 00cb 00       		.align	2
+ 498              	.LC10:
+ 499 00cc 2F6D6963 		.ascii	"/microROS/pong\000"
+ 499      726F524F 
+ 499      532F706F 
+ 499      6E6700
+ 500              		.section	.text.appMain,"ax",%progbits
+ 501              		.align	1
+ 502              		.global	appMain
+ 503              		.syntax unified
+ 504              		.thumb
+ 505              		.thumb_func
+ 506              		.fpu fpv4-sp-d16
+ 508              	appMain:
+ 509              	.LFB7:
+  79:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  80:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  81:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** void appMain(void *argument)
+  82:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** {
+ 510              		.loc 1 82 1
+ 511              		.cfi_startproc
+ 512              		@ args = 0, pretend = 0, frame = 456
+ARM GAS  /tmp/cc949nXl.s 			page 12
+
+
+ 513              		@ frame_needed = 1, uses_anonymous_args = 0
+ 514 0000 80B5     		push	{r7, lr}
+ 515              	.LCFI15:
+ 516              		.cfi_def_cfa_offset 8
+ 517              		.cfi_offset 7, -8
+ 518              		.cfi_offset 14, -4
+ 519 0002 F4B0     		sub	sp, sp, #464
+ 520              	.LCFI16:
+ 521              		.cfi_def_cfa_offset 472
+ 522 0004 02AF     		add	r7, sp, #8
+ 523              	.LCFI17:
+ 524              		.cfi_def_cfa 7, 464
+ 525 0006 3B1D     		adds	r3, r7, #4
+ 526 0008 1860     		str	r0, [r3]
+  83:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	int test_printf_count = 0;
+ 527              		.loc 1 83 6
+ 528 000a 0023     		movs	r3, #0
+ 529 000c C7F8C431 		str	r3, [r7, #452]
+  84:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("Into %s \r\n", __func__);
+ 530              		.loc 1 84 2
+ 531 0010 D149     		ldr	r1, .L29+8
+ 532 0012 D248     		ldr	r0, .L29+12
+ 533 0014 FFF7FEFF 		bl	printf
+  85:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	rcl_allocator_t allocator = rcl_get_default_allocator();
+ 534              		.loc 1 85 30
+ 535 0018 07F5C273 		add	r3, r7, #388
+ 536 001c 1846     		mov	r0, r3
+ 537 001e FFF7FEFF 		bl	rcutils_get_default_allocator
+  86:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 538              		.loc 1 86 2
+ 539 0022 D7F8C431 		ldr	r3, [r7, #452]
+ 540 0026 5A1C     		adds	r2, r3, #1
+ 541 0028 C7F8C421 		str	r2, [r7, #452]
+ 542 002c 1946     		mov	r1, r3
+ 543 002e CC48     		ldr	r0, .L29+16
+ 544 0030 FFF7FEFF 		bl	printf
+  87:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	rclc_support_t support;
+  88:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  89:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 545              		.loc 1 89 2
+ 546 0034 D7F8C431 		ldr	r3, [r7, #452]
+ 547 0038 5A1C     		adds	r2, r3, #1
+ 548 003a C7F8C421 		str	r2, [r7, #452]
+ 549 003e 1946     		mov	r1, r3
+ 550 0040 C748     		ldr	r0, .L29+16
+ 551 0042 FFF7FEFF 		bl	printf
+ 552              	.LBB3:
+  90:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // create init_options
+  91:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
+ 553              		.loc 1 91 2
+ 554 0046 07F5C273 		add	r3, r7, #388
+ 555 004a 07F59C70 		add	r0, r7, #312
+ 556 004e 0022     		movs	r2, #0
+ 557 0050 0021     		movs	r1, #0
+ 558 0052 FFF7FEFF 		bl	rclc_support_init
+ 559 0056 C7F8C001 		str	r0, [r7, #448]
+ 560 005a D7F8C031 		ldr	r3, [r7, #448]
+ARM GAS  /tmp/cc949nXl.s 			page 13
+
+
+ 561 005e 002B     		cmp	r3, #0
+ 562 0060 08D0     		beq	.L17
+ 563              	.LBB4:
+ 564              		.loc 1 91 2 is_stmt 0 discriminator 1
+ 565 0062 D7F8C021 		ldr	r2, [r7, #448]
+ 566 0066 5B21     		movs	r1, #91
+ 567 0068 BE48     		ldr	r0, .L29+20
+ 568 006a FFF7FEFF 		bl	printf
+ 569 006e 0020     		movs	r0, #0
+ 570 0070 FFF7FEFF 		bl	vTaskDelete
+ 571              	.L17:
+ 572              	.LBE4:
+ 573              	.LBE3:
+  92:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  93:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 574              		.loc 1 93 2 is_stmt 1
+ 575 0074 D7F8C431 		ldr	r3, [r7, #452]
+ 576 0078 5A1C     		adds	r2, r3, #1
+ 577 007a C7F8C421 		str	r2, [r7, #452]
+ 578 007e 1946     		mov	r1, r3
+ 579 0080 B748     		ldr	r0, .L29+16
+ 580 0082 FFF7FEFF 		bl	printf
+ 581              	.LBB5:
+  94:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // create node
+  95:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	rcl_node_t node;
+  96:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_node_init_default(&node, "pingpong_node", "", &support));
+ 582              		.loc 1 96 2
+ 583 0086 07F59C73 		add	r3, r7, #312
+ 584 008a 07F59870 		add	r0, r7, #304
+ 585 008e B64A     		ldr	r2, .L29+24
+ 586 0090 B649     		ldr	r1, .L29+28
+ 587 0092 FFF7FEFF 		bl	rclc_node_init_default
+ 588 0096 C7F8BC01 		str	r0, [r7, #444]
+ 589 009a D7F8BC31 		ldr	r3, [r7, #444]
+ 590 009e 002B     		cmp	r3, #0
+ 591 00a0 08D0     		beq	.L18
+ 592              	.LBB6:
+ 593              		.loc 1 96 2 is_stmt 0 discriminator 1
+ 594 00a2 D7F8BC21 		ldr	r2, [r7, #444]
+ 595 00a6 6021     		movs	r1, #96
+ 596 00a8 AE48     		ldr	r0, .L29+20
+ 597 00aa FFF7FEFF 		bl	printf
+ 598 00ae 0020     		movs	r0, #0
+ 599 00b0 FFF7FEFF 		bl	vTaskDelete
+ 600              	.L18:
+ 601              	.LBE6:
+ 602              	.LBE5:
+  97:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+  98:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 603              		.loc 1 98 2 is_stmt 1
+ 604 00b4 D7F8C431 		ldr	r3, [r7, #452]
+ 605 00b8 5A1C     		adds	r2, r3, #1
+ 606 00ba C7F8C421 		str	r2, [r7, #452]
+ 607 00be 1946     		mov	r1, r3
+ 608 00c0 A748     		ldr	r0, .L29+16
+ 609 00c2 FFF7FEFF 		bl	printf
+ 610              	.LBB7:
+ARM GAS  /tmp/cc949nXl.s 			page 14
+
+
+  99:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // Create a reliable ping publisher
+ 100:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_publisher_init_default(&ping_publisher, &node,
+ 611              		.loc 1 100 2
+ 612 00c6 FFF7FEFF 		bl	rosidl_typesupport_c__get_message_type_support_handle__std_msgs__msg__Header
+ 613 00ca 0246     		mov	r2, r0
+ 614 00cc 07F59871 		add	r1, r7, #304
+ 615 00d0 A74B     		ldr	r3, .L29+32
+ 616 00d2 A848     		ldr	r0, .L29+36
+ 617 00d4 FFF7FEFF 		bl	rclc_publisher_init_default
+ 618 00d8 C7F8B801 		str	r0, [r7, #440]
+ 619 00dc D7F8B831 		ldr	r3, [r7, #440]
+ 620 00e0 002B     		cmp	r3, #0
+ 621 00e2 08D0     		beq	.L19
+ 622              	.LBB8:
+ 623              		.loc 1 100 2 is_stmt 0 discriminator 1
+ 624 00e4 D7F8B821 		ldr	r2, [r7, #440]
+ 625 00e8 6521     		movs	r1, #101
+ 626 00ea 9E48     		ldr	r0, .L29+20
+ 627 00ec FFF7FEFF 		bl	printf
+ 628 00f0 0020     		movs	r0, #0
+ 629 00f2 FFF7FEFF 		bl	vTaskDelete
+ 630              	.L19:
+ 631              	.LBE8:
+ 632              	.LBE7:
+ 101:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
+ 102:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 103:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 633              		.loc 1 103 2 is_stmt 1
+ 634 00f6 D7F8C431 		ldr	r3, [r7, #452]
+ 635 00fa 5A1C     		adds	r2, r3, #1
+ 636 00fc C7F8C421 		str	r2, [r7, #452]
+ 637 0100 1946     		mov	r1, r3
+ 638 0102 9748     		ldr	r0, .L29+16
+ 639 0104 FFF7FEFF 		bl	printf
+ 640              	.LBB9:
+ 104:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // Create a best effort pong publisher
+ 105:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_publisher_init_best_effort(&pong_publisher, &node,
+ 641              		.loc 1 105 2
+ 642 0108 FFF7FEFF 		bl	rosidl_typesupport_c__get_message_type_support_handle__std_msgs__msg__Header
+ 643 010c 0246     		mov	r2, r0
+ 644 010e 07F59871 		add	r1, r7, #304
+ 645 0112 994B     		ldr	r3, .L29+40
+ 646 0114 9948     		ldr	r0, .L29+44
+ 647 0116 FFF7FEFF 		bl	rclc_publisher_init_best_effort
+ 648 011a C7F8B401 		str	r0, [r7, #436]
+ 649 011e D7F8B431 		ldr	r3, [r7, #436]
+ 650 0122 002B     		cmp	r3, #0
+ 651 0124 08D0     		beq	.L20
+ 652              	.LBB10:
+ 653              		.loc 1 105 2 is_stmt 0 discriminator 1
+ 654 0126 D7F8B421 		ldr	r2, [r7, #436]
+ 655 012a 6A21     		movs	r1, #106
+ 656 012c 8D48     		ldr	r0, .L29+20
+ 657 012e FFF7FEFF 		bl	printf
+ 658 0132 0020     		movs	r0, #0
+ 659 0134 FFF7FEFF 		bl	vTaskDelete
+ 660              	.L20:
+ARM GAS  /tmp/cc949nXl.s 			page 15
+
+
+ 661              	.LBE10:
+ 662              	.LBE9:
+ 106:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
+ 107:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 108:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 663              		.loc 1 108 2 is_stmt 1
+ 664 0138 D7F8C431 		ldr	r3, [r7, #452]
+ 665 013c 5A1C     		adds	r2, r3, #1
+ 666 013e C7F8C421 		str	r2, [r7, #452]
+ 667 0142 1946     		mov	r1, r3
+ 668 0144 8648     		ldr	r0, .L29+16
+ 669 0146 FFF7FEFF 		bl	printf
+ 670              	.LBB11:
+ 109:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // Create a best effort ping subscriber
+ 110:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_subscription_init_best_effort(&ping_subscriber, &node,
+ 671              		.loc 1 110 2
+ 672 014a FFF7FEFF 		bl	rosidl_typesupport_c__get_message_type_support_handle__std_msgs__msg__Header
+ 673 014e 0246     		mov	r2, r0
+ 674 0150 07F59871 		add	r1, r7, #304
+ 675 0154 864B     		ldr	r3, .L29+32
+ 676 0156 8A48     		ldr	r0, .L29+48
+ 677 0158 FFF7FEFF 		bl	rclc_subscription_init_best_effort
+ 678 015c C7F8B001 		str	r0, [r7, #432]
+ 679 0160 D7F8B031 		ldr	r3, [r7, #432]
+ 680 0164 002B     		cmp	r3, #0
+ 681 0166 08D0     		beq	.L21
+ 682              	.LBB12:
+ 683              		.loc 1 110 2 is_stmt 0 discriminator 1
+ 684 0168 D7F8B021 		ldr	r2, [r7, #432]
+ 685 016c 6F21     		movs	r1, #111
+ 686 016e 7D48     		ldr	r0, .L29+20
+ 687 0170 FFF7FEFF 		bl	printf
+ 688 0174 0020     		movs	r0, #0
+ 689 0176 FFF7FEFF 		bl	vTaskDelete
+ 690              	.L21:
+ 691              	.LBE12:
+ 692              	.LBE11:
+ 111:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
+ 112:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 113:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 693              		.loc 1 113 2 is_stmt 1
+ 694 017a D7F8C431 		ldr	r3, [r7, #452]
+ 695 017e 5A1C     		adds	r2, r3, #1
+ 696 0180 C7F8C421 		str	r2, [r7, #452]
+ 697 0184 1946     		mov	r1, r3
+ 698 0186 7648     		ldr	r0, .L29+16
+ 699 0188 FFF7FEFF 		bl	printf
+ 700              	.LBB13:
+ 114:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // Create a best effort  pong subscriber
+ 115:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_subscription_init_best_effort(&pong_subscriber, &node,
+ 701              		.loc 1 115 2
+ 702 018c FFF7FEFF 		bl	rosidl_typesupport_c__get_message_type_support_handle__std_msgs__msg__Header
+ 703 0190 0246     		mov	r2, r0
+ 704 0192 07F59871 		add	r1, r7, #304
+ 705 0196 784B     		ldr	r3, .L29+40
+ 706 0198 7A48     		ldr	r0, .L29+52
+ 707 019a FFF7FEFF 		bl	rclc_subscription_init_best_effort
+ARM GAS  /tmp/cc949nXl.s 			page 16
+
+
+ 708 019e C7F8AC01 		str	r0, [r7, #428]
+ 709 01a2 D7F8AC31 		ldr	r3, [r7, #428]
+ 710 01a6 002B     		cmp	r3, #0
+ 711 01a8 08D0     		beq	.L22
+ 712              	.LBB14:
+ 713              		.loc 1 115 2 is_stmt 0 discriminator 1
+ 714 01aa D7F8AC21 		ldr	r2, [r7, #428]
+ 715 01ae 7421     		movs	r1, #116
+ 716 01b0 6C48     		ldr	r0, .L29+20
+ 717 01b2 FFF7FEFF 		bl	printf
+ 718 01b6 0020     		movs	r0, #0
+ 719 01b8 FFF7FEFF 		bl	vTaskDelete
+ 720              	.L22:
+ 721              	.LBE14:
+ 722              	.LBE13:
+ 116:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
+ 117:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 118:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 119:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 723              		.loc 1 119 2 is_stmt 1
+ 724 01bc D7F8C431 		ldr	r3, [r7, #452]
+ 725 01c0 5A1C     		adds	r2, r3, #1
+ 726 01c2 C7F8C421 		str	r2, [r7, #452]
+ 727 01c6 1946     		mov	r1, r3
+ 728 01c8 6548     		ldr	r0, .L29+16
+ 729 01ca FFF7FEFF 		bl	printf
+ 730              	.LBB15:
+ 120:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // Create a 3 seconds ping timer timer,
+ 121:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	rcl_timer_t timer;
+ 122:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback));
+ 731              		.loc 1 122 2
+ 732 01ce 07F59C71 		add	r1, r7, #312
+ 733 01d2 07F59670 		add	r0, r7, #300
+ 734 01d6 6C4B     		ldr	r3, .L29+56
+ 735 01d8 0093     		str	r3, [sp]
+ 736 01da 5DA3     		adr	r3, .L29
+ 737 01dc D3E90023 		ldrd	r2, [r3]
+ 738 01e0 FFF7FEFF 		bl	rclc_timer_init_default
+ 739 01e4 C7F8A801 		str	r0, [r7, #424]
+ 740 01e8 D7F8A831 		ldr	r3, [r7, #424]
+ 741 01ec 002B     		cmp	r3, #0
+ 742 01ee 08D0     		beq	.L23
+ 743              	.LBB16:
+ 744              		.loc 1 122 2 is_stmt 0 discriminator 1
+ 745 01f0 D7F8A821 		ldr	r2, [r7, #424]
+ 746 01f4 7A21     		movs	r1, #122
+ 747 01f6 5B48     		ldr	r0, .L29+20
+ 748 01f8 FFF7FEFF 		bl	printf
+ 749 01fc 0020     		movs	r0, #0
+ 750 01fe FFF7FEFF 		bl	vTaskDelete
+ 751              	.L23:
+ 752              	.LBE16:
+ 753              	.LBE15:
+ 123:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 124:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 125:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 754              		.loc 1 125 2 is_stmt 1
+ARM GAS  /tmp/cc949nXl.s 			page 17
+
+
+ 755 0202 D7F8C431 		ldr	r3, [r7, #452]
+ 756 0206 5A1C     		adds	r2, r3, #1
+ 757 0208 C7F8C421 		str	r2, [r7, #452]
+ 758 020c 1946     		mov	r1, r3
+ 759 020e 5448     		ldr	r0, .L29+16
+ 760 0210 FFF7FEFF 		bl	printf
+ 761              	.LBB17:
+ 126:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // Create executor
+ 127:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	rclc_executor_t executor;
+ 128:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_executor_init(&executor, &support.context, 3, &allocator));
+ 762              		.loc 1 128 2
+ 763 0214 07F5C272 		add	r2, r7, #388
+ 764 0218 07F59C73 		add	r3, r7, #312
+ 765 021c 03F10801 		add	r1, r3, #8
+ 766 0220 07F1A800 		add	r0, r7, #168
+ 767 0224 1346     		mov	r3, r2
+ 768 0226 0322     		movs	r2, #3
+ 769 0228 FFF7FEFF 		bl	rclc_executor_init
+ 770 022c C7F8A401 		str	r0, [r7, #420]
+ 771 0230 D7F8A431 		ldr	r3, [r7, #420]
+ 772 0234 002B     		cmp	r3, #0
+ 773 0236 08D0     		beq	.L24
+ 774              	.LBB18:
+ 775              		.loc 1 128 2 is_stmt 0 discriminator 1
+ 776 0238 D7F8A421 		ldr	r2, [r7, #420]
+ 777 023c 8021     		movs	r1, #128
+ 778 023e 4948     		ldr	r0, .L29+20
+ 779 0240 FFF7FEFF 		bl	printf
+ 780 0244 0020     		movs	r0, #0
+ 781 0246 FFF7FEFF 		bl	vTaskDelete
+ 782              	.L24:
+ 783              	.LBE18:
+ 784              	.LBE17:
+ 785              	.LBB19:
+ 129:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_executor_add_timer(&executor, &timer));
+ 786              		.loc 1 129 2 is_stmt 1
+ 787 024a 07F59672 		add	r2, r7, #300
+ 788 024e 07F1A803 		add	r3, r7, #168
+ 789 0252 1146     		mov	r1, r2
+ 790 0254 1846     		mov	r0, r3
+ 791 0256 FFF7FEFF 		bl	rclc_executor_add_timer
+ 792 025a C7F8A001 		str	r0, [r7, #416]
+ 793 025e D7F8A031 		ldr	r3, [r7, #416]
+ 794 0262 002B     		cmp	r3, #0
+ 795 0264 08D0     		beq	.L25
+ 796              	.LBB20:
+ 797              		.loc 1 129 2 is_stmt 0 discriminator 1
+ 798 0266 D7F8A021 		ldr	r2, [r7, #416]
+ 799 026a 8121     		movs	r1, #129
+ 800 026c 3D48     		ldr	r0, .L29+20
+ 801 026e FFF7FEFF 		bl	printf
+ 802 0272 0020     		movs	r0, #0
+ 803 0274 FFF7FEFF 		bl	vTaskDelete
+ 804              	.L25:
+ 805              	.LBE20:
+ 806              	.LBE19:
+ 807              	.LBB21:
+ARM GAS  /tmp/cc949nXl.s 			page 18
+
+
+ 130:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_executor_add_subscription(&executor, &ping_subscriber, &incoming_ping,
+ 808              		.loc 1 130 2 is_stmt 1
+ 809 0278 07F1A800 		add	r0, r7, #168
+ 810 027c 0023     		movs	r3, #0
+ 811 027e 0093     		str	r3, [sp]
+ 812 0280 424B     		ldr	r3, .L29+60
+ 813 0282 434A     		ldr	r2, .L29+64
+ 814 0284 3E49     		ldr	r1, .L29+48
+ 815 0286 FFF7FEFF 		bl	rclc_executor_add_subscription
+ 816 028a C7F89C01 		str	r0, [r7, #412]
+ 817 028e D7F89C31 		ldr	r3, [r7, #412]
+ 818 0292 002B     		cmp	r3, #0
+ 819 0294 08D0     		beq	.L26
+ 820              	.LBB22:
+ 821              		.loc 1 130 2 is_stmt 0 discriminator 1
+ 822 0296 D7F89C21 		ldr	r2, [r7, #412]
+ 823 029a 8321     		movs	r1, #131
+ 824 029c 3148     		ldr	r0, .L29+20
+ 825 029e FFF7FEFF 		bl	printf
+ 826 02a2 0020     		movs	r0, #0
+ 827 02a4 FFF7FEFF 		bl	vTaskDelete
+ 828              	.L26:
+ 829              	.LBE22:
+ 830              	.LBE21:
+ 831              	.LBB23:
+ 131:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		&ping_subscription_callback, ON_NEW_DATA));
+ 132:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	RCCHECK(rclc_executor_add_subscription(&executor, &pong_subscriber, &incoming_pong,
+ 832              		.loc 1 132 2 is_stmt 1
+ 833 02a8 07F1A800 		add	r0, r7, #168
+ 834 02ac 0023     		movs	r3, #0
+ 835 02ae 0093     		str	r3, [sp]
+ 836 02b0 384B     		ldr	r3, .L29+68
+ 837 02b2 394A     		ldr	r2, .L29+72
+ 838 02b4 3349     		ldr	r1, .L29+52
+ 839 02b6 FFF7FEFF 		bl	rclc_executor_add_subscription
+ 840 02ba C7F89801 		str	r0, [r7, #408]
+ 841 02be D7F89831 		ldr	r3, [r7, #408]
+ 842 02c2 002B     		cmp	r3, #0
+ 843 02c4 08D0     		beq	.L27
+ 844              	.LBB24:
+ 845              		.loc 1 132 2 is_stmt 0 discriminator 1
+ 846 02c6 D7F89821 		ldr	r2, [r7, #408]
+ 847 02ca 8521     		movs	r1, #133
+ 848 02cc 2548     		ldr	r0, .L29+20
+ 849 02ce FFF7FEFF 		bl	printf
+ 850 02d2 0020     		movs	r0, #0
+ 851 02d4 FFF7FEFF 		bl	vTaskDelete
+ 852              	.L27:
+ 853              	.LBE24:
+ 854              	.LBE23:
+ 133:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		&pong_subscription_callback, ON_NEW_DATA));
+ 134:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 135:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 855              		.loc 1 135 2 is_stmt 1
+ 856 02d8 D7F8C431 		ldr	r3, [r7, #452]
+ 857 02dc 5A1C     		adds	r2, r3, #1
+ 858 02de C7F8C421 		str	r2, [r7, #452]
+ARM GAS  /tmp/cc949nXl.s 			page 19
+
+
+ 859 02e2 1946     		mov	r1, r3
+ 860 02e4 1E48     		ldr	r0, .L29+16
+ 861 02e6 FFF7FEFF 		bl	printf
+ 136:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** // Create and allocate the pingpong messages
+ 137:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	char outcoming_ping_buffer[STRING_BUFFER_LEN];
+ 138:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	outcoming_ping.frame_id.data = outcoming_ping_buffer;
+ 862              		.loc 1 138 31
+ 863 02ea 2C4A     		ldr	r2, .L29+76
+ 864 02ec 07F17403 		add	r3, r7, #116
+ 865 02f0 9360     		str	r3, [r2, #8]
+ 139:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	outcoming_ping.frame_id.capacity = STRING_BUFFER_LEN;
+ 866              		.loc 1 139 35
+ 867 02f2 2A4B     		ldr	r3, .L29+76
+ 868 02f4 3222     		movs	r2, #50
+ 869 02f6 1A61     		str	r2, [r3, #16]
+ 140:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 141:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	char incoming_ping_buffer[STRING_BUFFER_LEN];
+ 142:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	incoming_ping.frame_id.data = incoming_ping_buffer;
+ 870              		.loc 1 142 30
+ 871 02f8 254A     		ldr	r2, .L29+64
+ 872 02fa 07F14003 		add	r3, r7, #64
+ 873 02fe 9360     		str	r3, [r2, #8]
+ 143:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	incoming_ping.frame_id.capacity = STRING_BUFFER_LEN;
+ 874              		.loc 1 143 34
+ 875 0300 234B     		ldr	r3, .L29+64
+ 876 0302 3222     		movs	r2, #50
+ 877 0304 1A61     		str	r2, [r3, #16]
+ 144:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 145:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	char incoming_pong_buffer[STRING_BUFFER_LEN];
+ 146:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	incoming_pong.frame_id.data = incoming_pong_buffer;
+ 878              		.loc 1 146 30
+ 879 0306 244A     		ldr	r2, .L29+72
+ 880 0308 07F10C03 		add	r3, r7, #12
+ 881 030c 9360     		str	r3, [r2, #8]
+ 147:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	incoming_pong.frame_id.capacity = STRING_BUFFER_LEN;
+ 882              		.loc 1 147 34
+ 883 030e 224B     		ldr	r3, .L29+72
+ 884 0310 3222     		movs	r2, #50
+ 885 0312 1A61     		str	r2, [r3, #16]
+ 148:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 149:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	device_id = rand();
+ 886              		.loc 1 149 14
+ 887 0314 FFF7FEFF 		bl	rand
+ 888 0318 0246     		mov	r2, r0
+ 889              		.loc 1 149 12
+ 890 031a 214B     		ldr	r3, .L29+80
+ 891 031c 1A60     		str	r2, [r3]
+ 150:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	
+ 151:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	printf("test printf %d \r\n", test_printf_count++);
+ 892              		.loc 1 151 2
+ 893 031e D7F8C431 		ldr	r3, [r7, #452]
+ 894 0322 5A1C     		adds	r2, r3, #1
+ 895 0324 C7F8C421 		str	r2, [r7, #452]
+ 896 0328 1946     		mov	r1, r3
+ 897 032a 0D48     		ldr	r0, .L29+16
+ 898 032c FFF7FEFF 		bl	printf
+ 899              	.L28:
+ARM GAS  /tmp/cc949nXl.s 			page 20
+
+
+ 152:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 
+ 153:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 	while(1){
+ 154:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
+ 900              		.loc 1 154 3 discriminator 1
+ 901 0330 07F1A801 		add	r1, r7, #168
+ 902 0334 1B4A     		ldr	r2, .L29+84
+ 903 0336 4FF00003 		mov	r3, #0
+ 904 033a 0846     		mov	r0, r1
+ 905 033c FFF7FEFF 		bl	rclc_executor_spin_some
+ 155:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		usleep(10000);
+ 906              		.loc 1 155 3 discriminator 1
+ 907 0340 42F21070 		movw	r0, #10000
+ 908 0344 FFF7FEFF 		bl	usleep
+ 154:/home/mego-ros2/microros_ws/firmware/freertos_apps/apps/ping_pong/app.c **** 		usleep(10000);
+ 909              		.loc 1 154 3 discriminator 1
+ 910 0348 F2E7     		b	.L28
+ 911              	.L30:
+ 912 034a 00BFAFF3 		.align	3
+ 912      0080
+ 913              	.L29:
+ 914 0350 00943577 		.word	2000000000
+ 915 0354 00000000 		.word	0
+ 916 0358 00000000 		.word	__func__.9095
+ 917 035c 5C000000 		.word	.LC4
+ 918 0360 68000000 		.word	.LC5
+ 919 0364 7C000000 		.word	.LC6
+ 920 0368 A8000000 		.word	.LC7
+ 921 036c AC000000 		.word	.LC8
+ 922 0370 BC000000 		.word	.LC9
+ 923 0374 00000000 		.word	ping_publisher
+ 924 0378 CC000000 		.word	.LC10
+ 925 037c 00000000 		.word	pong_publisher
+ 926 0380 00000000 		.word	ping_subscriber
+ 927 0384 00000000 		.word	pong_subscriber
+ 928 0388 00000000 		.word	ping_timer_callback
+ 929 038c 00000000 		.word	ping_subscription_callback
+ 930 0390 00000000 		.word	incoming_ping
+ 931 0394 00000000 		.word	pong_subscription_callback
+ 932 0398 00000000 		.word	incoming_pong
+ 933 039c 00000000 		.word	outcoming_ping
+ 934 03a0 00000000 		.word	device_id
+ 935 03a4 80969800 		.word	10000000
+ 936              		.cfi_endproc
+ 937              	.LFE7:
+ 939              		.section	.rodata.__func__.9095,"a"
+ 940              		.align	2
+ 943              	__func__.9095:
+ 944 0000 6170704D 		.ascii	"appMain\000"
+ 944      61696E00 
+ 945              		.text
+ 946              	.Letext0:
+ 947              		.file 2 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/install
+ 948              		.file 3 "/home/mego-ros2/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stddef
+ 949              		.file 4 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/install
+ 950              		.file 5 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_typ
+ 951              		.file 6 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 952              		.file 7 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/install
+ARM GAS  /tmp/cc949nXl.s 			page 21
+
+
+ 953              		.file 8 "/home/mego-ros2/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stdarg
+ 954              		.file 9 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_types.h"
+ 955              		.file 10 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/reent.h"
+ 956              		.file 11 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/lock.h"
+ 957              		.file 12 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/lib/include/FreeRTO
+ 958              		.file 13 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/stdlib.h"
+ 959              		.file 14 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 960              		.file 15 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 961              		.file 16 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 962              		.file 17 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 963              		.file 18 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 964              		.file 19 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 965              		.file 20 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 966              		.file 21 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 967              		.file 22 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 968              		.file 23 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 969              		.file 24 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 970              		.file 25 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 971              		.file 26 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 972              		.file 27 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 973              		.file 28 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 974              		.file 29 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 975              		.file 30 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 976              		.file 31 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 977              		.file 32 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 978              		.file 33 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 979              		.file 34 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 980              		.file 35 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 981              		.file 36 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 982              		.file 37 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/instal
+ 983              		.file 38 "/home/mego-ros2/microros_ws/firmware/freertos_apps/stm32MakefileTest/lib/include/FreeRTO
+ 984              		.file 39 "<built-in>"
+ARM GAS  /tmp/cc949nXl.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 app.c
+     /tmp/cc949nXl.s:18     .rodata.rmw_qos_profile_sensor_data:0000000000000000 $d
+     /tmp/cc949nXl.s:21     .rodata.rmw_qos_profile_sensor_data:0000000000000000 rmw_qos_profile_sensor_data
+     /tmp/cc949nXl.s:45     .rodata.rmw_qos_profile_parameters:0000000000000000 $d
+     /tmp/cc949nXl.s:48     .rodata.rmw_qos_profile_parameters:0000000000000000 rmw_qos_profile_parameters
+     /tmp/cc949nXl.s:72     .rodata.rmw_qos_profile_default:0000000000000000 $d
+     /tmp/cc949nXl.s:75     .rodata.rmw_qos_profile_default:0000000000000000 rmw_qos_profile_default
+     /tmp/cc949nXl.s:99     .rodata.rmw_qos_profile_services_default:0000000000000000 $d
+     /tmp/cc949nXl.s:102    .rodata.rmw_qos_profile_services_default:0000000000000000 rmw_qos_profile_services_default
+     /tmp/cc949nXl.s:126    .rodata.rmw_qos_profile_parameter_events:0000000000000000 $d
+     /tmp/cc949nXl.s:129    .rodata.rmw_qos_profile_parameter_events:0000000000000000 rmw_qos_profile_parameter_events
+     /tmp/cc949nXl.s:153    .rodata.rmw_qos_profile_system_default:0000000000000000 $d
+     /tmp/cc949nXl.s:156    .rodata.rmw_qos_profile_system_default:0000000000000000 rmw_qos_profile_system_default
+     /tmp/cc949nXl.s:159    .rodata.rmw_qos_profile_unknown:0000000000000000 $d
+     /tmp/cc949nXl.s:162    .rodata.rmw_qos_profile_unknown:0000000000000000 rmw_qos_profile_unknown
+                            *COM*:0000000000000004 ping_publisher
+                            *COM*:0000000000000004 pong_publisher
+                            *COM*:0000000000000004 ping_subscriber
+                            *COM*:0000000000000004 pong_subscriber
+                            *COM*:0000000000000014 incoming_ping
+                            *COM*:0000000000000014 outcoming_ping
+                            *COM*:0000000000000014 incoming_pong
+                            *COM*:0000000000000004 device_id
+                            *COM*:0000000000000004 seq_no
+                            *COM*:0000000000000004 pong_count
+     /tmp/cc949nXl.s:196    .rodata:0000000000000000 $d
+     /tmp/cc949nXl.s:203    .text.ping_timer_callback:0000000000000000 $t
+     /tmp/cc949nXl.s:211    .text.ping_timer_callback:0000000000000000 ping_timer_callback
+     /tmp/cc949nXl.s:309    .text.ping_timer_callback:0000000000000080 $d
+     /tmp/cc949nXl.s:324    .text.ping_subscription_callback:0000000000000000 $t
+     /tmp/cc949nXl.s:331    .text.ping_subscription_callback:0000000000000000 ping_subscription_callback
+     /tmp/cc949nXl.s:391    .text.ping_subscription_callback:0000000000000040 $d
+     /tmp/cc949nXl.s:402    .text.pong_subscription_callback:0000000000000000 $t
+     /tmp/cc949nXl.s:409    .text.pong_subscription_callback:0000000000000000 pong_subscription_callback
+     /tmp/cc949nXl.s:472    .text.pong_subscription_callback:0000000000000044 $d
+     /tmp/cc949nXl.s:501    .text.appMain:0000000000000000 $t
+     /tmp/cc949nXl.s:508    .text.appMain:0000000000000000 appMain
+     /tmp/cc949nXl.s:914    .text.appMain:0000000000000350 $d
+     /tmp/cc949nXl.s:943    .rodata.__func__.9095:0000000000000000 __func__.9095
+     /tmp/cc949nXl.s:940    .rodata.__func__.9095:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+rand
+sprintf
+strlen
+clock_gettime
+rcl_publish
+printf
+strcmp
+rcutils_get_default_allocator
+rclc_support_init
+vTaskDelete
+rclc_node_init_default
+rosidl_typesupport_c__get_message_type_support_handle__std_msgs__msg__Header
+rclc_publisher_init_default
+rclc_publisher_init_best_effort
+ARM GAS  /tmp/cc949nXl.s 			page 23
+
+
+rclc_subscription_init_best_effort
+rclc_timer_init_default
+rclc_executor_init
+rclc_executor_add_timer
+rclc_executor_add_subscription
+rclc_executor_spin_some
+usleep

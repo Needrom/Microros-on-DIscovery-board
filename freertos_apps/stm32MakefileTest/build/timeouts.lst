@@ -1,0 +1,1668 @@
+ARM GAS  /tmp/ccN5TyNI.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"timeouts.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	lwip_cyclic_timers
+  18              		.section	.rodata.lwip_cyclic_timers,"a"
+  19              		.align	2
+  22              	lwip_cyclic_timers:
+  23 0000 FA000000 		.word	250
+  24 0004 00000000 		.word	tcp_tmr
+  25 0008 E8030000 		.word	1000
+  26 000c 00000000 		.word	ip_reass_tmr
+  27 0010 E8030000 		.word	1000
+  28 0014 00000000 		.word	etharp_tmr
+  29 0018 60EA0000 		.word	60000
+  30 001c 00000000 		.word	dhcp_coarse_tmr
+  31 0020 F4010000 		.word	500
+  32 0024 00000000 		.word	dhcp_fine_tmr
+  33 0028 E8030000 		.word	1000
+  34 002c 00000000 		.word	dns_tmr
+  35              		.global	lwip_num_cyclic_timers
+  36              		.section	.rodata.lwip_num_cyclic_timers,"a"
+  37              		.align	2
+  40              	lwip_num_cyclic_timers:
+  41 0000 06000000 		.word	6
+  42              		.section	.bss.next_timeout,"aw",%nobits
+  43              		.align	2
+  46              	next_timeout:
+  47 0000 00000000 		.space	4
+  48              		.section	.bss.current_timeout_due_time,"aw",%nobits
+  49              		.align	2
+  52              	current_timeout_due_time:
+  53 0000 00000000 		.space	4
+  54              		.section	.bss.tcpip_tcp_timer_active,"aw",%nobits
+  55              		.align	2
+  58              	tcpip_tcp_timer_active:
+  59 0000 00000000 		.space	4
+  60              		.section	.text.tcpip_tcp_timer,"ax",%progbits
+  61              		.align	1
+  62              		.arch armv7e-m
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  66              		.fpu fpv4-sp-d16
+  68              	tcpip_tcp_timer:
+ARM GAS  /tmp/ccN5TyNI.s 			page 2
+
+
+  69              	.LFB137:
+  70              		.file 1 "Middlewares/Third_Party/LwIP/src/core/timeouts.c"
+   1:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /**
+   2:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @file
+   3:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Stack-internal timers implementation.
+   4:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * This file includes timer callbacks for stack-internal timers as well as
+   5:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * functions to set up or stop timers and check for expired timers.
+   6:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+   7:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+   8:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+   9:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /*
+  10:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  11:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * All rights reserved.
+  12:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+  13:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  14:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * are permitted provided that the following conditions are met:
+  15:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+  16:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  17:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *    this list of conditions and the following disclaimer.
+  18:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *    and/or other materials provided with the distribution.
+  21:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * 3. The name of the author may not be used to endorse or promote products
+  22:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *    derived from this software without specific prior written permission.
+  23:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+  24:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  25:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  26:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  27:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  28:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  29:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  30:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  31:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  32:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  33:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * OF SUCH DAMAGE.
+  34:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+  35:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * This file is part of the lwIP TCP/IP stack.
+  36:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+  37:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Author: Adam Dunkels <adam@sics.se>
+  38:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *         Simon Goldschmidt
+  39:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+  40:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+  41:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  42:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/opt.h"
+  43:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  44:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/timeouts.h"
+  45:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/priv/tcp_priv.h"
+  46:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  47:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/def.h"
+  48:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/memp.h"
+  49:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/priv/tcpip_priv.h"
+  50:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  51:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/ip4_frag.h"
+  52:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/etharp.h"
+  53:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/dhcp.h"
+  54:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/autoip.h"
+  55:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/igmp.h"
+ARM GAS  /tmp/ccN5TyNI.s 			page 3
+
+
+  56:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/dns.h"
+  57:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/nd6.h"
+  58:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/ip6_frag.h"
+  59:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/mld6.h"
+  60:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/dhcp6.h"
+  61:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/sys.h"
+  62:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #include "lwip/pbuf.h"
+  63:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  64:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+  65:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #define HANDLER(x) x, #x
+  66:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #else /* LWIP_DEBUG_TIMERNAMES */
+  67:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #define HANDLER(x) x
+  68:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+  69:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  70:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #define LWIP_MAX_TIMEOUT  0x7fffffff
+  71:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  72:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /* Check if timer's expiry time is greater than time and care about u32_t wraparounds */
+  73:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #define TIME_LESS_THAN(t, compare_to) ( (((u32_t)((t)-(compare_to))) > LWIP_MAX_TIMEOUT) ? 1 : 0 )
+  74:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+  75:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /** This array contains all stack-internal cyclic timers. To get the number of
+  76:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * timers, use LWIP_ARRAYSIZE() */
+  77:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** const struct lwip_cyclic_timer lwip_cyclic_timers[] = {
+  78:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_TCP
+  79:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   /* The TCP timer is a special case: it does not have to run always and
+  80:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****      is triggered to start from TCP using tcp_timer_needed() */
+  81:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {TCP_TMR_INTERVAL, HANDLER(tcp_tmr)},
+  82:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_TCP */
+  83:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_IPV4
+  84:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if IP_REASSEMBLY
+  85:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {IP_TMR_INTERVAL, HANDLER(ip_reass_tmr)},
+  86:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* IP_REASSEMBLY */
+  87:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_ARP
+  88:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {ARP_TMR_INTERVAL, HANDLER(etharp_tmr)},
+  89:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_ARP */
+  90:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DHCP
+  91:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {DHCP_COARSE_TIMER_MSECS, HANDLER(dhcp_coarse_tmr)},
+  92:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {DHCP_FINE_TIMER_MSECS, HANDLER(dhcp_fine_tmr)},
+  93:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_DHCP */
+  94:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_AUTOIP
+  95:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {AUTOIP_TMR_INTERVAL, HANDLER(autoip_tmr)},
+  96:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_AUTOIP */
+  97:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_IGMP
+  98:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {IGMP_TMR_INTERVAL, HANDLER(igmp_tmr)},
+  99:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_IGMP */
+ 100:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_IPV4 */
+ 101:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DNS
+ 102:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {DNS_TMR_INTERVAL, HANDLER(dns_tmr)},
+ 103:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_DNS */
+ 104:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_IPV6
+ 105:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {ND6_TMR_INTERVAL, HANDLER(nd6_tmr)},
+ 106:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_IPV6_REASS
+ 107:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {IP6_REASS_TMR_INTERVAL, HANDLER(ip6_reass_tmr)},
+ 108:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_IPV6_REASS */
+ 109:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_IPV6_MLD
+ 110:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {MLD6_TMR_INTERVAL, HANDLER(mld6_tmr)},
+ 111:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_IPV6_MLD */
+ 112:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_IPV6_DHCP6
+ARM GAS  /tmp/ccN5TyNI.s 			page 4
+
+
+ 113:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   {DHCP6_TIMER_MSECS, HANDLER(dhcp6_tmr)},
+ 114:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_IPV6_DHCP6 */
+ 115:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_IPV6 */
+ 116:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** };
+ 117:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** const int lwip_num_cyclic_timers = LWIP_ARRAYSIZE(lwip_cyclic_timers);
+ 118:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 119:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_TIMERS && !LWIP_TIMERS_CUSTOM
+ 120:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 121:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /** The one and only timeout list */
+ 122:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** static struct sys_timeo *next_timeout;
+ 123:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 124:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** static u32_t current_timeout_due_time;
+ 125:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 126:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_TESTMODE
+ 127:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** struct sys_timeo**
+ 128:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_timeouts_get_next_timeout(void)
+ 129:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 130:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   return &next_timeout;
+ 131:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 132:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 133:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 134:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_TCP
+ 135:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /** global variable that shows if the tcp timer is currently scheduled or not */
+ 136:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** static int tcpip_tcp_timer_active;
+ 137:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 138:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /**
+ 139:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Timer callback function that calls tcp_tmr() and reschedules itself.
+ 140:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+ 141:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @param arg unused argument
+ 142:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+ 143:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** static void
+ 144:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** tcpip_tcp_timer(void *arg)
+ 145:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+  71              		.loc 1 145 1
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 8
+  74              		@ frame_needed = 1, uses_anonymous_args = 0
+  75 0000 80B5     		push	{r7, lr}
+  76              	.LCFI0:
+  77              		.cfi_def_cfa_offset 8
+  78              		.cfi_offset 7, -8
+  79              		.cfi_offset 14, -4
+  80 0002 82B0     		sub	sp, sp, #8
+  81              	.LCFI1:
+  82              		.cfi_def_cfa_offset 16
+  83 0004 00AF     		add	r7, sp, #0
+  84              	.LCFI2:
+  85              		.cfi_def_cfa_register 7
+  86 0006 7860     		str	r0, [r7, #4]
+ 146:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_UNUSED_ARG(arg);
+ 147:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 148:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   /* call TCP timer handler */
+ 149:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   tcp_tmr();
+  87              		.loc 1 149 3
+  88 0008 FFF7FEFF 		bl	tcp_tmr
+ 150:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   /* timer still needed? */
+ 151:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (tcp_active_pcbs || tcp_tw_pcbs) {
+ARM GAS  /tmp/ccN5TyNI.s 			page 5
+
+
+  89              		.loc 1 151 7
+  90 000c 0A4B     		ldr	r3, .L5
+  91 000e 1B68     		ldr	r3, [r3]
+  92              		.loc 1 151 6
+  93 0010 002B     		cmp	r3, #0
+  94 0012 03D1     		bne	.L2
+  95              		.loc 1 151 23 discriminator 1
+  96 0014 094B     		ldr	r3, .L5+4
+  97 0016 1B68     		ldr	r3, [r3]
+  98 0018 002B     		cmp	r3, #0
+  99 001a 05D0     		beq	.L3
+ 100              	.L2:
+ 152:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* restart timer */
+ 153:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout(TCP_TMR_INTERVAL, tcpip_tcp_timer, NULL);
+ 101              		.loc 1 153 5
+ 102 001c 0022     		movs	r2, #0
+ 103 001e 0849     		ldr	r1, .L5+8
+ 104 0020 FA20     		movs	r0, #250
+ 105 0022 FFF7FEFF 		bl	sys_timeout
+ 106 0026 02E0     		b	.L4
+ 107              	.L3:
+ 154:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   } else {
+ 155:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* disable timer */
+ 156:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     tcpip_tcp_timer_active = 0;
+ 108              		.loc 1 156 28
+ 109 0028 064B     		ldr	r3, .L5+12
+ 110 002a 0022     		movs	r2, #0
+ 111 002c 1A60     		str	r2, [r3]
+ 112              	.L4:
+ 157:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 158:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 113              		.loc 1 158 1
+ 114 002e 00BF     		nop
+ 115 0030 0837     		adds	r7, r7, #8
+ 116              	.LCFI3:
+ 117              		.cfi_def_cfa_offset 8
+ 118 0032 BD46     		mov	sp, r7
+ 119              	.LCFI4:
+ 120              		.cfi_def_cfa_register 13
+ 121              		@ sp needed
+ 122 0034 80BD     		pop	{r7, pc}
+ 123              	.L6:
+ 124 0036 00BF     		.align	2
+ 125              	.L5:
+ 126 0038 00000000 		.word	tcp_active_pcbs
+ 127 003c 00000000 		.word	tcp_tw_pcbs
+ 128 0040 00000000 		.word	tcpip_tcp_timer
+ 129 0044 00000000 		.word	tcpip_tcp_timer_active
+ 130              		.cfi_endproc
+ 131              	.LFE137:
+ 133              		.section	.text.tcp_timer_needed,"ax",%progbits
+ 134              		.align	1
+ 135              		.global	tcp_timer_needed
+ 136              		.syntax unified
+ 137              		.thumb
+ 138              		.thumb_func
+ 139              		.fpu fpv4-sp-d16
+ARM GAS  /tmp/ccN5TyNI.s 			page 6
+
+
+ 141              	tcp_timer_needed:
+ 142              	.LFB138:
+ 159:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 160:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /**
+ 161:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Called from TCP_REG when registering a new PCB:
+ 162:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * the reason is to have the TCP timer only running when
+ 163:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * there are active (or time-wait) PCBs.
+ 164:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+ 165:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void
+ 166:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** tcp_timer_needed(void)
+ 167:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 143              		.loc 1 167 1
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 0
+ 146              		@ frame_needed = 1, uses_anonymous_args = 0
+ 147 0000 80B5     		push	{r7, lr}
+ 148              	.LCFI5:
+ 149              		.cfi_def_cfa_offset 8
+ 150              		.cfi_offset 7, -8
+ 151              		.cfi_offset 14, -4
+ 152 0002 00AF     		add	r7, sp, #0
+ 153              	.LCFI6:
+ 154              		.cfi_def_cfa_register 7
+ 168:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 169:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 170:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   /* timer is off but needed again? */
+ 171:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (!tcpip_tcp_timer_active && (tcp_active_pcbs || tcp_tw_pcbs)) {
+ 155              		.loc 1 171 7
+ 156 0004 0A4B     		ldr	r3, .L11
+ 157 0006 1B68     		ldr	r3, [r3]
+ 158              		.loc 1 171 6
+ 159 0008 002B     		cmp	r3, #0
+ 160 000a 0FD1     		bne	.L10
+ 161              		.loc 1 171 35 discriminator 1
+ 162 000c 094B     		ldr	r3, .L11+4
+ 163 000e 1B68     		ldr	r3, [r3]
+ 164              		.loc 1 171 31 discriminator 1
+ 165 0010 002B     		cmp	r3, #0
+ 166 0012 03D1     		bne	.L9
+ 167              		.loc 1 171 51 discriminator 2
+ 168 0014 084B     		ldr	r3, .L11+8
+ 169 0016 1B68     		ldr	r3, [r3]
+ 170 0018 002B     		cmp	r3, #0
+ 171 001a 07D0     		beq	.L10
+ 172              	.L9:
+ 172:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* enable and start timer */
+ 173:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     tcpip_tcp_timer_active = 1;
+ 173              		.loc 1 173 28
+ 174 001c 044B     		ldr	r3, .L11
+ 175 001e 0122     		movs	r2, #1
+ 176 0020 1A60     		str	r2, [r3]
+ 174:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout(TCP_TMR_INTERVAL, tcpip_tcp_timer, NULL);
+ 177              		.loc 1 174 5
+ 178 0022 0022     		movs	r2, #0
+ 179 0024 0549     		ldr	r1, .L11+12
+ 180 0026 FA20     		movs	r0, #250
+ 181 0028 FFF7FEFF 		bl	sys_timeout
+ARM GAS  /tmp/ccN5TyNI.s 			page 7
+
+
+ 182              	.L10:
+ 175:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 176:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 183              		.loc 1 176 1
+ 184 002c 00BF     		nop
+ 185 002e 80BD     		pop	{r7, pc}
+ 186              	.L12:
+ 187              		.align	2
+ 188              	.L11:
+ 189 0030 00000000 		.word	tcpip_tcp_timer_active
+ 190 0034 00000000 		.word	tcp_active_pcbs
+ 191 0038 00000000 		.word	tcp_tw_pcbs
+ 192 003c 00000000 		.word	tcpip_tcp_timer
+ 193              		.cfi_endproc
+ 194              	.LFE138:
+ 196              		.section	.rodata
+ 197              		.align	2
+ 198              	.LC0:
+ 199 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/core/timeouts.c\000"
+ 199      6C657761 
+ 199      7265732F 
+ 199      54686972 
+ 199      645F5061 
+ 200 0031 000000   		.align	2
+ 201              	.LC1:
+ 202 0034 7379735F 		.ascii	"sys_timeout: timeout != NULL, pool MEMP_SYS_TIMEOUT"
+ 202      74696D65 
+ 202      6F75743A 
+ 202      2074696D 
+ 202      656F7574 
+ 203 0067 20697320 		.ascii	" is empty\000"
+ 203      656D7074 
+ 203      7900
+ 204 0071 000000   		.align	2
+ 205              	.LC2:
+ 206 0074 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+ 206      7274696F 
+ 206      6E202225 
+ 206      73222066 
+ 206      61696C65 
+ 207              		.section	.text.sys_timeout_abs,"ax",%progbits
+ 208              		.align	1
+ 209              		.syntax unified
+ 210              		.thumb
+ 211              		.thumb_func
+ 212              		.fpu fpv4-sp-d16
+ 214              	sys_timeout_abs:
+ 215              	.LFB139:
+ 177:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_TCP */
+ 178:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 179:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** static void
+ 180:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 181:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_timeout_abs(u32_t abs_time, sys_timeout_handler handler, void *arg, const char *handler_name)
+ 182:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #else /* LWIP_DEBUG_TIMERNAMES */
+ 183:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_timeout_abs(u32_t abs_time, sys_timeout_handler handler, void *arg)
+ 184:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 185:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ARM GAS  /tmp/ccN5TyNI.s 			page 8
+
+
+ 216              		.loc 1 185 1
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 24
+ 219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 220 0000 80B5     		push	{r7, lr}
+ 221              	.LCFI7:
+ 222              		.cfi_def_cfa_offset 8
+ 223              		.cfi_offset 7, -8
+ 224              		.cfi_offset 14, -4
+ 225 0002 86B0     		sub	sp, sp, #24
+ 226              	.LCFI8:
+ 227              		.cfi_def_cfa_offset 32
+ 228 0004 00AF     		add	r7, sp, #0
+ 229              	.LCFI9:
+ 230              		.cfi_def_cfa_register 7
+ 231 0006 F860     		str	r0, [r7, #12]
+ 232 0008 B960     		str	r1, [r7, #8]
+ 233 000a 7A60     		str	r2, [r7, #4]
+ 186:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   struct sys_timeo *timeout, *t;
+ 187:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 188:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   timeout = (struct sys_timeo *)memp_malloc(MEMP_SYS_TIMEOUT);
+ 234              		.loc 1 188 33
+ 235 000c 0A20     		movs	r0, #10
+ 236 000e FFF7FEFF 		bl	memp_malloc
+ 237 0012 3861     		str	r0, [r7, #16]
+ 189:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (timeout == NULL) {
+ 238              		.loc 1 189 6
+ 239 0014 3B69     		ldr	r3, [r7, #16]
+ 240 0016 002B     		cmp	r3, #0
+ 241 0018 09D1     		bne	.L14
+ 190:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     LWIP_ASSERT("sys_timeout: timeout != NULL, pool MEMP_SYS_TIMEOUT is empty", timeout != NULL);
+ 242              		.loc 1 190 5
+ 243 001a 3B69     		ldr	r3, [r7, #16]
+ 244 001c 002B     		cmp	r3, #0
+ 245 001e 51D1     		bne	.L23
+ 246              		.loc 1 190 5 is_stmt 0 discriminator 1
+ 247 0020 2A4B     		ldr	r3, .L24
+ 248 0022 BE22     		movs	r2, #190
+ 249 0024 2A49     		ldr	r1, .L24+4
+ 250 0026 2B48     		ldr	r0, .L24+8
+ 251 0028 FFF7FEFF 		bl	printf
+ 191:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     return;
+ 252              		.loc 1 191 5 is_stmt 1 discriminator 1
+ 253 002c 4AE0     		b	.L23
+ 254              	.L14:
+ 192:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 193:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 194:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   timeout->next = NULL;
+ 255              		.loc 1 194 17
+ 256 002e 3B69     		ldr	r3, [r7, #16]
+ 257 0030 0022     		movs	r2, #0
+ 258 0032 1A60     		str	r2, [r3]
+ 195:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   timeout->h = handler;
+ 259              		.loc 1 195 14
+ 260 0034 3B69     		ldr	r3, [r7, #16]
+ 261 0036 BA68     		ldr	r2, [r7, #8]
+ 262 0038 9A60     		str	r2, [r3, #8]
+ARM GAS  /tmp/ccN5TyNI.s 			page 9
+
+
+ 196:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   timeout->arg = arg;
+ 263              		.loc 1 196 16
+ 264 003a 3B69     		ldr	r3, [r7, #16]
+ 265 003c 7A68     		ldr	r2, [r7, #4]
+ 266 003e DA60     		str	r2, [r3, #12]
+ 197:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   timeout->time = abs_time;
+ 267              		.loc 1 197 17
+ 268 0040 3B69     		ldr	r3, [r7, #16]
+ 269 0042 FA68     		ldr	r2, [r7, #12]
+ 270 0044 5A60     		str	r2, [r3, #4]
+ 198:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 199:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 200:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   timeout->handler_name = handler_name;
+ 201:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_DEBUGF(TIMERS_DEBUG, ("sys_timeout: %p abs_time=%"U32_F" handler=%s arg=%p\n",
+ 202:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****                              (void *)timeout, abs_time, handler_name, (void *)arg));
+ 203:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+ 204:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 205:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (next_timeout == NULL) {
+ 271              		.loc 1 205 20
+ 272 0046 244B     		ldr	r3, .L24+12
+ 273 0048 1B68     		ldr	r3, [r3]
+ 274              		.loc 1 205 6
+ 275 004a 002B     		cmp	r3, #0
+ 276 004c 03D1     		bne	.L17
+ 206:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     next_timeout = timeout;
+ 277              		.loc 1 206 18
+ 278 004e 224A     		ldr	r2, .L24+12
+ 279 0050 3B69     		ldr	r3, [r7, #16]
+ 280 0052 1360     		str	r3, [r2]
+ 207:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     return;
+ 281              		.loc 1 207 5
+ 282 0054 37E0     		b	.L13
+ 283              	.L17:
+ 208:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 209:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (TIME_LESS_THAN(timeout->time, next_timeout->time)) {
+ 284              		.loc 1 209 7
+ 285 0056 3B69     		ldr	r3, [r7, #16]
+ 286 0058 5A68     		ldr	r2, [r3, #4]
+ 287 005a 1F4B     		ldr	r3, .L24+12
+ 288 005c 1B68     		ldr	r3, [r3]
+ 289 005e 5B68     		ldr	r3, [r3, #4]
+ 290 0060 D31A     		subs	r3, r2, r3
+ 291 0062 DB0F     		lsrs	r3, r3, #31
+ 292 0064 03F00103 		and	r3, r3, #1
+ 293 0068 DBB2     		uxtb	r3, r3
+ 294              		.loc 1 209 6
+ 295 006a 002B     		cmp	r3, #0
+ 296 006c 07D0     		beq	.L18
+ 210:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     timeout->next = next_timeout;
+ 297              		.loc 1 210 19
+ 298 006e 1A4B     		ldr	r3, .L24+12
+ 299 0070 1A68     		ldr	r2, [r3]
+ 300 0072 3B69     		ldr	r3, [r7, #16]
+ 301 0074 1A60     		str	r2, [r3]
+ 211:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     next_timeout = timeout;
+ 302              		.loc 1 211 18
+ 303 0076 184A     		ldr	r2, .L24+12
+ARM GAS  /tmp/ccN5TyNI.s 			page 10
+
+
+ 304 0078 3B69     		ldr	r3, [r7, #16]
+ 305 007a 1360     		str	r3, [r2]
+ 306 007c 23E0     		b	.L13
+ 307              	.L18:
+ 212:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   } else {
+ 213:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     for (t = next_timeout; t != NULL; t = t->next) {
+ 308              		.loc 1 213 12
+ 309 007e 164B     		ldr	r3, .L24+12
+ 310 0080 1B68     		ldr	r3, [r3]
+ 311 0082 7B61     		str	r3, [r7, #20]
+ 312              		.loc 1 213 5
+ 313 0084 1AE0     		b	.L19
+ 314              	.L22:
+ 214:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       if ((t->next == NULL) || TIME_LESS_THAN(timeout->time, t->next->time)) {
+ 315              		.loc 1 214 13
+ 316 0086 7B69     		ldr	r3, [r7, #20]
+ 317 0088 1B68     		ldr	r3, [r3]
+ 318              		.loc 1 214 10
+ 319 008a 002B     		cmp	r3, #0
+ 320 008c 0BD0     		beq	.L20
+ 321              		.loc 1 214 32 discriminator 1
+ 322 008e 3B69     		ldr	r3, [r7, #16]
+ 323 0090 5A68     		ldr	r2, [r3, #4]
+ 324 0092 7B69     		ldr	r3, [r7, #20]
+ 325 0094 1B68     		ldr	r3, [r3]
+ 326 0096 5B68     		ldr	r3, [r3, #4]
+ 327 0098 D31A     		subs	r3, r2, r3
+ 328              		.loc 1 214 29 discriminator 1
+ 329 009a DB0F     		lsrs	r3, r3, #31
+ 330 009c 03F00103 		and	r3, r3, #1
+ 331 00a0 DBB2     		uxtb	r3, r3
+ 332 00a2 002B     		cmp	r3, #0
+ 333 00a4 07D0     		beq	.L21
+ 334              	.L20:
+ 215:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****         timeout->next = t->next;
+ 335              		.loc 1 215 26
+ 336 00a6 7B69     		ldr	r3, [r7, #20]
+ 337 00a8 1A68     		ldr	r2, [r3]
+ 338              		.loc 1 215 23
+ 339 00aa 3B69     		ldr	r3, [r7, #16]
+ 340 00ac 1A60     		str	r2, [r3]
+ 216:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****         t->next = timeout;
+ 341              		.loc 1 216 17
+ 342 00ae 7B69     		ldr	r3, [r7, #20]
+ 343 00b0 3A69     		ldr	r2, [r7, #16]
+ 344 00b2 1A60     		str	r2, [r3]
+ 217:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****         break;
+ 345              		.loc 1 217 9
+ 346 00b4 07E0     		b	.L13
+ 347              	.L21:
+ 213:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       if ((t->next == NULL) || TIME_LESS_THAN(timeout->time, t->next->time)) {
+ 348              		.loc 1 213 41 discriminator 2
+ 349 00b6 7B69     		ldr	r3, [r7, #20]
+ 350 00b8 1B68     		ldr	r3, [r3]
+ 351 00ba 7B61     		str	r3, [r7, #20]
+ 352              	.L19:
+ 213:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       if ((t->next == NULL) || TIME_LESS_THAN(timeout->time, t->next->time)) {
+ARM GAS  /tmp/ccN5TyNI.s 			page 11
+
+
+ 353              		.loc 1 213 5 discriminator 1
+ 354 00bc 7B69     		ldr	r3, [r7, #20]
+ 355 00be 002B     		cmp	r3, #0
+ 356 00c0 E1D1     		bne	.L22
+ 357 00c2 00E0     		b	.L13
+ 358              	.L23:
+ 191:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 359              		.loc 1 191 5
+ 360 00c4 00BF     		nop
+ 361              	.L13:
+ 218:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       }
+ 219:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 220:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 221:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 362              		.loc 1 221 1
+ 363 00c6 1837     		adds	r7, r7, #24
+ 364              	.LCFI10:
+ 365              		.cfi_def_cfa_offset 8
+ 366 00c8 BD46     		mov	sp, r7
+ 367              	.LCFI11:
+ 368              		.cfi_def_cfa_register 13
+ 369              		@ sp needed
+ 370 00ca 80BD     		pop	{r7, pc}
+ 371              	.L25:
+ 372              		.align	2
+ 373              	.L24:
+ 374 00cc 00000000 		.word	.LC0
+ 375 00d0 34000000 		.word	.LC1
+ 376 00d4 74000000 		.word	.LC2
+ 377 00d8 00000000 		.word	next_timeout
+ 378              		.cfi_endproc
+ 379              	.LFE139:
+ 381              		.section	.text.lwip_cyclic_timer,"ax",%progbits
+ 382              		.align	1
+ 383              		.syntax unified
+ 384              		.thumb
+ 385              		.thumb_func
+ 386              		.fpu fpv4-sp-d16
+ 388              	lwip_cyclic_timer:
+ 389              	.LFB140:
+ 222:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 223:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /**
+ 224:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Timer callback function that calls cyclic->handler() and reschedules itself.
+ 225:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+ 226:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @param arg unused argument
+ 227:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+ 228:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if !LWIP_TESTMODE
+ 229:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** static
+ 230:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 231:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void
+ 232:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** lwip_cyclic_timer(void *arg)
+ 233:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 390              		.loc 1 233 1
+ 391              		.cfi_startproc
+ 392              		@ args = 0, pretend = 0, frame = 24
+ 393              		@ frame_needed = 1, uses_anonymous_args = 0
+ 394 0000 80B5     		push	{r7, lr}
+ARM GAS  /tmp/ccN5TyNI.s 			page 12
+
+
+ 395              	.LCFI12:
+ 396              		.cfi_def_cfa_offset 8
+ 397              		.cfi_offset 7, -8
+ 398              		.cfi_offset 14, -4
+ 399 0002 86B0     		sub	sp, sp, #24
+ 400              	.LCFI13:
+ 401              		.cfi_def_cfa_offset 32
+ 402 0004 00AF     		add	r7, sp, #0
+ 403              	.LCFI14:
+ 404              		.cfi_def_cfa_register 7
+ 405 0006 7860     		str	r0, [r7, #4]
+ 234:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   u32_t now;
+ 235:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   u32_t next_timeout_time;
+ 236:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   const struct lwip_cyclic_timer *cyclic = (const struct lwip_cyclic_timer *)arg;
+ 406              		.loc 1 236 35
+ 407 0008 7B68     		ldr	r3, [r7, #4]
+ 408 000a 7B61     		str	r3, [r7, #20]
+ 237:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 238:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 239:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_DEBUGF(TIMERS_DEBUG, ("tcpip: %s()\n", cyclic->handler_name));
+ 240:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 241:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   cyclic->handler();
+ 409              		.loc 1 241 9
+ 410 000c 7B69     		ldr	r3, [r7, #20]
+ 411 000e 5B68     		ldr	r3, [r3, #4]
+ 412              		.loc 1 241 3
+ 413 0010 9847     		blx	r3
+ 414              	.LVL0:
+ 242:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 243:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   now = sys_now();
+ 415              		.loc 1 243 9
+ 416 0012 FFF7FEFF 		bl	sys_now
+ 417 0016 3861     		str	r0, [r7, #16]
+ 244:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   next_timeout_time = (u32_t)(current_timeout_due_time + cyclic->interval_ms);  /* overflow handled
+ 418              		.loc 1 244 64
+ 419 0018 7B69     		ldr	r3, [r7, #20]
+ 420 001a 1A68     		ldr	r2, [r3]
+ 421              		.loc 1 244 23
+ 422 001c 0F4B     		ldr	r3, .L30
+ 423 001e 1B68     		ldr	r3, [r3]
+ 424              		.loc 1 244 21
+ 425 0020 1344     		add	r3, r3, r2
+ 426 0022 FB60     		str	r3, [r7, #12]
+ 245:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (TIME_LESS_THAN(next_timeout_time, now)) {
+ 427              		.loc 1 245 7
+ 428 0024 FA68     		ldr	r2, [r7, #12]
+ 429 0026 3B69     		ldr	r3, [r7, #16]
+ 430 0028 D31A     		subs	r3, r2, r3
+ 431 002a DB0F     		lsrs	r3, r3, #31
+ 432 002c 03F00103 		and	r3, r3, #1
+ 433 0030 DBB2     		uxtb	r3, r3
+ 434              		.loc 1 245 6
+ 435 0032 002B     		cmp	r3, #0
+ 436 0034 09D0     		beq	.L27
+ 246:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* timer would immediately expire again -> "overload" -> restart without any correction */
+ 247:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 248:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout_abs((u32_t)(now + cyclic->interval_ms), lwip_cyclic_timer, arg, cyclic->handler_nam
+ARM GAS  /tmp/ccN5TyNI.s 			page 13
+
+
+ 249:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #else
+ 250:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout_abs((u32_t)(now + cyclic->interval_ms), lwip_cyclic_timer, arg);
+ 437              		.loc 1 250 41
+ 438 0036 7B69     		ldr	r3, [r7, #20]
+ 439 0038 1A68     		ldr	r2, [r3]
+ 440              		.loc 1 250 5
+ 441 003a 3B69     		ldr	r3, [r7, #16]
+ 442 003c 1344     		add	r3, r3, r2
+ 443 003e 7A68     		ldr	r2, [r7, #4]
+ 444 0040 0749     		ldr	r1, .L30+4
+ 445 0042 1846     		mov	r0, r3
+ 446 0044 FFF7FEFF 		bl	sys_timeout_abs
+ 251:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 252:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 253:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   } else {
+ 254:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* correct cyclic interval with handler execution delay and sys_check_timeouts jitter */
+ 255:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 256:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout_abs(next_timeout_time, lwip_cyclic_timer, arg, cyclic->handler_name);
+ 257:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #else
+ 258:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout_abs(next_timeout_time, lwip_cyclic_timer, arg);
+ 259:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 260:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 261:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 447              		.loc 1 261 1
+ 448 0048 04E0     		b	.L29
+ 449              	.L27:
+ 258:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 450              		.loc 1 258 5
+ 451 004a 7A68     		ldr	r2, [r7, #4]
+ 452 004c 0449     		ldr	r1, .L30+4
+ 453 004e F868     		ldr	r0, [r7, #12]
+ 454 0050 FFF7FEFF 		bl	sys_timeout_abs
+ 455              	.L29:
+ 456              		.loc 1 261 1
+ 457 0054 00BF     		nop
+ 458 0056 1837     		adds	r7, r7, #24
+ 459              	.LCFI15:
+ 460              		.cfi_def_cfa_offset 8
+ 461 0058 BD46     		mov	sp, r7
+ 462              	.LCFI16:
+ 463              		.cfi_def_cfa_register 13
+ 464              		@ sp needed
+ 465 005a 80BD     		pop	{r7, pc}
+ 466              	.L31:
+ 467              		.align	2
+ 468              	.L30:
+ 469 005c 00000000 		.word	current_timeout_due_time
+ 470 0060 00000000 		.word	lwip_cyclic_timer
+ 471              		.cfi_endproc
+ 472              	.LFE140:
+ 474              		.section	.text.sys_timeouts_init,"ax",%progbits
+ 475              		.align	1
+ 476              		.global	sys_timeouts_init
+ 477              		.syntax unified
+ 478              		.thumb
+ 479              		.thumb_func
+ 480              		.fpu fpv4-sp-d16
+ARM GAS  /tmp/ccN5TyNI.s 			page 14
+
+
+ 482              	sys_timeouts_init:
+ 483              	.LFB141:
+ 262:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 263:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /** Initialize this module */
+ 264:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void sys_timeouts_init(void)
+ 265:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 484              		.loc 1 265 1
+ 485              		.cfi_startproc
+ 486              		@ args = 0, pretend = 0, frame = 8
+ 487              		@ frame_needed = 1, uses_anonymous_args = 0
+ 488 0000 80B5     		push	{r7, lr}
+ 489              	.LCFI17:
+ 490              		.cfi_def_cfa_offset 8
+ 491              		.cfi_offset 7, -8
+ 492              		.cfi_offset 14, -4
+ 493 0002 82B0     		sub	sp, sp, #8
+ 494              	.LCFI18:
+ 495              		.cfi_def_cfa_offset 16
+ 496 0004 00AF     		add	r7, sp, #0
+ 497              	.LCFI19:
+ 498              		.cfi_def_cfa_register 7
+ 266:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   size_t i;
+ 267:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   /* tcp_tmr() at index 0 is started on demand */
+ 268:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   for (i = (LWIP_TCP ? 1 : 0); i < LWIP_ARRAYSIZE(lwip_cyclic_timers); i++) {
+ 499              		.loc 1 268 10
+ 500 0006 0123     		movs	r3, #1
+ 501 0008 7B60     		str	r3, [r7, #4]
+ 502              		.loc 1 268 3
+ 503 000a 0EE0     		b	.L33
+ 504              	.L34:
+ 269:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* we have to cast via size_t to get rid of const warning
+ 270:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       (this is OK as cyclic_timer() casts back to const* */
+ 271:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout(lwip_cyclic_timers[i].interval_ms, lwip_cyclic_timer, LWIP_CONST_CAST(void *, &lwip
+ 505              		.loc 1 271 5 discriminator 3
+ 506 000c 0A4A     		ldr	r2, .L35
+ 507 000e 7B68     		ldr	r3, [r7, #4]
+ 508 0010 52F83300 		ldr	r0, [r2, r3, lsl #3]
+ 509              		.loc 1 271 71 discriminator 3
+ 510 0014 7B68     		ldr	r3, [r7, #4]
+ 511 0016 DB00     		lsls	r3, r3, #3
+ 512 0018 074A     		ldr	r2, .L35
+ 513 001a 1344     		add	r3, r3, r2
+ 514              		.loc 1 271 5 discriminator 3
+ 515 001c 1A46     		mov	r2, r3
+ 516 001e 0749     		ldr	r1, .L35+4
+ 517 0020 FFF7FEFF 		bl	sys_timeout
+ 268:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* we have to cast via size_t to get rid of const warning
+ 518              		.loc 1 268 73 discriminator 3
+ 519 0024 7B68     		ldr	r3, [r7, #4]
+ 520 0026 0133     		adds	r3, r3, #1
+ 521 0028 7B60     		str	r3, [r7, #4]
+ 522              	.L33:
+ 268:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* we have to cast via size_t to get rid of const warning
+ 523              		.loc 1 268 3 discriminator 1
+ 524 002a 7B68     		ldr	r3, [r7, #4]
+ 525 002c 052B     		cmp	r3, #5
+ 526 002e EDD9     		bls	.L34
+ARM GAS  /tmp/ccN5TyNI.s 			page 15
+
+
+ 272:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 273:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 527              		.loc 1 273 1
+ 528 0030 00BF     		nop
+ 529 0032 0837     		adds	r7, r7, #8
+ 530              	.LCFI20:
+ 531              		.cfi_def_cfa_offset 8
+ 532 0034 BD46     		mov	sp, r7
+ 533              	.LCFI21:
+ 534              		.cfi_def_cfa_register 13
+ 535              		@ sp needed
+ 536 0036 80BD     		pop	{r7, pc}
+ 537              	.L36:
+ 538              		.align	2
+ 539              	.L35:
+ 540 0038 00000000 		.word	lwip_cyclic_timers
+ 541 003c 00000000 		.word	lwip_cyclic_timer
+ 542              		.cfi_endproc
+ 543              	.LFE141:
+ 545              		.section	.rodata
+ 546              		.align	2
+ 547              	.LC3:
+ 548 009c 54696D65 		.ascii	"Timeout time too long, max is LWIP_UINT32_MAX/4 mse"
+ 548      6F757420 
+ 548      74696D65 
+ 548      20746F6F 
+ 548      206C6F6E 
+ 549 00cf 637300   		.ascii	"cs\000"
+ 550              		.section	.text.sys_timeout,"ax",%progbits
+ 551              		.align	1
+ 552              		.global	sys_timeout
+ 553              		.syntax unified
+ 554              		.thumb
+ 555              		.thumb_func
+ 556              		.fpu fpv4-sp-d16
+ 558              	sys_timeout:
+ 559              	.LFB142:
+ 274:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 275:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /**
+ 276:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Create a one-shot timer (aka timeout). Timeouts are processed in the
+ 277:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * following cases:
+ 278:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * - while waiting for a message using sys_timeouts_mbox_fetch()
+ 279:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * - by calling sys_check_timeouts() (NO_SYS==1 only)
+ 280:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+ 281:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @param msecs time in milliseconds after that the timer should expire
+ 282:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @param handler callback function to call when msecs have elapsed
+ 283:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @param arg argument to pass to the callback function
+ 284:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+ 285:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 286:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void
+ 287:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_timeout_debug(u32_t msecs, sys_timeout_handler handler, void *arg, const char *handler_name)
+ 288:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #else /* LWIP_DEBUG_TIMERNAMES */
+ 289:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void
+ 290:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_timeout(u32_t msecs, sys_timeout_handler handler, void *arg)
+ 291:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+ 292:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 560              		.loc 1 292 1
+ARM GAS  /tmp/ccN5TyNI.s 			page 16
+
+
+ 561              		.cfi_startproc
+ 562              		@ args = 0, pretend = 0, frame = 24
+ 563              		@ frame_needed = 1, uses_anonymous_args = 0
+ 564 0000 80B5     		push	{r7, lr}
+ 565              	.LCFI22:
+ 566              		.cfi_def_cfa_offset 8
+ 567              		.cfi_offset 7, -8
+ 568              		.cfi_offset 14, -4
+ 569 0002 86B0     		sub	sp, sp, #24
+ 570              	.LCFI23:
+ 571              		.cfi_def_cfa_offset 32
+ 572 0004 00AF     		add	r7, sp, #0
+ 573              	.LCFI24:
+ 574              		.cfi_def_cfa_register 7
+ 575 0006 F860     		str	r0, [r7, #12]
+ 576 0008 B960     		str	r1, [r7, #8]
+ 577 000a 7A60     		str	r2, [r7, #4]
+ 293:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   u32_t next_timeout_time;
+ 294:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 295:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 296:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 297:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_ASSERT("Timeout time too long, max is LWIP_UINT32_MAX/4 msecs", msecs <= (LWIP_UINT32_MAX / 
+ 578              		.loc 1 297 3
+ 579 000c FB68     		ldr	r3, [r7, #12]
+ 580 000e B3F1804F 		cmp	r3, #1073741824
+ 581 0012 06D3     		bcc	.L38
+ 582              		.loc 1 297 3 is_stmt 0 discriminator 1
+ 583 0014 0A4B     		ldr	r3, .L39
+ 584 0016 40F22912 		movw	r2, #297
+ 585 001a 0A49     		ldr	r1, .L39+4
+ 586 001c 0A48     		ldr	r0, .L39+8
+ 587 001e FFF7FEFF 		bl	printf
+ 588              	.L38:
+ 298:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 299:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   next_timeout_time = (u32_t)(sys_now() + msecs); /* overflow handled by TIME_LESS_THAN macro */ 
+ 589              		.loc 1 299 31 is_stmt 1
+ 590 0022 FFF7FEFF 		bl	sys_now
+ 591 0026 0246     		mov	r2, r0
+ 592              		.loc 1 299 21
+ 593 0028 FB68     		ldr	r3, [r7, #12]
+ 594 002a 1344     		add	r3, r3, r2
+ 595 002c 7B61     		str	r3, [r7, #20]
+ 300:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 301:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 302:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   sys_timeout_abs(next_timeout_time, handler, arg, handler_name);
+ 303:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #else
+ 304:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   sys_timeout_abs(next_timeout_time, handler, arg);
+ 596              		.loc 1 304 3
+ 597 002e 7A68     		ldr	r2, [r7, #4]
+ 598 0030 B968     		ldr	r1, [r7, #8]
+ 599 0032 7869     		ldr	r0, [r7, #20]
+ 600 0034 FFF7FEFF 		bl	sys_timeout_abs
+ 305:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif
+ 306:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 601              		.loc 1 306 1
+ 602 0038 00BF     		nop
+ 603 003a 1837     		adds	r7, r7, #24
+ARM GAS  /tmp/ccN5TyNI.s 			page 17
+
+
+ 604              	.LCFI25:
+ 605              		.cfi_def_cfa_offset 8
+ 606 003c BD46     		mov	sp, r7
+ 607              	.LCFI26:
+ 608              		.cfi_def_cfa_register 13
+ 609              		@ sp needed
+ 610 003e 80BD     		pop	{r7, pc}
+ 611              	.L40:
+ 612              		.align	2
+ 613              	.L39:
+ 614 0040 00000000 		.word	.LC0
+ 615 0044 9C000000 		.word	.LC3
+ 616 0048 74000000 		.word	.LC2
+ 617              		.cfi_endproc
+ 618              	.LFE142:
+ 620              		.section	.text.sys_untimeout,"ax",%progbits
+ 621              		.align	1
+ 622              		.global	sys_untimeout
+ 623              		.syntax unified
+ 624              		.thumb
+ 625              		.thumb_func
+ 626              		.fpu fpv4-sp-d16
+ 628              	sys_untimeout:
+ 629              	.LFB143:
+ 307:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 308:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /**
+ 309:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Go through timeout list (for this task only) and remove the first matching
+ 310:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * entry (subsequent entries remain untouched), even though the timeout has not
+ 311:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * triggered yet.
+ 312:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+ 313:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @param handler callback function that would be called by the timeout
+ 314:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @param arg callback argument that would be passed to handler
+ 315:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** */
+ 316:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void
+ 317:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_untimeout(sys_timeout_handler handler, void *arg)
+ 318:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 630              		.loc 1 318 1
+ 631              		.cfi_startproc
+ 632              		@ args = 0, pretend = 0, frame = 16
+ 633              		@ frame_needed = 1, uses_anonymous_args = 0
+ 634 0000 80B5     		push	{r7, lr}
+ 635              	.LCFI27:
+ 636              		.cfi_def_cfa_offset 8
+ 637              		.cfi_offset 7, -8
+ 638              		.cfi_offset 14, -4
+ 639 0002 84B0     		sub	sp, sp, #16
+ 640              	.LCFI28:
+ 641              		.cfi_def_cfa_offset 24
+ 642 0004 00AF     		add	r7, sp, #0
+ 643              	.LCFI29:
+ 644              		.cfi_def_cfa_register 7
+ 645 0006 7860     		str	r0, [r7, #4]
+ 646 0008 3960     		str	r1, [r7]
+ 319:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   struct sys_timeo *prev_t, *t;
+ 320:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 321:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 322:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ARM GAS  /tmp/ccN5TyNI.s 			page 18
+
+
+ 323:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (next_timeout == NULL) {
+ 647              		.loc 1 323 20
+ 648 000a 194B     		ldr	r3, .L50
+ 649 000c 1B68     		ldr	r3, [r3]
+ 650              		.loc 1 323 6
+ 651 000e 002B     		cmp	r3, #0
+ 652 0010 2AD0     		beq	.L49
+ 324:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     return;
+ 325:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 326:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 327:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   for (t = next_timeout, prev_t = NULL; t != NULL; prev_t = t, t = t->next) {
+ 653              		.loc 1 327 10
+ 654 0012 174B     		ldr	r3, .L50
+ 655 0014 1B68     		ldr	r3, [r3]
+ 656 0016 BB60     		str	r3, [r7, #8]
+ 657              		.loc 1 327 33
+ 658 0018 0023     		movs	r3, #0
+ 659 001a FB60     		str	r3, [r7, #12]
+ 660              		.loc 1 327 3
+ 661 001c 1FE0     		b	.L44
+ 662              	.L48:
+ 328:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if ((t->h == handler) && (t->arg == arg)) {
+ 663              		.loc 1 328 11
+ 664 001e BB68     		ldr	r3, [r7, #8]
+ 665 0020 9B68     		ldr	r3, [r3, #8]
+ 666              		.loc 1 328 8
+ 667 0022 7A68     		ldr	r2, [r7, #4]
+ 668 0024 9A42     		cmp	r2, r3
+ 669 0026 15D1     		bne	.L45
+ 670              		.loc 1 328 32 discriminator 1
+ 671 0028 BB68     		ldr	r3, [r7, #8]
+ 672 002a DB68     		ldr	r3, [r3, #12]
+ 673              		.loc 1 328 27 discriminator 1
+ 674 002c 3A68     		ldr	r2, [r7]
+ 675 002e 9A42     		cmp	r2, r3
+ 676 0030 10D1     		bne	.L45
+ 329:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       /* We have a match */
+ 330:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       /* Unlink from previous in list */
+ 331:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       if (prev_t == NULL) {
+ 677              		.loc 1 331 10
+ 678 0032 FB68     		ldr	r3, [r7, #12]
+ 679 0034 002B     		cmp	r3, #0
+ 680 0036 04D1     		bne	.L46
+ 332:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****         next_timeout = t->next;
+ 681              		.loc 1 332 25
+ 682 0038 BB68     		ldr	r3, [r7, #8]
+ 683 003a 1B68     		ldr	r3, [r3]
+ 684              		.loc 1 332 22
+ 685 003c 0C4A     		ldr	r2, .L50
+ 686 003e 1360     		str	r3, [r2]
+ 687 0040 03E0     		b	.L47
+ 688              	.L46:
+ 333:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       } else {
+ 334:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****         prev_t->next = t->next;
+ 689              		.loc 1 334 25
+ 690 0042 BB68     		ldr	r3, [r7, #8]
+ 691 0044 1A68     		ldr	r2, [r3]
+ARM GAS  /tmp/ccN5TyNI.s 			page 19
+
+
+ 692              		.loc 1 334 22
+ 693 0046 FB68     		ldr	r3, [r7, #12]
+ 694 0048 1A60     		str	r2, [r3]
+ 695              	.L47:
+ 335:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       }
+ 336:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       memp_free(MEMP_SYS_TIMEOUT, t);
+ 696              		.loc 1 336 7
+ 697 004a B968     		ldr	r1, [r7, #8]
+ 698 004c 0A20     		movs	r0, #10
+ 699 004e FFF7FEFF 		bl	memp_free
+ 337:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       return;
+ 700              		.loc 1 337 7
+ 701 0052 0AE0     		b	.L41
+ 702              	.L45:
+ 327:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if ((t->h == handler) && (t->arg == arg)) {
+ 703              		.loc 1 327 59 discriminator 2
+ 704 0054 BB68     		ldr	r3, [r7, #8]
+ 705 0056 FB60     		str	r3, [r7, #12]
+ 327:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if ((t->h == handler) && (t->arg == arg)) {
+ 706              		.loc 1 327 66 discriminator 2
+ 707 0058 BB68     		ldr	r3, [r7, #8]
+ 708 005a 1B68     		ldr	r3, [r3]
+ 709 005c BB60     		str	r3, [r7, #8]
+ 710              	.L44:
+ 327:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if ((t->h == handler) && (t->arg == arg)) {
+ 711              		.loc 1 327 3 discriminator 1
+ 712 005e BB68     		ldr	r3, [r7, #8]
+ 713 0060 002B     		cmp	r3, #0
+ 714 0062 DCD1     		bne	.L48
+ 338:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 339:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 340:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   return;
+ 715              		.loc 1 340 3
+ 716 0064 00BF     		nop
+ 717 0066 00E0     		b	.L41
+ 718              	.L49:
+ 324:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 719              		.loc 1 324 5
+ 720 0068 00BF     		nop
+ 721              	.L41:
+ 341:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 722              		.loc 1 341 1
+ 723 006a 1037     		adds	r7, r7, #16
+ 724              	.LCFI30:
+ 725              		.cfi_def_cfa_offset 8
+ 726 006c BD46     		mov	sp, r7
+ 727              	.LCFI31:
+ 728              		.cfi_def_cfa_register 13
+ 729              		@ sp needed
+ 730 006e 80BD     		pop	{r7, pc}
+ 731              	.L51:
+ 732              		.align	2
+ 733              	.L50:
+ 734 0070 00000000 		.word	next_timeout
+ 735              		.cfi_endproc
+ 736              	.LFE143:
+ 738              		.section	.text.sys_check_timeouts,"ax",%progbits
+ARM GAS  /tmp/ccN5TyNI.s 			page 20
+
+
+ 739              		.align	1
+ 740              		.global	sys_check_timeouts
+ 741              		.syntax unified
+ 742              		.thumb
+ 743              		.thumb_func
+ 744              		.fpu fpv4-sp-d16
+ 746              	sys_check_timeouts:
+ 747              	.LFB144:
+ 342:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 343:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /**
+ 344:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * @ingroup lwip_nosys
+ 345:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Handle timeouts for NO_SYS==1 (i.e. without using
+ 346:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * tcpip_thread/sys_timeouts_mbox_fetch(). Uses sys_now() to call timeout
+ 347:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * handler functions when timeouts expire.
+ 348:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  *
+ 349:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * Must be called periodically from your main loop.
+ 350:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+ 351:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void
+ 352:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_check_timeouts(void)
+ 353:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 748              		.loc 1 353 1
+ 749              		.cfi_startproc
+ 750              		@ args = 0, pretend = 0, frame = 16
+ 751              		@ frame_needed = 1, uses_anonymous_args = 0
+ 752 0000 80B5     		push	{r7, lr}
+ 753              	.LCFI32:
+ 754              		.cfi_def_cfa_offset 8
+ 755              		.cfi_offset 7, -8
+ 756              		.cfi_offset 14, -4
+ 757 0002 84B0     		sub	sp, sp, #16
+ 758              	.LCFI33:
+ 759              		.cfi_def_cfa_offset 24
+ 760 0004 00AF     		add	r7, sp, #0
+ 761              	.LCFI34:
+ 762              		.cfi_def_cfa_register 7
+ 354:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   u32_t now;
+ 355:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 356:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 357:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 358:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   /* Process only timers expired at the start of the function. */
+ 359:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   now = sys_now();
+ 763              		.loc 1 359 9
+ 764 0006 FFF7FEFF 		bl	sys_now
+ 765 000a F860     		str	r0, [r7, #12]
+ 766              	.L57:
+ 767              	.LBB2:
+ 360:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 361:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   do {
+ 362:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     struct sys_timeo *tmptimeout;
+ 363:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     sys_timeout_handler handler;
+ 364:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     void *arg;
+ 365:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 366:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     PBUF_CHECK_FREE_OOSEQ();
+ 367:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 368:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     tmptimeout = next_timeout;
+ 768              		.loc 1 368 16
+ 769 000c 174B     		ldr	r3, .L60
+ARM GAS  /tmp/ccN5TyNI.s 			page 21
+
+
+ 770 000e 1B68     		ldr	r3, [r3]
+ 771 0010 BB60     		str	r3, [r7, #8]
+ 369:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if (tmptimeout == NULL) {
+ 772              		.loc 1 369 8
+ 773 0012 BB68     		ldr	r3, [r7, #8]
+ 774 0014 002B     		cmp	r3, #0
+ 775 0016 22D0     		beq	.L58
+ 370:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       return;
+ 371:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 372:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 373:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if (TIME_LESS_THAN(now, tmptimeout->time)) {
+ 776              		.loc 1 373 9
+ 777 0018 BB68     		ldr	r3, [r7, #8]
+ 778 001a 5B68     		ldr	r3, [r3, #4]
+ 779 001c FA68     		ldr	r2, [r7, #12]
+ 780 001e D31A     		subs	r3, r2, r3
+ 781 0020 DB0F     		lsrs	r3, r3, #31
+ 782 0022 03F00103 		and	r3, r3, #1
+ 783 0026 DBB2     		uxtb	r3, r3
+ 784              		.loc 1 373 8
+ 785 0028 002B     		cmp	r3, #0
+ 786 002a 1AD1     		bne	.L59
+ 374:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       return;
+ 375:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 376:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 377:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* Timeout has expired */
+ 378:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     next_timeout = tmptimeout->next;
+ 787              		.loc 1 378 30
+ 788 002c BB68     		ldr	r3, [r7, #8]
+ 789 002e 1B68     		ldr	r3, [r3]
+ 790              		.loc 1 378 18
+ 791 0030 0E4A     		ldr	r2, .L60
+ 792 0032 1360     		str	r3, [r2]
+ 379:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     handler = tmptimeout->h;
+ 793              		.loc 1 379 13
+ 794 0034 BB68     		ldr	r3, [r7, #8]
+ 795 0036 9B68     		ldr	r3, [r3, #8]
+ 796 0038 7B60     		str	r3, [r7, #4]
+ 380:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     arg = tmptimeout->arg;
+ 797              		.loc 1 380 9
+ 798 003a BB68     		ldr	r3, [r7, #8]
+ 799 003c DB68     		ldr	r3, [r3, #12]
+ 800 003e 3B60     		str	r3, [r7]
+ 381:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     current_timeout_due_time = tmptimeout->time;
+ 801              		.loc 1 381 42
+ 802 0040 BB68     		ldr	r3, [r7, #8]
+ 803 0042 5B68     		ldr	r3, [r3, #4]
+ 804              		.loc 1 381 30
+ 805 0044 0A4A     		ldr	r2, .L60+4
+ 806 0046 1360     		str	r3, [r2]
+ 382:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #if LWIP_DEBUG_TIMERNAMES
+ 383:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if (handler != NULL) {
+ 384:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       LWIP_DEBUGF(TIMERS_DEBUG, ("sct calling h=%s t=%"U32_F" arg=%p\n",
+ 385:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****                                  tmptimeout->handler_name, sys_now() - tmptimeout->time, arg));
+ 386:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 387:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** #endif /* LWIP_DEBUG_TIMERNAMES */
+ 388:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     memp_free(MEMP_SYS_TIMEOUT, tmptimeout);
+ARM GAS  /tmp/ccN5TyNI.s 			page 22
+
+
+ 807              		.loc 1 388 5
+ 808 0048 B968     		ldr	r1, [r7, #8]
+ 809 004a 0A20     		movs	r0, #10
+ 810 004c FFF7FEFF 		bl	memp_free
+ 389:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     if (handler != NULL) {
+ 811              		.loc 1 389 8
+ 812 0050 7B68     		ldr	r3, [r7, #4]
+ 813 0052 002B     		cmp	r3, #0
+ 814 0054 DAD0     		beq	.L57
+ 390:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****       handler(arg);
+ 815              		.loc 1 390 7
+ 816 0056 7B68     		ldr	r3, [r7, #4]
+ 817 0058 3868     		ldr	r0, [r7]
+ 818 005a 9847     		blx	r3
+ 819              	.LVL1:
+ 820              	.LBE2:
+ 361:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     struct sys_timeo *tmptimeout;
+ 821              		.loc 1 361 6
+ 822 005c D6E7     		b	.L57
+ 823              	.L58:
+ 824              	.LBB3:
+ 370:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 825              		.loc 1 370 7
+ 826 005e 00BF     		nop
+ 827 0060 00E0     		b	.L52
+ 828              	.L59:
+ 374:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 829              		.loc 1 374 7
+ 830 0062 00BF     		nop
+ 831              	.L52:
+ 832              	.LBE3:
+ 391:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     }
+ 392:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     LWIP_TCPIP_THREAD_ALIVE();
+ 393:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 394:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     /* Repeat until all expired timers have been called */
+ 395:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   } while (1);
+ 396:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 833              		.loc 1 396 1
+ 834 0064 1037     		adds	r7, r7, #16
+ 835              	.LCFI35:
+ 836              		.cfi_def_cfa_offset 8
+ 837 0066 BD46     		mov	sp, r7
+ 838              	.LCFI36:
+ 839              		.cfi_def_cfa_register 13
+ 840              		@ sp needed
+ 841 0068 80BD     		pop	{r7, pc}
+ 842              	.L61:
+ 843 006a 00BF     		.align	2
+ 844              	.L60:
+ 845 006c 00000000 		.word	next_timeout
+ 846 0070 00000000 		.word	current_timeout_due_time
+ 847              		.cfi_endproc
+ 848              	.LFE144:
+ 850              		.section	.text.sys_restart_timeouts,"ax",%progbits
+ 851              		.align	1
+ 852              		.global	sys_restart_timeouts
+ 853              		.syntax unified
+ARM GAS  /tmp/ccN5TyNI.s 			page 23
+
+
+ 854              		.thumb
+ 855              		.thumb_func
+ 856              		.fpu fpv4-sp-d16
+ 858              	sys_restart_timeouts:
+ 859              	.LFB145:
+ 397:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 398:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /** Rebase the timeout times to the current time.
+ 399:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * This is necessary if sys_check_timeouts() hasn't been called for a long
+ 400:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * time (e.g. while saving energy) to prevent all timer functions of that
+ 401:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * period being called.
+ 402:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+ 403:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** void
+ 404:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_restart_timeouts(void)
+ 405:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 860              		.loc 1 405 1
+ 861              		.cfi_startproc
+ 862              		@ args = 0, pretend = 0, frame = 16
+ 863              		@ frame_needed = 1, uses_anonymous_args = 0
+ 864 0000 80B5     		push	{r7, lr}
+ 865              	.LCFI37:
+ 866              		.cfi_def_cfa_offset 8
+ 867              		.cfi_offset 7, -8
+ 868              		.cfi_offset 14, -4
+ 869 0002 84B0     		sub	sp, sp, #16
+ 870              	.LCFI38:
+ 871              		.cfi_def_cfa_offset 24
+ 872 0004 00AF     		add	r7, sp, #0
+ 873              	.LCFI39:
+ 874              		.cfi_def_cfa_register 7
+ 406:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   u32_t now;
+ 407:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   u32_t base;
+ 408:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   struct sys_timeo *t;
+ 409:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 410:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (next_timeout == NULL) {
+ 875              		.loc 1 410 20
+ 876 0006 114B     		ldr	r3, .L68
+ 877 0008 1B68     		ldr	r3, [r3]
+ 878              		.loc 1 410 6
+ 879 000a 002B     		cmp	r3, #0
+ 880 000c 19D0     		beq	.L67
+ 411:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     return;
+ 412:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 413:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 414:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   now = sys_now();
+ 881              		.loc 1 414 9
+ 882 000e FFF7FEFF 		bl	sys_now
+ 883 0012 B860     		str	r0, [r7, #8]
+ 415:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   base = next_timeout->time;
+ 884              		.loc 1 415 22
+ 885 0014 0D4B     		ldr	r3, .L68
+ 886 0016 1B68     		ldr	r3, [r3]
+ 887              		.loc 1 415 8
+ 888 0018 5B68     		ldr	r3, [r3, #4]
+ 889 001a 7B60     		str	r3, [r7, #4]
+ 416:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 417:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   for (t = next_timeout; t != NULL; t = t->next) {
+ 890              		.loc 1 417 10
+ARM GAS  /tmp/ccN5TyNI.s 			page 24
+
+
+ 891 001c 0B4B     		ldr	r3, .L68
+ 892 001e 1B68     		ldr	r3, [r3]
+ 893 0020 FB60     		str	r3, [r7, #12]
+ 894              		.loc 1 417 3
+ 895 0022 0AE0     		b	.L65
+ 896              	.L66:
+ 418:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     t->time = (t->time - base) + now;
+ 897              		.loc 1 418 17 discriminator 3
+ 898 0024 FB68     		ldr	r3, [r7, #12]
+ 899 0026 5A68     		ldr	r2, [r3, #4]
+ 900              		.loc 1 418 24 discriminator 3
+ 901 0028 7B68     		ldr	r3, [r7, #4]
+ 902 002a D21A     		subs	r2, r2, r3
+ 903              		.loc 1 418 32 discriminator 3
+ 904 002c BB68     		ldr	r3, [r7, #8]
+ 905 002e 1A44     		add	r2, r2, r3
+ 906              		.loc 1 418 13 discriminator 3
+ 907 0030 FB68     		ldr	r3, [r7, #12]
+ 908 0032 5A60     		str	r2, [r3, #4]
+ 417:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     t->time = (t->time - base) + now;
+ 909              		.loc 1 417 39 discriminator 3
+ 910 0034 FB68     		ldr	r3, [r7, #12]
+ 911 0036 1B68     		ldr	r3, [r3]
+ 912 0038 FB60     		str	r3, [r7, #12]
+ 913              	.L65:
+ 417:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     t->time = (t->time - base) + now;
+ 914              		.loc 1 417 3 discriminator 1
+ 915 003a FB68     		ldr	r3, [r7, #12]
+ 916 003c 002B     		cmp	r3, #0
+ 917 003e F1D1     		bne	.L66
+ 918 0040 00E0     		b	.L62
+ 919              	.L67:
+ 411:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 920              		.loc 1 411 5
+ 921 0042 00BF     		nop
+ 922              	.L62:
+ 419:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 420:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 923              		.loc 1 420 1
+ 924 0044 1037     		adds	r7, r7, #16
+ 925              	.LCFI40:
+ 926              		.cfi_def_cfa_offset 8
+ 927 0046 BD46     		mov	sp, r7
+ 928              	.LCFI41:
+ 929              		.cfi_def_cfa_register 13
+ 930              		@ sp needed
+ 931 0048 80BD     		pop	{r7, pc}
+ 932              	.L69:
+ 933 004a 00BF     		.align	2
+ 934              	.L68:
+ 935 004c 00000000 		.word	next_timeout
+ 936              		.cfi_endproc
+ 937              	.LFE145:
+ 939              		.section	.rodata
+ 940 00d2 0000     		.align	2
+ 941              	.LC4:
+ 942 00d4 696E7661 		.ascii	"invalid sleeptime\000"
+ARM GAS  /tmp/ccN5TyNI.s 			page 25
+
+
+ 942      6C696420 
+ 942      736C6565 
+ 942      7074696D 
+ 942      6500
+ 943              		.section	.text.sys_timeouts_sleeptime,"ax",%progbits
+ 944              		.align	1
+ 945              		.global	sys_timeouts_sleeptime
+ 946              		.syntax unified
+ 947              		.thumb
+ 948              		.thumb_func
+ 949              		.fpu fpv4-sp-d16
+ 951              	sys_timeouts_sleeptime:
+ 952              	.LFB146:
+ 421:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 422:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** /** Return the time left before the next timeout is due. If no timeouts are
+ 423:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  * enqueued, returns 0xffffffff
+ 424:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****  */
+ 425:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** u32_t
+ 426:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** sys_timeouts_sleeptime(void)
+ 427:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** {
+ 953              		.loc 1 427 1
+ 954              		.cfi_startproc
+ 955              		@ args = 0, pretend = 0, frame = 8
+ 956              		@ frame_needed = 1, uses_anonymous_args = 0
+ 957 0000 80B5     		push	{r7, lr}
+ 958              	.LCFI42:
+ 959              		.cfi_def_cfa_offset 8
+ 960              		.cfi_offset 7, -8
+ 961              		.cfi_offset 14, -4
+ 962 0002 82B0     		sub	sp, sp, #8
+ 963              	.LCFI43:
+ 964              		.cfi_def_cfa_offset 16
+ 965 0004 00AF     		add	r7, sp, #0
+ 966              	.LCFI44:
+ 967              		.cfi_def_cfa_register 7
+ 428:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   u32_t now;
+ 429:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 430:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   LWIP_ASSERT_CORE_LOCKED();
+ 431:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** 
+ 432:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (next_timeout == NULL) {
+ 968              		.loc 1 432 20
+ 969 0006 164B     		ldr	r3, .L75
+ 970 0008 1B68     		ldr	r3, [r3]
+ 971              		.loc 1 432 6
+ 972 000a 002B     		cmp	r3, #0
+ 973 000c 02D1     		bne	.L71
+ 433:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     return SYS_TIMEOUTS_SLEEPTIME_INFINITE;
+ 974              		.loc 1 433 12
+ 975 000e 4FF0FF33 		mov	r3, #-1
+ 976 0012 20E0     		b	.L72
+ 977              	.L71:
+ 434:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 435:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   now = sys_now();
+ 978              		.loc 1 435 9
+ 979 0014 FFF7FEFF 		bl	sys_now
+ 980 0018 7860     		str	r0, [r7, #4]
+ 436:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   if (TIME_LESS_THAN(next_timeout->time, now)) {
+ARM GAS  /tmp/ccN5TyNI.s 			page 26
+
+
+ 981              		.loc 1 436 7
+ 982 001a 114B     		ldr	r3, .L75
+ 983 001c 1B68     		ldr	r3, [r3]
+ 984 001e 5A68     		ldr	r2, [r3, #4]
+ 985 0020 7B68     		ldr	r3, [r7, #4]
+ 986 0022 D31A     		subs	r3, r2, r3
+ 987 0024 DB0F     		lsrs	r3, r3, #31
+ 988 0026 03F00103 		and	r3, r3, #1
+ 989 002a DBB2     		uxtb	r3, r3
+ 990              		.loc 1 436 6
+ 991 002c 002B     		cmp	r3, #0
+ 992 002e 01D0     		beq	.L73
+ 437:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     return 0;
+ 993              		.loc 1 437 12
+ 994 0030 0023     		movs	r3, #0
+ 995 0032 10E0     		b	.L72
+ 996              	.L73:
+ 997              	.LBB4:
+ 438:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   } else {
+ 439:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     u32_t ret = (u32_t)(next_timeout->time - now);
+ 998              		.loc 1 439 37
+ 999 0034 0A4B     		ldr	r3, .L75
+ 1000 0036 1B68     		ldr	r3, [r3]
+ 1001 0038 5A68     		ldr	r2, [r3, #4]
+ 1002              		.loc 1 439 11
+ 1003 003a 7B68     		ldr	r3, [r7, #4]
+ 1004 003c D31A     		subs	r3, r2, r3
+ 1005 003e 3B60     		str	r3, [r7]
+ 440:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     LWIP_ASSERT("invalid sleeptime", ret <= LWIP_MAX_TIMEOUT);
+ 1006              		.loc 1 440 5
+ 1007 0040 3B68     		ldr	r3, [r7]
+ 1008 0042 002B     		cmp	r3, #0
+ 1009 0044 06DA     		bge	.L74
+ 1010              		.loc 1 440 5 is_stmt 0 discriminator 1
+ 1011 0046 074B     		ldr	r3, .L75+4
+ 1012 0048 4FF4DC72 		mov	r2, #440
+ 1013 004c 0649     		ldr	r1, .L75+8
+ 1014 004e 0748     		ldr	r0, .L75+12
+ 1015 0050 FFF7FEFF 		bl	printf
+ 1016              	.L74:
+ 441:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****     return ret;
+ 1017              		.loc 1 441 12 is_stmt 1
+ 1018 0054 3B68     		ldr	r3, [r7]
+ 1019              	.L72:
+ 1020              	.LBE4:
+ 442:Middlewares/Third_Party/LwIP/src/core/timeouts.c ****   }
+ 443:Middlewares/Third_Party/LwIP/src/core/timeouts.c **** }
+ 1021              		.loc 1 443 1
+ 1022 0056 1846     		mov	r0, r3
+ 1023 0058 0837     		adds	r7, r7, #8
+ 1024              	.LCFI45:
+ 1025              		.cfi_def_cfa_offset 8
+ 1026 005a BD46     		mov	sp, r7
+ 1027              	.LCFI46:
+ 1028              		.cfi_def_cfa_register 13
+ 1029              		@ sp needed
+ 1030 005c 80BD     		pop	{r7, pc}
+ARM GAS  /tmp/ccN5TyNI.s 			page 27
+
+
+ 1031              	.L76:
+ 1032 005e 00BF     		.align	2
+ 1033              	.L75:
+ 1034 0060 00000000 		.word	next_timeout
+ 1035 0064 00000000 		.word	.LC0
+ 1036 0068 D4000000 		.word	.LC4
+ 1037 006c 74000000 		.word	.LC2
+ 1038              		.cfi_endproc
+ 1039              	.LFE146:
+ 1041              		.text
+ 1042              	.Letext0:
+ 1043              		.file 2 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_typ
+ 1044              		.file 3 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 1045              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 1046              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 1047              		.file 6 "/home/mego-ros2/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stddef
+ 1048              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 1049              		.file 8 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_types.h"
+ 1050              		.file 9 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/reent.h"
+ 1051              		.file 10 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/lock.h"
+ 1052              		.file 11 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/stdlib.h"
+ 1053              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 1054              		.file 13 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/ctype.h"
+ 1055              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 1056              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 1057              		.file 16 "Middlewares/Third_Party/LwIP/system/arch/sys_arch.h"
+ 1058              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h"
+ 1059              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/tcpbase.h"
+ 1060              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 1061              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 1062              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 1063              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 1064              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 1065              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
+ 1066              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
+ 1067              		.file 26 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
+ 1068              		.file 27 "Middlewares/Third_Party/LwIP/src/include/lwip/tcp.h"
+ 1069              		.file 28 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/tcp_priv.h"
+ 1070              		.file 29 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/tcp.h"
+ 1071              		.file 30 "Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h"
+ 1072              		.file 31 "Middlewares/Third_Party/LwIP/src/include/lwip/udp.h"
+ 1073              		.file 32 "Middlewares/Third_Party/LwIP/src/include/lwip/dns.h"
+ARM GAS  /tmp/ccN5TyNI.s 			page 28
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 timeouts.c
+     /tmp/ccN5TyNI.s:22     .rodata.lwip_cyclic_timers:0000000000000000 lwip_cyclic_timers
+     /tmp/ccN5TyNI.s:19     .rodata.lwip_cyclic_timers:0000000000000000 $d
+     /tmp/ccN5TyNI.s:40     .rodata.lwip_num_cyclic_timers:0000000000000000 lwip_num_cyclic_timers
+     /tmp/ccN5TyNI.s:37     .rodata.lwip_num_cyclic_timers:0000000000000000 $d
+     /tmp/ccN5TyNI.s:43     .bss.next_timeout:0000000000000000 $d
+     /tmp/ccN5TyNI.s:46     .bss.next_timeout:0000000000000000 next_timeout
+     /tmp/ccN5TyNI.s:49     .bss.current_timeout_due_time:0000000000000000 $d
+     /tmp/ccN5TyNI.s:52     .bss.current_timeout_due_time:0000000000000000 current_timeout_due_time
+     /tmp/ccN5TyNI.s:55     .bss.tcpip_tcp_timer_active:0000000000000000 $d
+     /tmp/ccN5TyNI.s:58     .bss.tcpip_tcp_timer_active:0000000000000000 tcpip_tcp_timer_active
+     /tmp/ccN5TyNI.s:61     .text.tcpip_tcp_timer:0000000000000000 $t
+     /tmp/ccN5TyNI.s:68     .text.tcpip_tcp_timer:0000000000000000 tcpip_tcp_timer
+     /tmp/ccN5TyNI.s:558    .text.sys_timeout:0000000000000000 sys_timeout
+     /tmp/ccN5TyNI.s:126    .text.tcpip_tcp_timer:0000000000000038 $d
+     /tmp/ccN5TyNI.s:134    .text.tcp_timer_needed:0000000000000000 $t
+     /tmp/ccN5TyNI.s:141    .text.tcp_timer_needed:0000000000000000 tcp_timer_needed
+     /tmp/ccN5TyNI.s:189    .text.tcp_timer_needed:0000000000000030 $d
+     /tmp/ccN5TyNI.s:197    .rodata:0000000000000000 $d
+     /tmp/ccN5TyNI.s:208    .text.sys_timeout_abs:0000000000000000 $t
+     /tmp/ccN5TyNI.s:214    .text.sys_timeout_abs:0000000000000000 sys_timeout_abs
+     /tmp/ccN5TyNI.s:374    .text.sys_timeout_abs:00000000000000cc $d
+     /tmp/ccN5TyNI.s:382    .text.lwip_cyclic_timer:0000000000000000 $t
+     /tmp/ccN5TyNI.s:388    .text.lwip_cyclic_timer:0000000000000000 lwip_cyclic_timer
+     /tmp/ccN5TyNI.s:469    .text.lwip_cyclic_timer:000000000000005c $d
+     /tmp/ccN5TyNI.s:475    .text.sys_timeouts_init:0000000000000000 $t
+     /tmp/ccN5TyNI.s:482    .text.sys_timeouts_init:0000000000000000 sys_timeouts_init
+     /tmp/ccN5TyNI.s:540    .text.sys_timeouts_init:0000000000000038 $d
+     /tmp/ccN5TyNI.s:551    .text.sys_timeout:0000000000000000 $t
+     /tmp/ccN5TyNI.s:614    .text.sys_timeout:0000000000000040 $d
+     /tmp/ccN5TyNI.s:621    .text.sys_untimeout:0000000000000000 $t
+     /tmp/ccN5TyNI.s:628    .text.sys_untimeout:0000000000000000 sys_untimeout
+     /tmp/ccN5TyNI.s:734    .text.sys_untimeout:0000000000000070 $d
+     /tmp/ccN5TyNI.s:739    .text.sys_check_timeouts:0000000000000000 $t
+     /tmp/ccN5TyNI.s:746    .text.sys_check_timeouts:0000000000000000 sys_check_timeouts
+     /tmp/ccN5TyNI.s:845    .text.sys_check_timeouts:000000000000006c $d
+     /tmp/ccN5TyNI.s:851    .text.sys_restart_timeouts:0000000000000000 $t
+     /tmp/ccN5TyNI.s:858    .text.sys_restart_timeouts:0000000000000000 sys_restart_timeouts
+     /tmp/ccN5TyNI.s:935    .text.sys_restart_timeouts:000000000000004c $d
+     /tmp/ccN5TyNI.s:944    .text.sys_timeouts_sleeptime:0000000000000000 $t
+     /tmp/ccN5TyNI.s:951    .text.sys_timeouts_sleeptime:0000000000000000 sys_timeouts_sleeptime
+     /tmp/ccN5TyNI.s:1034   .text.sys_timeouts_sleeptime:0000000000000060 $d
+
+UNDEFINED SYMBOLS
+tcp_tmr
+ip_reass_tmr
+etharp_tmr
+dhcp_coarse_tmr
+dhcp_fine_tmr
+dns_tmr
+tcp_active_pcbs
+tcp_tw_pcbs
+memp_malloc
+printf
+sys_now
+memp_free
+ARM GAS  /tmp/ccN5TyNI.s 			page 29
+
+

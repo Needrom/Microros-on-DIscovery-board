@@ -1,23 +1,10 @@
-#ifndef _RETARGET_H__
-#define _RETARGET_H__
+/*
+ * retarget printf
+ */
 
-#include "stm32f4xx_hal.h"
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <stdio.h>
+#include"main.h"
+#include"usart.h"
 
-void RetargetInit(UART_HandleTypeDef *huart);
-
-int _isatty(int fd);
-
-int _write(int fd, char *ptr, int len);
-
-int _close(int fd);
-
-int _lseek(int fd, int ptr, int dir);
-
-int _read(int fd, char *ptr, int len);
-
-int _fstat(int fd, struct stat *st);
-
-#endif //#ifndef _RETARGET_H__
+int Retarget_Init(UART_HandleTypeDef *_huart);
+int __io_putchar(int ch);
+int _write(int file, char *ptr, int len);

@@ -1,100 +1,31 @@
-#include <_ansi.h>
-#include <_syslist.h>
-#include <errno.h>
-#include <sys/time.h>
-#include <sys/times.h>
-#include <retarget.h>
-#include <stdint.h>
+/*
+ * retarget printf
+ */
 
-#if !defined(OS_USE_SEMIHOSTING)
+#include "retarget.h"
 
-#define STDIN_FILENO  0
-#define STDOUT_FILENO 1
-#define STDERR_FILENO 2
+UART_HandleTypeDef * printf_uart = NULL;
 
-UART_HandleTypeDef *gHuart;
-
-void RetargetInit(UART_HandleTypeDef *huart)
-{
-    gHuart = huart;
-
-    /* Disable I/O buffering for STDOUT stream, so that
-     * chars are sent out as soon as they are printed. */
-    setvbuf(stdout, NULL, _IONBF, 0);
+int Retarget_Init(UART_HandleTypeDef *_huart){
+	printf_uart = _huart;
 }
 
-int _isatty(int fd)
+int __io_putchar(int ch)
 {
-    if (fd >= STDIN_FILENO && fd <= STDERR_FILENO)
-        return 1;
-
-    errno = EBADF;
-    return 0;
+  uint8_t c[1];
+  c[0] = ch & 0x00FF;
+  if (printf_uart != NULL){
+     HAL_UART_Transmit(printf_uart, &c[0], 1, 10);
+  }
+  return ch;
 }
 
-int _write(int fd, char *ptr, int len)
+int _write(int file,char *ptr, int len)
 {
-    HAL_StatusTypeDef hstatus;
-
-    if (fd == STDOUT_FILENO || fd == STDERR_FILENO)
-    {
-//        hstatus = HAL_UART_Transmit(gHuart, (uint8_t *) ptr, len, HAL_MAX_DELAY);
-        hstatus = HAL_UART_Transmit_DMA(gHuart, (uint8_t *) ptr, len);
-        if (hstatus == HAL_OK)
-            return len;
-        else
-            return EIO;
-    }
-    errno = EBADF;
-    return -1;
+  int DataIdx;
+  for(DataIdx= 0; DataIdx< len; DataIdx++){
+  __io_putchar(*ptr++);
+  }
+  return len;
 }
 
-int _close(int fd)
-{
-    if (fd >= STDIN_FILENO && fd <= STDERR_FILENO)
-        return 0;
-
-    errno = EBADF;
-    return -1;
-}
-
-int _lseek(int fd, int ptr, int dir)
-{
-    (void) fd;
-    (void) ptr;
-    (void) dir;
-
-    errno = EBADF;
-    return -1;
-}
-
-int _read(int fd, char *ptr, int len)
-{
-    HAL_StatusTypeDef hstatus;
-
-    if (fd == STDIN_FILENO)
-    {
-        hstatus = HAL_UART_Receive(gHuart, (uint8_t *) ptr, 1, HAL_MAX_DELAY);
-//        hstatus = HAL_UART_Receive_DMA(gHuart, (uint8_t *) ptr, 1);
-        if (hstatus == HAL_OK)
-            return 1;
-        else
-            return EIO;
-    }
-    errno = EBADF;
-    return -1;
-}
-
-int _fstat(int fd, struct stat *st)
-{
-    if (fd >= STDIN_FILENO && fd <= STDERR_FILENO)
-    {
-        st->st_mode = S_IFCHR;
-        return 0;
-    }
-
-    errno = EBADF;
-    return 0;
-}
-
-#endif //#if !defined(OS_USE_SEMIHOSTING)

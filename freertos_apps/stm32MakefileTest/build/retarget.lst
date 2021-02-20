@@ -1,0 +1,277 @@
+ARM GAS  /tmp/ccPtuMQg.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"retarget.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	printf_uart
+  18              		.section	.bss.printf_uart,"aw",%nobits
+  19              		.align	2
+  22              	printf_uart:
+  23 0000 00000000 		.space	4
+  24              		.section	.text.Retarget_Init,"ax",%progbits
+  25              		.align	1
+  26              		.global	Retarget_Init
+  27              		.arch armv7e-m
+  28              		.syntax unified
+  29              		.thumb
+  30              		.thumb_func
+  31              		.fpu fpv4-sp-d16
+  33              	Retarget_Init:
+  34              	.LFB130:
+  35              		.file 1 "Core/Src/retarget.c"
+   1:Core/Src/retarget.c **** /*
+   2:Core/Src/retarget.c ****  * retarget printf
+   3:Core/Src/retarget.c ****  */
+   4:Core/Src/retarget.c **** 
+   5:Core/Src/retarget.c **** #include "retarget.h"
+   6:Core/Src/retarget.c **** 
+   7:Core/Src/retarget.c **** UART_HandleTypeDef * printf_uart = NULL;
+   8:Core/Src/retarget.c **** 
+   9:Core/Src/retarget.c **** int Retarget_Init(UART_HandleTypeDef *_huart){
+  36              		.loc 1 9 46
+  37              		.cfi_startproc
+  38              		@ args = 0, pretend = 0, frame = 8
+  39              		@ frame_needed = 1, uses_anonymous_args = 0
+  40              		@ link register save eliminated.
+  41 0000 80B4     		push	{r7}
+  42              	.LCFI0:
+  43              		.cfi_def_cfa_offset 4
+  44              		.cfi_offset 7, -4
+  45 0002 83B0     		sub	sp, sp, #12
+  46              	.LCFI1:
+  47              		.cfi_def_cfa_offset 16
+  48 0004 00AF     		add	r7, sp, #0
+  49              	.LCFI2:
+  50              		.cfi_def_cfa_register 7
+  51 0006 7860     		str	r0, [r7, #4]
+ARM GAS  /tmp/ccPtuMQg.s 			page 2
+
+
+  10:Core/Src/retarget.c **** 	printf_uart = _huart;
+  52              		.loc 1 10 14
+  53 0008 044A     		ldr	r2, .L2
+  54 000a 7B68     		ldr	r3, [r7, #4]
+  55 000c 1360     		str	r3, [r2]
+  11:Core/Src/retarget.c **** }
+  56              		.loc 1 11 1
+  57 000e 00BF     		nop
+  58 0010 1846     		mov	r0, r3
+  59 0012 0C37     		adds	r7, r7, #12
+  60              	.LCFI3:
+  61              		.cfi_def_cfa_offset 4
+  62 0014 BD46     		mov	sp, r7
+  63              	.LCFI4:
+  64              		.cfi_def_cfa_register 13
+  65              		@ sp needed
+  66 0016 5DF8047B 		ldr	r7, [sp], #4
+  67              	.LCFI5:
+  68              		.cfi_restore 7
+  69              		.cfi_def_cfa_offset 0
+  70 001a 7047     		bx	lr
+  71              	.L3:
+  72              		.align	2
+  73              	.L2:
+  74 001c 00000000 		.word	printf_uart
+  75              		.cfi_endproc
+  76              	.LFE130:
+  78              		.section	.text.__io_putchar,"ax",%progbits
+  79              		.align	1
+  80              		.global	__io_putchar
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  84              		.fpu fpv4-sp-d16
+  86              	__io_putchar:
+  87              	.LFB131:
+  12:Core/Src/retarget.c **** 
+  13:Core/Src/retarget.c **** int __io_putchar(int ch)
+  14:Core/Src/retarget.c **** {
+  88              		.loc 1 14 1
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 16
+  91              		@ frame_needed = 1, uses_anonymous_args = 0
+  92 0000 80B5     		push	{r7, lr}
+  93              	.LCFI6:
+  94              		.cfi_def_cfa_offset 8
+  95              		.cfi_offset 7, -8
+  96              		.cfi_offset 14, -4
+  97 0002 84B0     		sub	sp, sp, #16
+  98              	.LCFI7:
+  99              		.cfi_def_cfa_offset 24
+ 100 0004 00AF     		add	r7, sp, #0
+ 101              	.LCFI8:
+ 102              		.cfi_def_cfa_register 7
+ 103 0006 7860     		str	r0, [r7, #4]
+  15:Core/Src/retarget.c ****   uint8_t c[1];
+  16:Core/Src/retarget.c ****   c[0] = ch & 0x00FF;
+ARM GAS  /tmp/ccPtuMQg.s 			page 3
+
+
+ 104              		.loc 1 16 8
+ 105 0008 7B68     		ldr	r3, [r7, #4]
+ 106 000a DBB2     		uxtb	r3, r3
+ 107 000c 3B73     		strb	r3, [r7, #12]
+  17:Core/Src/retarget.c ****   if (printf_uart != NULL){
+ 108              		.loc 1 17 19
+ 109 000e 084B     		ldr	r3, .L7
+ 110 0010 1B68     		ldr	r3, [r3]
+ 111              		.loc 1 17 6
+ 112 0012 002B     		cmp	r3, #0
+ 113 0014 07D0     		beq	.L5
+  18:Core/Src/retarget.c ****      HAL_UART_Transmit(printf_uart, &c[0], 1, 10);
+ 114              		.loc 1 18 6
+ 115 0016 064B     		ldr	r3, .L7
+ 116 0018 1868     		ldr	r0, [r3]
+ 117 001a 07F10C01 		add	r1, r7, #12
+ 118 001e 0A23     		movs	r3, #10
+ 119 0020 0122     		movs	r2, #1
+ 120 0022 FFF7FEFF 		bl	HAL_UART_Transmit
+ 121              	.L5:
+  19:Core/Src/retarget.c ****   }
+  20:Core/Src/retarget.c ****   return ch;
+ 122              		.loc 1 20 10
+ 123 0026 7B68     		ldr	r3, [r7, #4]
+  21:Core/Src/retarget.c **** }
+ 124              		.loc 1 21 1
+ 125 0028 1846     		mov	r0, r3
+ 126 002a 1037     		adds	r7, r7, #16
+ 127              	.LCFI9:
+ 128              		.cfi_def_cfa_offset 8
+ 129 002c BD46     		mov	sp, r7
+ 130              	.LCFI10:
+ 131              		.cfi_def_cfa_register 13
+ 132              		@ sp needed
+ 133 002e 80BD     		pop	{r7, pc}
+ 134              	.L8:
+ 135              		.align	2
+ 136              	.L7:
+ 137 0030 00000000 		.word	printf_uart
+ 138              		.cfi_endproc
+ 139              	.LFE131:
+ 141              		.section	.text._write,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	_write
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 147              		.fpu fpv4-sp-d16
+ 149              	_write:
+ 150              	.LFB132:
+  22:Core/Src/retarget.c **** 
+  23:Core/Src/retarget.c **** int _write(int file,char *ptr, int len)
+  24:Core/Src/retarget.c **** {
+ 151              		.loc 1 24 1
+ 152              		.cfi_startproc
+ 153              		@ args = 0, pretend = 0, frame = 24
+ 154              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  /tmp/ccPtuMQg.s 			page 4
+
+
+ 155 0000 80B5     		push	{r7, lr}
+ 156              	.LCFI11:
+ 157              		.cfi_def_cfa_offset 8
+ 158              		.cfi_offset 7, -8
+ 159              		.cfi_offset 14, -4
+ 160 0002 86B0     		sub	sp, sp, #24
+ 161              	.LCFI12:
+ 162              		.cfi_def_cfa_offset 32
+ 163 0004 00AF     		add	r7, sp, #0
+ 164              	.LCFI13:
+ 165              		.cfi_def_cfa_register 7
+ 166 0006 F860     		str	r0, [r7, #12]
+ 167 0008 B960     		str	r1, [r7, #8]
+ 168 000a 7A60     		str	r2, [r7, #4]
+  25:Core/Src/retarget.c ****   int DataIdx;
+  26:Core/Src/retarget.c ****   for(DataIdx= 0; DataIdx< len; DataIdx++){
+ 169              		.loc 1 26 14
+ 170 000c 0023     		movs	r3, #0
+ 171 000e 7B61     		str	r3, [r7, #20]
+ 172              		.loc 1 26 3
+ 173 0010 09E0     		b	.L10
+ 174              	.L11:
+  27:Core/Src/retarget.c ****   __io_putchar(*ptr++);
+ 175              		.loc 1 27 20 discriminator 3
+ 176 0012 BB68     		ldr	r3, [r7, #8]
+ 177 0014 5A1C     		adds	r2, r3, #1
+ 178 0016 BA60     		str	r2, [r7, #8]
+ 179              		.loc 1 27 16 discriminator 3
+ 180 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 181              		.loc 1 27 3 discriminator 3
+ 182 001a 1846     		mov	r0, r3
+ 183 001c FFF7FEFF 		bl	__io_putchar
+  26:Core/Src/retarget.c ****   __io_putchar(*ptr++);
+ 184              		.loc 1 26 40 discriminator 3
+ 185 0020 7B69     		ldr	r3, [r7, #20]
+ 186 0022 0133     		adds	r3, r3, #1
+ 187 0024 7B61     		str	r3, [r7, #20]
+ 188              	.L10:
+  26:Core/Src/retarget.c ****   __io_putchar(*ptr++);
+ 189              		.loc 1 26 3 discriminator 1
+ 190 0026 7A69     		ldr	r2, [r7, #20]
+ 191 0028 7B68     		ldr	r3, [r7, #4]
+ 192 002a 9A42     		cmp	r2, r3
+ 193 002c F1DB     		blt	.L11
+  28:Core/Src/retarget.c ****   }
+  29:Core/Src/retarget.c ****   return len;
+ 194              		.loc 1 29 10
+ 195 002e 7B68     		ldr	r3, [r7, #4]
+  30:Core/Src/retarget.c **** }
+ 196              		.loc 1 30 1
+ 197 0030 1846     		mov	r0, r3
+ 198 0032 1837     		adds	r7, r7, #24
+ 199              	.LCFI14:
+ 200              		.cfi_def_cfa_offset 8
+ 201 0034 BD46     		mov	sp, r7
+ 202              	.LCFI15:
+ 203              		.cfi_def_cfa_register 13
+ARM GAS  /tmp/ccPtuMQg.s 			page 5
+
+
+ 204              		@ sp needed
+ 205 0036 80BD     		pop	{r7, pc}
+ 206              		.cfi_endproc
+ 207              	.LFE132:
+ 209              		.text
+ 210              	.Letext0:
+ 211              		.file 2 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_typ
+ 212              		.file 3 "/home/mego-ros2/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 213              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 214              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 215              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 216              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 217              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 218              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 219              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 220              		.file 11 "Core/Inc/usart.h"
+ARM GAS  /tmp/ccPtuMQg.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 retarget.c
+     /tmp/ccPtuMQg.s:22     .bss.printf_uart:0000000000000000 printf_uart
+     /tmp/ccPtuMQg.s:19     .bss.printf_uart:0000000000000000 $d
+     /tmp/ccPtuMQg.s:25     .text.Retarget_Init:0000000000000000 $t
+     /tmp/ccPtuMQg.s:33     .text.Retarget_Init:0000000000000000 Retarget_Init
+     /tmp/ccPtuMQg.s:74     .text.Retarget_Init:000000000000001c $d
+     /tmp/ccPtuMQg.s:79     .text.__io_putchar:0000000000000000 $t
+     /tmp/ccPtuMQg.s:86     .text.__io_putchar:0000000000000000 __io_putchar
+     /tmp/ccPtuMQg.s:137    .text.__io_putchar:0000000000000030 $d
+     /tmp/ccPtuMQg.s:142    .text._write:0000000000000000 $t
+     /tmp/ccPtuMQg.s:149    .text._write:0000000000000000 _write
+
+UNDEFINED SYMBOLS
+HAL_UART_Transmit

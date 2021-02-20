@@ -35,6 +35,7 @@
 #include <ucdr/microcdr.h>
 #include <uxr/client/client.h>
 #include <lwip.h>
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,7 +62,7 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 1500 * 4	//128 * 4 for original
+  .stack_size = 1500 * 4
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -130,17 +131,26 @@ void StartDefaultTask(void *argument)
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);
   bool availableNetwork = false;
 
+
 #ifdef MICRO_XRCEDDS_CUSTOM_SERIAL 
   availableNetwork = true;
+  printf("MICRO_XRCEDDS_CUSTOM_SERIAL \r\n");
 #elif defined(MICRO_XRCEDDS_UDP)
   printf("Ethernet Initialization \r\n");
 
   printf("Waiting for IP \r\n");
   int retries = 0;
+  
+  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
+
   while(gnetif.ip_addr.addr == 0 && retries < 10){
-  	osDelay(500);
+  	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
+	osDelay(500);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
 	retries++;
   };
+
+  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
 
   availableNetwork = (gnetif.ip_addr.addr != 0);
   if(availableNetwork){
@@ -149,6 +159,7 @@ void StartDefaultTask(void *argument)
   	printf("Impossible to retrieve an IP \n");
   }
 #endif
+  printf("endif----- \r\n");
 
   rcl_allocator_t freeRTOS_allocator = rcutils_get_zero_initialized_allocator();
   freeRTOS_allocator.allocate = __freertos_allocate;
@@ -159,11 +170,15 @@ void StartDefaultTask(void *argument)
   if(!rcutils_set_default_allocator(&freeRTOS_allocator)){
   	printf("Error on default allocators (line %d)\n", __LINE__);
   }
+  else {
+  	printf("freeRTOS allocator success \r\n");
+  }
 
   osThreadAttr_t attributes;
   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
   attributes.stack_size = 5 * 3000;
   attributes.priority = (osPriority_t)osPriorityNormal1;
+  printf("before appMain \r\n");
   osThreadNew(appMain, NULL, &attributes);
   osDelay(500);
   char ptrTaskList[500];
@@ -179,7 +194,9 @@ void StartDefaultTask(void *argument)
 
   for(;;)
   {
+    printf("into the printf \r\n");
     if (eTaskGetState(xHandle) != eSuspended && availableNetwork)
+    //if(1)
     {
     	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
 	osDelay(150);
@@ -189,6 +206,7 @@ void StartDefaultTask(void *argument)
 	osDelay(150);
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
 	osDelay(150);
+	printf("available \r\n");
     }
     else {
         HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
@@ -199,6 +217,7 @@ void StartDefaultTask(void *argument)
 	osDelay(1000);
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
 	osDelay(1000);
+	printf("not available \r\n");
     }
   }
   /* USER CODE END StartDefaultTask */
