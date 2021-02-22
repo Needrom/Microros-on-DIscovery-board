@@ -125,7 +125,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* init code for LWIP */
-  MX_LWIP_Init();
+//  MX_LWIP_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);
@@ -176,7 +176,8 @@ void StartDefaultTask(void *argument)
 
   osThreadAttr_t attributes;
   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
-  attributes.stack_size = 5 * 3000;
+  attributes.name = "microROS_app";
+  attributes.stack_size = 4 * 3000;
   attributes.priority = (osPriority_t)osPriorityNormal1;
   printf("before appMain \r\n");
   osThreadNew(appMain, NULL, &attributes);
@@ -209,14 +210,14 @@ void StartDefaultTask(void *argument)
 	printf("available \r\n");
     }
     else {
-        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-	osDelay(1000);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-	osDelay(1000);	
+//        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+//	osDelay(1000);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+//	osDelay(1000);	
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-	osDelay(1000);
+	osDelay(250);
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-	osDelay(1000);
+	osDelay(250);
 	printf("not available \r\n");
     }
   }
