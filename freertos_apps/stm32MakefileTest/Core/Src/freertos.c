@@ -36,6 +36,9 @@
 #include <uxr/client/client.h>
 #include <lwip.h>
 #include <stdio.h>
+
+#include <rmw_microxrcedds_c/config.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -131,10 +134,15 @@ void StartDefaultTask(void *argument)
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);
   bool availableNetwork = false;
 
-
-#ifdef MICRO_XRCEDDS_CUSTOM_SERIAL 
-  availableNetwork = true;
-  printf("MICRO_XRCEDDS_CUSTOM_SERIAL \r\n");
+#ifdef RMW_UXRCE_TRANSPORT_CUSTOM 
+  availableNetwork = true; 
+  rmw_uros_set_custom_transport( 
+    true, 
+    (void *) &huart3, 
+    freertos_serial_open, 
+    freertos_serial_close, 
+    freertos_serial_write, 
+    freertos_serial_read); 
 #elif defined(MICRO_XRCEDDS_UDP)
   printf("Ethernet Initialization \r\n");
 

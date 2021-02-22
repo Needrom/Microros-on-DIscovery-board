@@ -171,6 +171,7 @@ lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_sched.c \
 lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_unistd.c \
 lib/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread.c \
 Core/Src/FreeRTOS-openocd.c \
+Core/Src/microros_transports.c \
 $(wildcard $(UROS_APP_FOLDER)/*.c)
 
 # Removing heap4 manager while being polite with STM32CubeMX
