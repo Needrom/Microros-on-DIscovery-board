@@ -38,6 +38,9 @@
 #include <stdio.h>
 
 #include <rmw_microxrcedds_c/config.h>
+#include "microros_transports.h"
+#include "usart.h"
+#include "retarget.h"
 
 /* USER CODE END Includes */
 
@@ -138,7 +141,7 @@ void StartDefaultTask(void *argument)
   availableNetwork = true; 
   rmw_uros_set_custom_transport( 
     true, 
-    (void *) &huart3, 
+    (void *) &huart1, 
     freertos_serial_open, 
     freertos_serial_close, 
     freertos_serial_write, 
@@ -189,6 +192,7 @@ void StartDefaultTask(void *argument)
   attributes.priority = (osPriority_t)osPriorityNormal1;
   printf("before appMain \r\n");
   osThreadNew(appMain, NULL, &attributes);
+  Retarget_Init(&huart1);
   osDelay(500);
   char ptrTaskList[500];
   vTaskList(ptrTaskList);
@@ -215,7 +219,6 @@ void StartDefaultTask(void *argument)
 	osDelay(150);
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
 	osDelay(150);
-	printf("available \r\n");
     }
     else {
 //        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
@@ -223,10 +226,9 @@ void StartDefaultTask(void *argument)
 //	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
 //	osDelay(1000);	
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-	osDelay(250);
+	osDelay(1000);
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-	osDelay(250);
-	printf("not available \r\n");
+	osDelay(1000);
     }
   }
   /* USER CODE END StartDefaultTask */
