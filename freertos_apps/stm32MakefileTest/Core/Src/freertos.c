@@ -22,6 +22,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "main.h"
+#include "usart.h"
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -36,6 +37,8 @@
 #include <uxr/client/client.h>
 #include <lwip.h>
 #include <stdio.h>
+
+#include <microros_transports.h>
 
 #include <rmw_microxrcedds_c/config.h>
 #include "microros_transports.h"
