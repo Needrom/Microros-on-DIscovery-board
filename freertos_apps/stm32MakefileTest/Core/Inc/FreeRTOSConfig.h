@@ -56,7 +56,7 @@
 #define configENABLE_FPU                         0
 #define configENABLE_MPU                         0
 
-#define configUSE_POSIX_ERRNO			 1
+#define configUSE_POSIX_ERRNO                    1
 #define configUSE_PREEMPTION                     1
 #define configSUPPORT_STATIC_ALLOCATION          1
 #define configSUPPORT_DYNAMIC_ALLOCATION         1
@@ -106,7 +106,7 @@ to exclude the API function. */
 #define INCLUDE_xQueueGetMutexHolder         1
 #define INCLUDE_uxTaskGetStackHighWaterMark  1
 #define INCLUDE_eTaskGetState                1
-#define INCLUDE_xTaskGetHandle		     1
+#define INCLUDE_xTaskGetHandle               1
 
 /*
  * The CMSIS-RTOS V2 FreeRTOS wrapper is dependent on the heap implementation used

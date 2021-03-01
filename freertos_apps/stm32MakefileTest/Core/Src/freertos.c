@@ -22,7 +22,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "main.h"
-#include "usart.h"
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -37,8 +36,6 @@
 #include <uxr/client/client.h>
 #include <lwip.h>
 #include <stdio.h>
-
-#include <microros_transports.h>
 
 #include <rmw_microxrcedds_c/config.h>
 #include "microros_transports.h"
@@ -134,7 +131,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* init code for LWIP */
-//  MX_LWIP_Init();
+  MX_LWIP_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);
@@ -191,7 +188,7 @@ void StartDefaultTask(void *argument)
   osThreadAttr_t attributes;
   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
   attributes.name = "microROS_app";
-  attributes.stack_size = 4 * 3000;
+  attributes.stack_size = 3 * 10000;
   attributes.priority = (osPriority_t)osPriorityNormal1;
   printf("before appMain \r\n");
   osThreadNew(appMain, NULL, &attributes);
