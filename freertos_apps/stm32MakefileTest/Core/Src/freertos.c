@@ -207,7 +207,7 @@ void StartDefaultTask(void *argument)
 
   for(;;)
   {
-    printf("into the printf \r\n");
+//    printf("into the printf \r\n");
     if (eTaskGetState(xHandle) != eSuspended && availableNetwork)
     //if(1)
     {
@@ -221,10 +221,10 @@ void StartDefaultTask(void *argument)
 	osDelay(150);
     }
     else {
-//        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-//	osDelay(1000);
-//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-//	osDelay(1000);	
+        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+	osDelay(1000);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+	osDelay(1000);	
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
 	osDelay(1000);
 	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
