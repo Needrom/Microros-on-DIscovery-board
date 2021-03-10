@@ -95,8 +95,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
-  Retarget_Init(&huart1);
-
+//  Retarget_Init(&huart1);
+  HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
+  
   printf("printf is ready \r\n");
   /* USER CODE END 2 */
 
