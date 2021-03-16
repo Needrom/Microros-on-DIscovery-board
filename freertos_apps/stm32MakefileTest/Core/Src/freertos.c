@@ -46,7 +46,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+void CheckGPIO();
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -208,35 +208,45 @@ void StartDefaultTask(void *argument)
   for(;;)
   {
 //    printf("into the printf \r\n");
-    if (eTaskGetState(xHandle) != eSuspended && availableNetwork)
-    //if(1)
-    {
-    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-	osDelay(150);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-	osDelay(150);	
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-	osDelay(150);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-	osDelay(150);
-    }
-    else {
-        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-	osDelay(1000);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-	osDelay(1000);	
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-	osDelay(1000);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-	osDelay(1000);
-    }
+    osDelay(1000);
+    CheckGPIO();
+//    if (eTaskGetState(xHandle) != eSuspended && availableNetwork)
+//    //if(1)
+//    {
+//    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+//	osDelay(150);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+//	osDelay(150);	
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+//	osDelay(150);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+//	osDelay(150);
+//    }
+//    else {
+//        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+//	osDelay(1000);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+//	osDelay(1000);	
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+//	osDelay(1000);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+//	osDelay(1000);
+//    }
   }
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void CheckGPIO(){
+	//printf("PE2: %d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2));
+	//printf("PE3: %d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);
+	osDelay(1000);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, GPIO_PIN_RESET);
 
+}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

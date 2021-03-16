@@ -94,6 +94,7 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_TIM9_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
 //  Retarget_Init(&huart1);
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
@@ -164,6 +165,54 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+typedef struct {
+        int cnt_10ms;
+        int btn_press;
+        int value;
+}BUTTON;
+
+BUTTON button_pin2 = {0};
+BUTTON button_pin3 = {0};
+BUTTON button_pin4 = {0};
+
+
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+        static unsigned char ledState = 0;
+        if(htim == (&htim6)){
+//              if(cnt_10ms++ >= 100){
+//                      cnt_10ms = 0;
+//                      printf("pin read :%d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));
+//              }
+                //printf("into the %s \r\n", __func__);
+                if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == 0){
+                        if(button_pin2.cnt_10ms++ >= 8 && button_pin2.btn_press == 0){
+                                button_pin2.btn_press = 1;
+                                //printf("btn press \r\n");
+                                HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, button_pin2.value);
+                                button_pin2.value = ~button_pin2.value;
+                        }
+                } else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3) == 0){
+                        button_pin3.cnt_10ms++;
+                        if(button_pin3.cnt_10ms++ >= 8 && button_pin3.btn_press == 0){
+                                button_pin3.btn_press = 1;
+
+                                //function code
+                                TIM6->ARR += 10;
+                                if(TIM6->ARR >= 500){
+                                        TIM6->ARR = 50;
+                                }
+                                //printf("current htim9.Period is : %d \r\n", TIM6->ARR);
+                        }
+                } else {
+                        button_pin2.cnt_10ms = 0;
+                        button_pin2.btn_press = 0;
+
+                        button_pin3.cnt_10ms = 0;
+                        button_pin3.btn_press = 0;
+                }
+        }
+}
 
 /* USER CODE END 4 */
 
