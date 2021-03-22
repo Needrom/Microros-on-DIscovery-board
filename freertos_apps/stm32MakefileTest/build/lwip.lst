@@ -1,0 +1,376 @@
+ARM GAS  /tmp/ccgYFXuu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"lwip.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	Netif_LinkSemaphore
+  18              		.section	.bss.Netif_LinkSemaphore,"aw",%nobits
+  19              		.align	2
+  22              	Netif_LinkSemaphore:
+  23 0000 00000000 		.space	4
+  24              		.comm	link_arg,8,4
+  25              		.comm	gnetif,56,4
+  26              		.comm	ipaddr,4,4
+  27              		.comm	netmask,4,4
+  28              		.comm	gw,4,4
+  29              		.comm	attributes,36,4
+  30              		.section	.rodata
+  31              		.align	2
+  32              	.LC0:
+  33 0000 4C696E6B 		.ascii	"LinkThr\000"
+  33      54687200 
+  34              		.section	.text.MX_LWIP_Init,"ax",%progbits
+  35              		.align	1
+  36              		.global	MX_LWIP_Init
+  37              		.arch armv7e-m
+  38              		.syntax unified
+  39              		.thumb
+  40              		.thumb_func
+  41              		.fpu fpv4-sp-d16
+  43              	MX_LWIP_Init:
+  44              	.LFB137:
+  45              		.file 1 "LWIP/App/lwip.c"
+   1:LWIP/App/lwip.c **** /**
+   2:LWIP/App/lwip.c ****  ******************************************************************************
+   3:LWIP/App/lwip.c ****   * File Name          : LWIP.c
+   4:LWIP/App/lwip.c ****   * Description        : This file provides initialization code for LWIP
+   5:LWIP/App/lwip.c ****   *                      middleWare.
+   6:LWIP/App/lwip.c ****   ******************************************************************************
+   7:LWIP/App/lwip.c ****   * @attention
+   8:LWIP/App/lwip.c ****   *
+   9:LWIP/App/lwip.c ****   * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  10:LWIP/App/lwip.c ****   * All rights reserved.</center></h2>
+  11:LWIP/App/lwip.c ****   *
+  12:LWIP/App/lwip.c ****   * This software component is licensed by ST under Ultimate Liberty license
+  13:LWIP/App/lwip.c ****   * SLA0044, the "License"; You may not use this file except in compliance with
+  14:LWIP/App/lwip.c ****   * the License. You may obtain a copy of the License at:
+ARM GAS  /tmp/ccgYFXuu.s 			page 2
+
+
+  15:LWIP/App/lwip.c ****   *                             www.st.com/SLA0044
+  16:LWIP/App/lwip.c ****   *
+  17:LWIP/App/lwip.c ****   ******************************************************************************
+  18:LWIP/App/lwip.c ****   */
+  19:LWIP/App/lwip.c **** 
+  20:LWIP/App/lwip.c **** /* Includes ------------------------------------------------------------------*/
+  21:LWIP/App/lwip.c **** #include "lwip.h"
+  22:LWIP/App/lwip.c **** #include "lwip/init.h"
+  23:LWIP/App/lwip.c **** #include "lwip/netif.h"
+  24:LWIP/App/lwip.c **** #if defined ( __CC_ARM )  /* MDK ARM Compiler */
+  25:LWIP/App/lwip.c **** #include "lwip/sio.h"
+  26:LWIP/App/lwip.c **** #endif /* MDK ARM Compiler */
+  27:LWIP/App/lwip.c **** #include "ethernetif.h"
+  28:LWIP/App/lwip.c **** #include <string.h>
+  29:LWIP/App/lwip.c **** 
+  30:LWIP/App/lwip.c **** /* USER CODE BEGIN 0 */
+  31:LWIP/App/lwip.c **** 
+  32:LWIP/App/lwip.c **** /* USER CODE END 0 */
+  33:LWIP/App/lwip.c **** /* Private function prototypes -----------------------------------------------*/
+  34:LWIP/App/lwip.c **** /* ETH Variables initialization ----------------------------------------------*/
+  35:LWIP/App/lwip.c **** void Error_Handler(void);
+  36:LWIP/App/lwip.c **** 
+  37:LWIP/App/lwip.c **** /* USER CODE BEGIN 1 */
+  38:LWIP/App/lwip.c **** 
+  39:LWIP/App/lwip.c **** /* USER CODE END 1 */
+  40:LWIP/App/lwip.c **** /* Semaphore to signal Ethernet Link state update */
+  41:LWIP/App/lwip.c **** osSemaphoreId Netif_LinkSemaphore = NULL;
+  42:LWIP/App/lwip.c **** /* Ethernet link thread Argument */
+  43:LWIP/App/lwip.c **** struct link_str link_arg;
+  44:LWIP/App/lwip.c **** 
+  45:LWIP/App/lwip.c **** /* Variables Initialization */
+  46:LWIP/App/lwip.c **** struct netif gnetif;
+  47:LWIP/App/lwip.c **** ip4_addr_t ipaddr;
+  48:LWIP/App/lwip.c **** ip4_addr_t netmask;
+  49:LWIP/App/lwip.c **** ip4_addr_t gw;
+  50:LWIP/App/lwip.c **** /* USER CODE BEGIN OS_THREAD_ATTR_CMSIS_RTOS_V2 */
+  51:LWIP/App/lwip.c **** #define INTERFACE_THREAD_STACK_SIZE ( 1024 )
+  52:LWIP/App/lwip.c **** osThreadAttr_t attributes;
+  53:LWIP/App/lwip.c **** /* USER CODE END OS_THREAD_ATTR_CMSIS_RTOS_V2 */
+  54:LWIP/App/lwip.c **** 
+  55:LWIP/App/lwip.c **** /* USER CODE BEGIN 2 */
+  56:LWIP/App/lwip.c **** 
+  57:LWIP/App/lwip.c **** /* USER CODE END 2 */
+  58:LWIP/App/lwip.c **** 
+  59:LWIP/App/lwip.c **** /**
+  60:LWIP/App/lwip.c ****   * LwIP initialization function
+  61:LWIP/App/lwip.c ****   */
+  62:LWIP/App/lwip.c **** void MX_LWIP_Init(void)
+  63:LWIP/App/lwip.c **** {
+  46              		.loc 1 63 1
+  47              		.cfi_startproc
+  48              		@ args = 0, pretend = 0, frame = 0
+  49              		@ frame_needed = 1, uses_anonymous_args = 0
+  50 0000 80B5     		push	{r7, lr}
+  51              	.LCFI0:
+  52              		.cfi_def_cfa_offset 8
+  53              		.cfi_offset 7, -8
+ARM GAS  /tmp/ccgYFXuu.s 			page 3
+
+
+  54              		.cfi_offset 14, -4
+  55 0002 84B0     		sub	sp, sp, #16
+  56              	.LCFI1:
+  57              		.cfi_def_cfa_offset 24
+  58 0004 04AF     		add	r7, sp, #16
+  59              	.LCFI2:
+  60              		.cfi_def_cfa 7, 8
+  64:LWIP/App/lwip.c ****   /* Initilialize the LwIP stack with RTOS */
+  65:LWIP/App/lwip.c ****   tcpip_init( NULL, NULL );
+  61              		.loc 1 65 3
+  62 0006 0021     		movs	r1, #0
+  63 0008 0020     		movs	r0, #0
+  64 000a FFF7FEFF 		bl	tcpip_init
+  66:LWIP/App/lwip.c **** 
+  67:LWIP/App/lwip.c ****   /* IP addresses initialization with DHCP (IPv4) */
+  68:LWIP/App/lwip.c ****   ipaddr.addr = 0;
+  65              		.loc 1 68 15
+  66 000e 2A4B     		ldr	r3, .L4
+  67 0010 0022     		movs	r2, #0
+  68 0012 1A60     		str	r2, [r3]
+  69:LWIP/App/lwip.c ****   netmask.addr = 0;
+  69              		.loc 1 69 16
+  70 0014 294B     		ldr	r3, .L4+4
+  71 0016 0022     		movs	r2, #0
+  72 0018 1A60     		str	r2, [r3]
+  70:LWIP/App/lwip.c ****   gw.addr = 0;
+  73              		.loc 1 70 11
+  74 001a 294B     		ldr	r3, .L4+8
+  75 001c 0022     		movs	r2, #0
+  76 001e 1A60     		str	r2, [r3]
+  71:LWIP/App/lwip.c **** 
+  72:LWIP/App/lwip.c ****   /* add the network interface (IPv4/IPv6) with RTOS */
+  73:LWIP/App/lwip.c ****   netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &tcpip_input);
+  77              		.loc 1 73 3
+  78 0020 284B     		ldr	r3, .L4+12
+  79 0022 0293     		str	r3, [sp, #8]
+  80 0024 284B     		ldr	r3, .L4+16
+  81 0026 0193     		str	r3, [sp, #4]
+  82 0028 0023     		movs	r3, #0
+  83 002a 0093     		str	r3, [sp]
+  84 002c 244B     		ldr	r3, .L4+8
+  85 002e 234A     		ldr	r2, .L4+4
+  86 0030 2149     		ldr	r1, .L4
+  87 0032 2648     		ldr	r0, .L4+20
+  88 0034 FFF7FEFF 		bl	netif_add
+  74:LWIP/App/lwip.c **** 
+  75:LWIP/App/lwip.c ****   /* Registers the default network interface */
+  76:LWIP/App/lwip.c ****   netif_set_default(&gnetif);
+  89              		.loc 1 76 3
+  90 0038 2448     		ldr	r0, .L4+20
+  91 003a FFF7FEFF 		bl	netif_set_default
+  77:LWIP/App/lwip.c **** 
+  78:LWIP/App/lwip.c ****   if (netif_is_link_up(&gnetif))
+  92              		.loc 1 78 7
+  93 003e 234B     		ldr	r3, .L4+20
+  94 0040 93F83130 		ldrb	r3, [r3, #49]	@ zero_extendqisi2
+  95 0044 9B08     		lsrs	r3, r3, #2
+ARM GAS  /tmp/ccgYFXuu.s 			page 4
+
+
+  96 0046 03F00103 		and	r3, r3, #1
+  97 004a DBB2     		uxtb	r3, r3
+  98              		.loc 1 78 6
+  99 004c 002B     		cmp	r3, #0
+ 100 004e 03D0     		beq	.L2
+  79:LWIP/App/lwip.c ****   {
+  80:LWIP/App/lwip.c ****     /* When the netif is fully configured this function must be called */
+  81:LWIP/App/lwip.c ****     netif_set_up(&gnetif);
+ 101              		.loc 1 81 5
+ 102 0050 1E48     		ldr	r0, .L4+20
+ 103 0052 FFF7FEFF 		bl	netif_set_up
+ 104 0056 02E0     		b	.L3
+ 105              	.L2:
+  82:LWIP/App/lwip.c ****   }
+  83:LWIP/App/lwip.c ****   else
+  84:LWIP/App/lwip.c ****   {
+  85:LWIP/App/lwip.c ****     /* When the netif link is down this function must be called */
+  86:LWIP/App/lwip.c ****     netif_set_down(&gnetif);
+ 106              		.loc 1 86 5
+ 107 0058 1C48     		ldr	r0, .L4+20
+ 108 005a FFF7FEFF 		bl	netif_set_down
+ 109              	.L3:
+  87:LWIP/App/lwip.c ****   }
+  88:LWIP/App/lwip.c **** 
+  89:LWIP/App/lwip.c ****   /* Set the link callback function, this function is called on change of link status*/
+  90:LWIP/App/lwip.c ****   netif_set_link_callback(&gnetif, ethernetif_update_config);
+ 110              		.loc 1 90 3
+ 111 005e 1C49     		ldr	r1, .L4+24
+ 112 0060 1A48     		ldr	r0, .L4+20
+ 113 0062 FFF7FEFF 		bl	netif_set_link_callback
+  91:LWIP/App/lwip.c **** 
+  92:LWIP/App/lwip.c ****   /* create a binary semaphore used for informing ethernetif of frame reception */
+  93:LWIP/App/lwip.c ****   Netif_LinkSemaphore = osSemaphoreNew(1, 1, NULL);
+ 114              		.loc 1 93 25
+ 115 0066 0022     		movs	r2, #0
+ 116 0068 0121     		movs	r1, #1
+ 117 006a 0120     		movs	r0, #1
+ 118 006c FFF7FEFF 		bl	osSemaphoreNew
+ 119 0070 0246     		mov	r2, r0
+ 120              		.loc 1 93 23
+ 121 0072 184B     		ldr	r3, .L4+28
+ 122 0074 1A60     		str	r2, [r3]
+  94:LWIP/App/lwip.c **** 
+  95:LWIP/App/lwip.c ****   link_arg.netif = &gnetif;
+ 123              		.loc 1 95 18
+ 124 0076 184B     		ldr	r3, .L4+32
+ 125 0078 144A     		ldr	r2, .L4+20
+ 126 007a 1A60     		str	r2, [r3]
+  96:LWIP/App/lwip.c ****   link_arg.semaphore = Netif_LinkSemaphore;
+ 127              		.loc 1 96 22
+ 128 007c 154B     		ldr	r3, .L4+28
+ 129 007e 1B68     		ldr	r3, [r3]
+ 130 0080 154A     		ldr	r2, .L4+32
+ 131 0082 5360     		str	r3, [r2, #4]
+  97:LWIP/App/lwip.c ****   /* Create the Ethernet link handler thread */
+  98:LWIP/App/lwip.c **** /* USER CODE BEGIN OS_THREAD_NEW_CMSIS_RTOS_V2 */
+  99:LWIP/App/lwip.c ****   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
+ARM GAS  /tmp/ccgYFXuu.s 			page 5
+
+
+ 132              		.loc 1 99 3
+ 133 0084 2422     		movs	r2, #36
+ 134 0086 0021     		movs	r1, #0
+ 135 0088 1448     		ldr	r0, .L4+36
+ 136 008a FFF7FEFF 		bl	memset
+ 100:LWIP/App/lwip.c ****   attributes.name = "LinkThr";
+ 137              		.loc 1 100 19
+ 138 008e 134B     		ldr	r3, .L4+36
+ 139 0090 134A     		ldr	r2, .L4+40
+ 140 0092 1A60     		str	r2, [r3]
+ 101:LWIP/App/lwip.c ****   attributes.stack_size = INTERFACE_THREAD_STACK_SIZE;
+ 141              		.loc 1 101 25
+ 142 0094 114B     		ldr	r3, .L4+36
+ 143 0096 4FF48062 		mov	r2, #1024
+ 144 009a 5A61     		str	r2, [r3, #20]
+ 102:LWIP/App/lwip.c ****   attributes.priority = osPriorityBelowNormal;
+ 145              		.loc 1 102 23
+ 146 009c 0F4B     		ldr	r3, .L4+36
+ 147 009e 1022     		movs	r2, #16
+ 148 00a0 9A61     		str	r2, [r3, #24]
+ 103:LWIP/App/lwip.c ****   osThreadNew(ethernetif_set_link, &link_arg, &attributes);
+ 149              		.loc 1 103 3
+ 150 00a2 0E4A     		ldr	r2, .L4+36
+ 151 00a4 0C49     		ldr	r1, .L4+32
+ 152 00a6 0F48     		ldr	r0, .L4+44
+ 153 00a8 FFF7FEFF 		bl	osThreadNew
+ 104:LWIP/App/lwip.c **** /* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
+ 105:LWIP/App/lwip.c **** 
+ 106:LWIP/App/lwip.c ****   /* Start DHCP negotiation for a network interface (IPv4) */
+ 107:LWIP/App/lwip.c ****   dhcp_start(&gnetif);
+ 154              		.loc 1 107 3
+ 155 00ac 0748     		ldr	r0, .L4+20
+ 156 00ae FFF7FEFF 		bl	dhcp_start
+ 108:LWIP/App/lwip.c **** 
+ 109:LWIP/App/lwip.c **** /* USER CODE BEGIN 3 */
+ 110:LWIP/App/lwip.c **** 
+ 111:LWIP/App/lwip.c **** /* USER CODE END 3 */
+ 112:LWIP/App/lwip.c **** }
+ 157              		.loc 1 112 1
+ 158 00b2 00BF     		nop
+ 159 00b4 BD46     		mov	sp, r7
+ 160              	.LCFI3:
+ 161              		.cfi_def_cfa_register 13
+ 162              		@ sp needed
+ 163 00b6 80BD     		pop	{r7, pc}
+ 164              	.L5:
+ 165              		.align	2
+ 166              	.L4:
+ 167 00b8 00000000 		.word	ipaddr
+ 168 00bc 00000000 		.word	netmask
+ 169 00c0 00000000 		.word	gw
+ 170 00c4 00000000 		.word	tcpip_input
+ 171 00c8 00000000 		.word	ethernetif_init
+ 172 00cc 00000000 		.word	gnetif
+ 173 00d0 00000000 		.word	ethernetif_update_config
+ 174 00d4 00000000 		.word	Netif_LinkSemaphore
+ 175 00d8 00000000 		.word	link_arg
+ARM GAS  /tmp/ccgYFXuu.s 			page 6
+
+
+ 176 00dc 00000000 		.word	attributes
+ 177 00e0 00000000 		.word	.LC0
+ 178 00e4 00000000 		.word	ethernetif_set_link
+ 179              		.cfi_endproc
+ 180              	.LFE137:
+ 182              		.text
+ 183              	.Letext0:
+ 184              		.file 2 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_types.h"
+ 185              		.file 3 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 186              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 187              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 188              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 189              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 190              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_eth.h"
+ 191              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 192              		.file 10 "/home/mego/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stddef.h"
+ 193              		.file 11 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_types.h"
+ 194              		.file 12 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/reent.h"
+ 195              		.file 13 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/lock.h"
+ 196              		.file 14 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/stdlib.h"
+ 197              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 198              		.file 16 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/ctype.h"
+ 199              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 200              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 201              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 202              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 203              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 204              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 205              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
+ 206              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
+ 207              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ethernet.h"
+ 208              		.file 26 "Middlewares/Third_Party/LwIP/src/include/netif/ethernet.h"
+ 209              		.file 27 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
+ 210              		.file 28 "Middlewares/Third_Party/LwIP/src/include/lwip/udp.h"
+ 211              		.file 29 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 212              		.file 30 "Middlewares/Third_Party/LwIP/system/arch/sys_arch.h"
+ 213              		.file 31 "Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h"
+ 214              		.file 32 "LWIP/Target/ethernetif.h"
+ 215              		.file 33 "Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h"
+ 216              		.file 34 "LWIP/App/lwip.h"
+ARM GAS  /tmp/ccgYFXuu.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 lwip.c
+     /tmp/ccgYFXuu.s:22     .bss.Netif_LinkSemaphore:0000000000000000 Netif_LinkSemaphore
+     /tmp/ccgYFXuu.s:19     .bss.Netif_LinkSemaphore:0000000000000000 $d
+                            *COM*:0000000000000008 link_arg
+                            *COM*:0000000000000038 gnetif
+                            *COM*:0000000000000004 ipaddr
+                            *COM*:0000000000000004 netmask
+                            *COM*:0000000000000004 gw
+                            *COM*:0000000000000024 attributes
+     /tmp/ccgYFXuu.s:31     .rodata:0000000000000000 $d
+     /tmp/ccgYFXuu.s:35     .text.MX_LWIP_Init:0000000000000000 $t
+     /tmp/ccgYFXuu.s:43     .text.MX_LWIP_Init:0000000000000000 MX_LWIP_Init
+     /tmp/ccgYFXuu.s:167    .text.MX_LWIP_Init:00000000000000b8 $d
+
+UNDEFINED SYMBOLS
+tcpip_init
+netif_add
+netif_set_default
+netif_set_up
+netif_set_down
+netif_set_link_callback
+osSemaphoreNew
+memset
+osThreadNew
+dhcp_start
+tcpip_input
+ethernetif_init
+ethernetif_update_config
+ethernetif_set_link

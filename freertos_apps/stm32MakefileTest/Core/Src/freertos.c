@@ -41,6 +41,10 @@
 #include "microros_transports.h"
 #include "usart.h"
 #include "retarget.h"
+#include "../../Component/Key/key.h"
+#include "../../Component/PWM/pwm.h"
+
+#include "tim.h"
 
 /* USER CODE END Includes */
 
@@ -191,7 +195,7 @@ void StartDefaultTask(void *argument)
   attributes.stack_size = 3 * 10000;
   attributes.priority = (osPriority_t)osPriorityNormal1;
   printf("before appMain \r\n");
-  osThreadNew(appMain, NULL, &attributes);
+//  osThreadNew(appMain, NULL, &attributes);
   Retarget_Init(&huart1);
   osDelay(500);
   char ptrTaskList[500];
@@ -205,13 +209,16 @@ void StartDefaultTask(void *argument)
   TaskHandle_t xHandle;
   xHandle = xTaskGetHandle("microROS_app");
 
+  PWM_SetMode(PWM_OPM); 
+  
   for(;;)
   {
 //    printf("into the printf \r\n");
-    osDelay(1000);
+    osDelay(1);
+//    HAL_TIM_OnePulse_Start(&htim9, TIM_CHANNEL_1);
     CheckGPIO();
 //    if (eTaskGetState(xHandle) != eSuspended && availableNetwork)
-//    //if(1)
+//    if(0)
 //    {
 //    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
 //	osDelay(150);
@@ -241,10 +248,12 @@ void StartDefaultTask(void *argument)
 void CheckGPIO(){
 	//printf("PE2: %d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2));
 	//printf("PE3: %d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));
-	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_3, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_2, GPIO_PIN_SET);
 	osDelay(1000);
-	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_3, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_2, GPIO_PIN_RESET);
+	osDelay(1000);
 
 }
 /* USER CODE END Application */

@@ -1,0 +1,437 @@
+ARM GAS  /tmp/ccVsTpuj.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"A6_X4connector.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.comm	x4_connector,4,4
+  18              		.section	.text.X4_ConnectorInit,"ax",%progbits
+  19              		.align	1
+  20              		.global	X4_ConnectorInit
+  21              		.arch armv7e-m
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  25              		.fpu fpv4-sp-d16
+  27              	X4_ConnectorInit:
+  28              	.LFB133:
+  29              		.file 1 "Component/A6_X4connector/A6_X4connector.c"
+   1:Component/A6_X4connector/A6_X4connector.c **** /*
+   2:Component/A6_X4connector/A6_X4connector.c ****  * Creator: Mego
+   3:Component/A6_X4connector/A6_X4connector.c ****  * Date: 20210316
+   4:Component/A6_X4connector/A6_X4connector.c ****  * Brief: API to connector the A6_X4connetor
+   5:Component/A6_X4connector/A6_X4connector.c ****  */
+   6:Component/A6_X4connector/A6_X4connector.c **** 
+   7:Component/A6_X4connector/A6_X4connector.c **** #include"A6_X4connector.h"
+   8:Component/A6_X4connector/A6_X4connector.c **** 
+   9:Component/A6_X4connector/A6_X4connector.c **** X4_Connector *x4_connector;
+  10:Component/A6_X4connector/A6_X4connector.c **** 
+  11:Component/A6_X4connector/A6_X4connector.c **** void X4_ConnectorInit(X4_Connector *__x4_connector){
+  30              		.loc 1 11 52
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 1, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35 0000 80B4     		push	{r7}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 4
+  38              		.cfi_offset 7, -4
+  39 0002 83B0     		sub	sp, sp, #12
+  40              	.LCFI1:
+  41              		.cfi_def_cfa_offset 16
+  42 0004 00AF     		add	r7, sp, #0
+  43              	.LCFI2:
+  44              		.cfi_def_cfa_register 7
+  45 0006 7860     		str	r0, [r7, #4]
+  12:Component/A6_X4connector/A6_X4connector.c **** 	if(__x4_connector == NULL){
+  46              		.loc 1 12 4
+ARM GAS  /tmp/ccVsTpuj.s 			page 2
+
+
+  47 0008 7B68     		ldr	r3, [r7, #4]
+  48 000a 002B     		cmp	r3, #0
+  49 000c 04D0     		beq	.L4
+  13:Component/A6_X4connector/A6_X4connector.c **** 		return -1;
+  14:Component/A6_X4connector/A6_X4connector.c **** 	}
+  15:Component/A6_X4connector/A6_X4connector.c **** 	
+  16:Component/A6_X4connector/A6_X4connector.c **** 	x4_connector = __x4_connector;
+  50              		.loc 1 16 15
+  51 000e 054A     		ldr	r2, .L5
+  52 0010 7B68     		ldr	r3, [r7, #4]
+  53 0012 1360     		str	r3, [r2]
+  17:Component/A6_X4connector/A6_X4connector.c **** 	
+  18:Component/A6_X4connector/A6_X4connector.c **** 	return 0;
+  54              		.loc 1 18 9
+  55 0014 00BF     		nop
+  56 0016 00E0     		b	.L1
+  57              	.L4:
+  13:Component/A6_X4connector/A6_X4connector.c **** 		return -1;
+  58              		.loc 1 13 10
+  59 0018 00BF     		nop
+  60              	.L1:
+  19:Component/A6_X4connector/A6_X4connector.c **** }
+  61              		.loc 1 19 1
+  62 001a 0C37     		adds	r7, r7, #12
+  63              	.LCFI3:
+  64              		.cfi_def_cfa_offset 4
+  65 001c BD46     		mov	sp, r7
+  66              	.LCFI4:
+  67              		.cfi_def_cfa_register 13
+  68              		@ sp needed
+  69 001e 5DF8047B 		ldr	r7, [sp], #4
+  70              	.LCFI5:
+  71              		.cfi_restore 7
+  72              		.cfi_def_cfa_offset 0
+  73 0022 7047     		bx	lr
+  74              	.L6:
+  75              		.align	2
+  76              	.L5:
+  77 0024 00000000 		.word	x4_connector
+  78              		.cfi_endproc
+  79              	.LFE133:
+  81              		.section	.text.X4_ConnectorState_Tmr,"ax",%progbits
+  82              		.align	1
+  83              		.global	X4_ConnectorState_Tmr
+  84              		.syntax unified
+  85              		.thumb
+  86              		.thumb_func
+  87              		.fpu fpv4-sp-d16
+  89              	X4_ConnectorState_Tmr:
+  90              	.LFB134:
+  20:Component/A6_X4connector/A6_X4connector.c **** 
+  21:Component/A6_X4connector/A6_X4connector.c **** void X4_ConnectorState_Tmr(){
+  91              		.loc 1 21 29
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 1, uses_anonymous_args = 0
+  95              		@ link register save eliminated.
+ARM GAS  /tmp/ccVsTpuj.s 			page 3
+
+
+  96 0000 80B4     		push	{r7}
+  97              	.LCFI6:
+  98              		.cfi_def_cfa_offset 4
+  99              		.cfi_offset 7, -4
+ 100 0002 00AF     		add	r7, sp, #0
+ 101              	.LCFI7:
+ 102              		.cfi_def_cfa_register 7
+  22:Component/A6_X4connector/A6_X4connector.c **** 	
+  23:Component/A6_X4connector/A6_X4connector.c **** }
+ 103              		.loc 1 23 1
+ 104 0004 00BF     		nop
+ 105 0006 BD46     		mov	sp, r7
+ 106              	.LCFI8:
+ 107              		.cfi_def_cfa_register 13
+ 108              		@ sp needed
+ 109 0008 5DF8047B 		ldr	r7, [sp], #4
+ 110              	.LCFI9:
+ 111              		.cfi_restore 7
+ 112              		.cfi_def_cfa_offset 0
+ 113 000c 7047     		bx	lr
+ 114              		.cfi_endproc
+ 115              	.LFE134:
+ 117              		.section	.text.X4_NegativeForbit,"ax",%progbits
+ 118              		.align	1
+ 119              		.global	X4_NegativeForbit
+ 120              		.syntax unified
+ 121              		.thumb
+ 122              		.thumb_func
+ 123              		.fpu fpv4-sp-d16
+ 125              	X4_NegativeForbit:
+ 126              	.LFB135:
+  24:Component/A6_X4connector/A6_X4connector.c **** 
+  25:Component/A6_X4connector/A6_X4connector.c **** void X4_NegativeForbit(){
+ 127              		.loc 1 25 25
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 0
+ 130              		@ frame_needed = 1, uses_anonymous_args = 0
+ 131 0000 80B5     		push	{r7, lr}
+ 132              	.LCFI10:
+ 133              		.cfi_def_cfa_offset 8
+ 134              		.cfi_offset 7, -8
+ 135              		.cfi_offset 14, -4
+ 136 0002 00AF     		add	r7, sp, #0
+ 137              	.LCFI11:
+ 138              		.cfi_def_cfa_register 7
+  26:Component/A6_X4connector/A6_X4connector.c **** 	X4_Pin_Write(GPIOE, X4_NegativeForbit_Pin, GPIO_PIN_SET);
+ 139              		.loc 1 26 2
+ 140 0004 0122     		movs	r2, #1
+ 141 0006 0421     		movs	r1, #4
+ 142 0008 0248     		ldr	r0, .L9
+ 143 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  27:Component/A6_X4connector/A6_X4connector.c **** } 
+ 144              		.loc 1 27 1
+ 145 000e 00BF     		nop
+ 146 0010 80BD     		pop	{r7, pc}
+ 147              	.L10:
+ 148 0012 00BF     		.align	2
+ARM GAS  /tmp/ccVsTpuj.s 			page 4
+
+
+ 149              	.L9:
+ 150 0014 00100240 		.word	1073876992
+ 151              		.cfi_endproc
+ 152              	.LFE135:
+ 154              		.section	.text.X4_PostiveForbit,"ax",%progbits
+ 155              		.align	1
+ 156              		.global	X4_PostiveForbit
+ 157              		.syntax unified
+ 158              		.thumb
+ 159              		.thumb_func
+ 160              		.fpu fpv4-sp-d16
+ 162              	X4_PostiveForbit:
+ 163              	.LFB136:
+  28:Component/A6_X4connector/A6_X4connector.c **** 
+  29:Component/A6_X4connector/A6_X4connector.c **** void X4_PostiveForbit(){
+ 164              		.loc 1 29 24
+ 165              		.cfi_startproc
+ 166              		@ args = 0, pretend = 0, frame = 0
+ 167              		@ frame_needed = 1, uses_anonymous_args = 0
+ 168 0000 80B5     		push	{r7, lr}
+ 169              	.LCFI12:
+ 170              		.cfi_def_cfa_offset 8
+ 171              		.cfi_offset 7, -8
+ 172              		.cfi_offset 14, -4
+ 173 0002 00AF     		add	r7, sp, #0
+ 174              	.LCFI13:
+ 175              		.cfi_def_cfa_register 7
+  30:Component/A6_X4connector/A6_X4connector.c **** 	X4_Pin_Write(GPIOE, X4_PostiveForbit_Pin, GPIO_PIN_SET);
+ 176              		.loc 1 30 2
+ 177 0004 0122     		movs	r2, #1
+ 178 0006 0821     		movs	r1, #8
+ 179 0008 0248     		ldr	r0, .L12
+ 180 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  31:Component/A6_X4connector/A6_X4connector.c **** }
+ 181              		.loc 1 31 1
+ 182 000e 00BF     		nop
+ 183 0010 80BD     		pop	{r7, pc}
+ 184              	.L13:
+ 185 0012 00BF     		.align	2
+ 186              	.L12:
+ 187 0014 00100240 		.word	1073876992
+ 188              		.cfi_endproc
+ 189              	.LFE136:
+ 191              		.section	.text.X4_ClearAlarm,"ax",%progbits
+ 192              		.align	1
+ 193              		.global	X4_ClearAlarm
+ 194              		.syntax unified
+ 195              		.thumb
+ 196              		.thumb_func
+ 197              		.fpu fpv4-sp-d16
+ 199              	X4_ClearAlarm:
+ 200              	.LFB137:
+  32:Component/A6_X4connector/A6_X4connector.c **** 
+  33:Component/A6_X4connector/A6_X4connector.c **** void X4_ClearAlarm(){
+ 201              		.loc 1 33 21
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccVsTpuj.s 			page 5
+
+
+ 204              		@ frame_needed = 1, uses_anonymous_args = 0
+ 205 0000 80B5     		push	{r7, lr}
+ 206              	.LCFI14:
+ 207              		.cfi_def_cfa_offset 8
+ 208              		.cfi_offset 7, -8
+ 209              		.cfi_offset 14, -4
+ 210 0002 00AF     		add	r7, sp, #0
+ 211              	.LCFI15:
+ 212              		.cfi_def_cfa_register 7
+  34:Component/A6_X4connector/A6_X4connector.c **** 	X4_Pin_Write(GPIOE, X4_ServoAlarmClear_Pin, GPIO_PIN_SET);
+ 213              		.loc 1 34 2
+ 214 0004 0122     		movs	r2, #1
+ 215 0006 0121     		movs	r1, #1
+ 216 0008 0248     		ldr	r0, .L15
+ 217 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  35:Component/A6_X4connector/A6_X4connector.c **** }
+ 218              		.loc 1 35 1
+ 219 000e 00BF     		nop
+ 220 0010 80BD     		pop	{r7, pc}
+ 221              	.L16:
+ 222 0012 00BF     		.align	2
+ 223              	.L15:
+ 224 0014 00100240 		.word	1073876992
+ 225              		.cfi_endproc
+ 226              	.LFE137:
+ 228              		.section	.rodata
+ 229              		.align	2
+ 230              	.LC0:
+ 231 0000 70696E20 		.ascii	"pin 37 get signal \015\000"
+ 231      33372067 
+ 231      65742073 
+ 231      69676E61 
+ 231      6C200D00 
+ 232              		.align	2
+ 233              	.LC1:
+ 234 0014 70696E20 		.ascii	"pin 35 get signal \015\000"
+ 234      33352067 
+ 234      65742073 
+ 234      69676E61 
+ 234      6C200D00 
+ 235              		.section	.text.X4_ConnectorCallBack,"ax",%progbits
+ 236              		.align	1
+ 237              		.global	X4_ConnectorCallBack
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 241              		.fpu fpv4-sp-d16
+ 243              	X4_ConnectorCallBack:
+ 244              	.LFB138:
+  36:Component/A6_X4connector/A6_X4connector.c **** 
+  37:Component/A6_X4connector/A6_X4connector.c **** /* GPIO中断回调
+  38:Component/A6_X4connector/A6_X4connector.c ****  * @brief  EXTI line detection callbacks.
+  39:Component/A6_X4connector/A6_X4connector.c ****  * @param  GPIO_Pin: Specifies the pins connected EXTI line
+  40:Component/A6_X4connector/A6_X4connector.c ****  * @retval None
+  41:Component/A6_X4connector/A6_X4connector.c ****  */
+  42:Component/A6_X4connector/A6_X4connector.c **** void X4_ConnectorCallBack(uint16_t GPIO_Pin){
+ 245              		.loc 1 42 45
+ARM GAS  /tmp/ccVsTpuj.s 			page 6
+
+
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 8
+ 248              		@ frame_needed = 1, uses_anonymous_args = 0
+ 249 0000 80B5     		push	{r7, lr}
+ 250              	.LCFI16:
+ 251              		.cfi_def_cfa_offset 8
+ 252              		.cfi_offset 7, -8
+ 253              		.cfi_offset 14, -4
+ 254 0002 82B0     		sub	sp, sp, #8
+ 255              	.LCFI17:
+ 256              		.cfi_def_cfa_offset 16
+ 257 0004 00AF     		add	r7, sp, #0
+ 258              	.LCFI18:
+ 259              		.cfi_def_cfa_register 7
+ 260 0006 0346     		mov	r3, r0
+ 261 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+  43:Component/A6_X4connector/A6_X4connector.c ****    
+  44:Component/A6_X4connector/A6_X4connector.c ****     if(X4_Connector_Pin_37 == GPIO_Pin){
+ 262              		.loc 1 44 7
+ 263 000a FB88     		ldrh	r3, [r7, #6]
+ 264 000c 022B     		cmp	r3, #2
+ 265 000e 0CD1     		bne	.L18
+  45:Component/A6_X4connector/A6_X4connector.c ****     	HAL_Delay(10);
+ 266              		.loc 1 45 6
+ 267 0010 0A20     		movs	r0, #10
+ 268 0012 FFF7FEFF 		bl	HAL_Delay
+  46:Component/A6_X4connector/A6_X4connector.c **** 	if(HAL_GPIO_ReadPin(X4_Connector_PortF, X4_Connector_Pin_37) == GPIO_PIN_RESET){
+ 269              		.loc 1 46 5
+ 270 0016 0221     		movs	r1, #2
+ 271 0018 0E48     		ldr	r0, .L21
+ 272 001a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 273 001e 0346     		mov	r3, r0
+ 274              		.loc 1 46 4
+ 275 0020 002B     		cmp	r3, #0
+ 276 0022 02D1     		bne	.L18
+  47:Component/A6_X4connector/A6_X4connector.c **** 		printf("pin 37 get signal \r\n");
+ 277              		.loc 1 47 3
+ 278 0024 0C48     		ldr	r0, .L21+4
+ 279 0026 FFF7FEFF 		bl	puts
+ 280              	.L18:
+  48:Component/A6_X4connector/A6_X4connector.c **** 	}
+  49:Component/A6_X4connector/A6_X4connector.c ****     }
+  50:Component/A6_X4connector/A6_X4connector.c ****     
+  51:Component/A6_X4connector/A6_X4connector.c ****     if(X4_Connector_Pin_35 == GPIO_Pin){
+ 281              		.loc 1 51 7
+ 282 002a FB88     		ldrh	r3, [r7, #6]
+ 283 002c 012B     		cmp	r3, #1
+ 284 002e 0CD1     		bne	.L20
+  52:Component/A6_X4connector/A6_X4connector.c ****     	HAL_Delay(10);
+ 285              		.loc 1 52 6
+ 286 0030 0A20     		movs	r0, #10
+ 287 0032 FFF7FEFF 		bl	HAL_Delay
+  53:Component/A6_X4connector/A6_X4connector.c **** 	if(HAL_GPIO_ReadPin(X4_Connector_PortF, X4_Connector_Pin_37) == GPIO_PIN_RESET){
+ 288              		.loc 1 53 5
+ 289 0036 0221     		movs	r1, #2
+ 290 0038 0648     		ldr	r0, .L21
+ 291 003a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ARM GAS  /tmp/ccVsTpuj.s 			page 7
+
+
+ 292 003e 0346     		mov	r3, r0
+ 293              		.loc 1 53 4
+ 294 0040 002B     		cmp	r3, #0
+ 295 0042 02D1     		bne	.L20
+  54:Component/A6_X4connector/A6_X4connector.c **** 		printf("pin 35 get signal \r\n");
+ 296              		.loc 1 54 3
+ 297 0044 0548     		ldr	r0, .L21+8
+ 298 0046 FFF7FEFF 		bl	puts
+ 299              	.L20:
+  55:Component/A6_X4connector/A6_X4connector.c **** 	}
+  56:Component/A6_X4connector/A6_X4connector.c ****     }
+  57:Component/A6_X4connector/A6_X4connector.c **** }
+ 300              		.loc 1 57 1
+ 301 004a 00BF     		nop
+ 302 004c 0837     		adds	r7, r7, #8
+ 303              	.LCFI19:
+ 304              		.cfi_def_cfa_offset 8
+ 305 004e BD46     		mov	sp, r7
+ 306              	.LCFI20:
+ 307              		.cfi_def_cfa_register 13
+ 308              		@ sp needed
+ 309 0050 80BD     		pop	{r7, pc}
+ 310              	.L22:
+ 311 0052 00BF     		.align	2
+ 312              	.L21:
+ 313 0054 00140240 		.word	1073878016
+ 314 0058 00000000 		.word	.LC0
+ 315 005c 14000000 		.word	.LC1
+ 316              		.cfi_endproc
+ 317              	.LFE138:
+ 319              		.text
+ 320              	.Letext0:
+ 321              		.file 2 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_types.h"
+ 322              		.file 3 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 323              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 324              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 325              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 326              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 327              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 328              		.file 9 "/home/mego/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stddef.h"
+ 329              		.file 10 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_types.h"
+ 330              		.file 11 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/reent.h"
+ 331              		.file 12 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/lock.h"
+ 332              		.file 13 "Component/A6_X4connector/A6_X4connector.h"
+ARM GAS  /tmp/ccVsTpuj.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 A6_X4connector.c
+                            *COM*:0000000000000004 x4_connector
+     /tmp/ccVsTpuj.s:19     .text.X4_ConnectorInit:0000000000000000 $t
+     /tmp/ccVsTpuj.s:27     .text.X4_ConnectorInit:0000000000000000 X4_ConnectorInit
+     /tmp/ccVsTpuj.s:77     .text.X4_ConnectorInit:0000000000000024 $d
+     /tmp/ccVsTpuj.s:82     .text.X4_ConnectorState_Tmr:0000000000000000 $t
+     /tmp/ccVsTpuj.s:89     .text.X4_ConnectorState_Tmr:0000000000000000 X4_ConnectorState_Tmr
+     /tmp/ccVsTpuj.s:118    .text.X4_NegativeForbit:0000000000000000 $t
+     /tmp/ccVsTpuj.s:125    .text.X4_NegativeForbit:0000000000000000 X4_NegativeForbit
+     /tmp/ccVsTpuj.s:150    .text.X4_NegativeForbit:0000000000000014 $d
+     /tmp/ccVsTpuj.s:155    .text.X4_PostiveForbit:0000000000000000 $t
+     /tmp/ccVsTpuj.s:162    .text.X4_PostiveForbit:0000000000000000 X4_PostiveForbit
+     /tmp/ccVsTpuj.s:187    .text.X4_PostiveForbit:0000000000000014 $d
+     /tmp/ccVsTpuj.s:192    .text.X4_ClearAlarm:0000000000000000 $t
+     /tmp/ccVsTpuj.s:199    .text.X4_ClearAlarm:0000000000000000 X4_ClearAlarm
+     /tmp/ccVsTpuj.s:224    .text.X4_ClearAlarm:0000000000000014 $d
+     /tmp/ccVsTpuj.s:229    .rodata:0000000000000000 $d
+     /tmp/ccVsTpuj.s:236    .text.X4_ConnectorCallBack:0000000000000000 $t
+     /tmp/ccVsTpuj.s:243    .text.X4_ConnectorCallBack:0000000000000000 X4_ConnectorCallBack
+     /tmp/ccVsTpuj.s:313    .text.X4_ConnectorCallBack:0000000000000054 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_Delay
+HAL_GPIO_ReadPin
+puts

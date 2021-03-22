@@ -1,0 +1,650 @@
+ARM GAS  /tmp/ccFxZ57g.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"microros_transports.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.bss.dma_buffer,"aw",%nobits
+  18              		.align	2
+  21              	dma_buffer:
+  22 0000 00000000 		.space	2048
+  22      00000000 
+  22      00000000 
+  22      00000000 
+  22      00000000 
+  23              		.section	.bss.dma_head,"aw",%nobits
+  24              		.align	2
+  27              	dma_head:
+  28 0000 00000000 		.space	4
+  29              		.section	.bss.dma_tail,"aw",%nobits
+  30              		.align	2
+  33              	dma_tail:
+  34 0000 00000000 		.space	4
+  35              		.section	.text.freertos_serial_open,"ax",%progbits
+  36              		.align	1
+  37              		.global	freertos_serial_open
+  38              		.arch armv7e-m
+  39              		.syntax unified
+  40              		.thumb
+  41              		.thumb_func
+  42              		.fpu fpv4-sp-d16
+  44              	freertos_serial_open:
+  45              	.LFB133:
+  46              		.file 1 "Core/Src/microros_transports.c"
+   1:Core/Src/microros_transports.c **** #include <uxr/client/transport.h>
+   2:Core/Src/microros_transports.c **** 
+   3:Core/Src/microros_transports.c **** #include "stm32f4xx_hal.h"
+   4:Core/Src/microros_transports.c **** #include "stm32f4xx_hal_dma.h"
+   5:Core/Src/microros_transports.c **** 
+   6:Core/Src/microros_transports.c **** #include <unistd.h>
+   7:Core/Src/microros_transports.c **** #include <stdio.h>
+   8:Core/Src/microros_transports.c **** #include <string.h>
+   9:Core/Src/microros_transports.c **** #include <stdbool.h>
+  10:Core/Src/microros_transports.c **** 
+  11:Core/Src/microros_transports.c **** // --- micro-ROS Transports ---
+  12:Core/Src/microros_transports.c **** #define UART_DMA_BUFFER_SIZE 2048
+  13:Core/Src/microros_transports.c **** 
+  14:Core/Src/microros_transports.c **** static uint8_t dma_buffer[UART_DMA_BUFFER_SIZE];
+ARM GAS  /tmp/ccFxZ57g.s 			page 2
+
+
+  15:Core/Src/microros_transports.c **** static size_t dma_head = 0, dma_tail = 0;
+  16:Core/Src/microros_transports.c **** 
+  17:Core/Src/microros_transports.c **** bool freertos_serial_open(struct uxrCustomTransport * transport){
+  47              		.loc 1 17 65
+  48              		.cfi_startproc
+  49              		@ args = 0, pretend = 0, frame = 16
+  50              		@ frame_needed = 1, uses_anonymous_args = 0
+  51 0000 80B5     		push	{r7, lr}
+  52              	.LCFI0:
+  53              		.cfi_def_cfa_offset 8
+  54              		.cfi_offset 7, -8
+  55              		.cfi_offset 14, -4
+  56 0002 84B0     		sub	sp, sp, #16
+  57              	.LCFI1:
+  58              		.cfi_def_cfa_offset 24
+  59 0004 00AF     		add	r7, sp, #0
+  60              	.LCFI2:
+  61              		.cfi_def_cfa_register 7
+  62 0006 7860     		str	r0, [r7, #4]
+  18:Core/Src/microros_transports.c ****     UART_HandleTypeDef * uart = (UART_HandleTypeDef*) transport->args;
+  63              		.loc 1 18 26
+  64 0008 7B68     		ldr	r3, [r7, #4]
+  65 000a D3F88C32 		ldr	r3, [r3, #652]
+  66 000e FB60     		str	r3, [r7, #12]
+  19:Core/Src/microros_transports.c ****     HAL_UART_Receive_DMA(uart, dma_buffer, UART_DMA_BUFFER_SIZE);
+  67              		.loc 1 19 5
+  68 0010 4FF40062 		mov	r2, #2048
+  69 0014 0449     		ldr	r1, .L3
+  70 0016 F868     		ldr	r0, [r7, #12]
+  71 0018 FFF7FEFF 		bl	HAL_UART_Receive_DMA
+  20:Core/Src/microros_transports.c ****     return true;
+  72              		.loc 1 20 12
+  73 001c 0123     		movs	r3, #1
+  21:Core/Src/microros_transports.c **** }
+  74              		.loc 1 21 1
+  75 001e 1846     		mov	r0, r3
+  76 0020 1037     		adds	r7, r7, #16
+  77              	.LCFI3:
+  78              		.cfi_def_cfa_offset 8
+  79 0022 BD46     		mov	sp, r7
+  80              	.LCFI4:
+  81              		.cfi_def_cfa_register 13
+  82              		@ sp needed
+  83 0024 80BD     		pop	{r7, pc}
+  84              	.L4:
+  85 0026 00BF     		.align	2
+  86              	.L3:
+  87 0028 00000000 		.word	dma_buffer
+  88              		.cfi_endproc
+  89              	.LFE133:
+  91              		.section	.text.freertos_serial_close,"ax",%progbits
+  92              		.align	1
+  93              		.global	freertos_serial_close
+  94              		.syntax unified
+  95              		.thumb
+  96              		.thumb_func
+  97              		.fpu fpv4-sp-d16
+ARM GAS  /tmp/ccFxZ57g.s 			page 3
+
+
+  99              	freertos_serial_close:
+ 100              	.LFB134:
+  22:Core/Src/microros_transports.c **** 
+  23:Core/Src/microros_transports.c **** bool freertos_serial_close(struct uxrCustomTransport * transport){
+ 101              		.loc 1 23 66
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 16
+ 104              		@ frame_needed = 1, uses_anonymous_args = 0
+ 105 0000 80B5     		push	{r7, lr}
+ 106              	.LCFI5:
+ 107              		.cfi_def_cfa_offset 8
+ 108              		.cfi_offset 7, -8
+ 109              		.cfi_offset 14, -4
+ 110 0002 84B0     		sub	sp, sp, #16
+ 111              	.LCFI6:
+ 112              		.cfi_def_cfa_offset 24
+ 113 0004 00AF     		add	r7, sp, #0
+ 114              	.LCFI7:
+ 115              		.cfi_def_cfa_register 7
+ 116 0006 7860     		str	r0, [r7, #4]
+  24:Core/Src/microros_transports.c ****     UART_HandleTypeDef * uart = (UART_HandleTypeDef*) transport->args;
+ 117              		.loc 1 24 26
+ 118 0008 7B68     		ldr	r3, [r7, #4]
+ 119 000a D3F88C32 		ldr	r3, [r3, #652]
+ 120 000e FB60     		str	r3, [r7, #12]
+  25:Core/Src/microros_transports.c ****     HAL_UART_DMAStop(uart);
+ 121              		.loc 1 25 5
+ 122 0010 F868     		ldr	r0, [r7, #12]
+ 123 0012 FFF7FEFF 		bl	HAL_UART_DMAStop
+  26:Core/Src/microros_transports.c ****     return true;
+ 124              		.loc 1 26 12
+ 125 0016 0123     		movs	r3, #1
+  27:Core/Src/microros_transports.c **** }
+ 126              		.loc 1 27 1
+ 127 0018 1846     		mov	r0, r3
+ 128 001a 1037     		adds	r7, r7, #16
+ 129              	.LCFI8:
+ 130              		.cfi_def_cfa_offset 8
+ 131 001c BD46     		mov	sp, r7
+ 132              	.LCFI9:
+ 133              		.cfi_def_cfa_register 13
+ 134              		@ sp needed
+ 135 001e 80BD     		pop	{r7, pc}
+ 136              		.cfi_endproc
+ 137              	.LFE134:
+ 139              		.section	.text.freertos_serial_write,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	freertos_serial_write
+ 142              		.syntax unified
+ 143              		.thumb
+ 144              		.thumb_func
+ 145              		.fpu fpv4-sp-d16
+ 147              	freertos_serial_write:
+ 148              	.LFB135:
+  28:Core/Src/microros_transports.c **** 
+  29:Core/Src/microros_transports.c **** size_t freertos_serial_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len,
+ 149              		.loc 1 29 115
+ARM GAS  /tmp/ccFxZ57g.s 			page 4
+
+
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 24
+ 152              		@ frame_needed = 1, uses_anonymous_args = 0
+ 153 0000 80B5     		push	{r7, lr}
+ 154              	.LCFI10:
+ 155              		.cfi_def_cfa_offset 8
+ 156              		.cfi_offset 7, -8
+ 157              		.cfi_offset 14, -4
+ 158 0002 86B0     		sub	sp, sp, #24
+ 159              	.LCFI11:
+ 160              		.cfi_def_cfa_offset 32
+ 161 0004 00AF     		add	r7, sp, #0
+ 162              	.LCFI12:
+ 163              		.cfi_def_cfa_register 7
+ 164 0006 F860     		str	r0, [r7, #12]
+ 165 0008 B960     		str	r1, [r7, #8]
+ 166 000a 7A60     		str	r2, [r7, #4]
+ 167 000c 3B60     		str	r3, [r7]
+  30:Core/Src/microros_transports.c ****     UART_HandleTypeDef * uart = (UART_HandleTypeDef*) transport->args;
+ 168              		.loc 1 30 26
+ 169 000e FB68     		ldr	r3, [r7, #12]
+ 170 0010 D3F88C32 		ldr	r3, [r3, #652]
+ 171 0014 7B61     		str	r3, [r7, #20]
+  31:Core/Src/microros_transports.c **** 
+  32:Core/Src/microros_transports.c ****     HAL_StatusTypeDef ret;
+  33:Core/Src/microros_transports.c ****     if (uart->gState == HAL_UART_STATE_READY){
+ 172              		.loc 1 33 13
+ 173 0016 7B69     		ldr	r3, [r7, #20]
+ 174 0018 93F83930 		ldrb	r3, [r3, #57]
+ 175 001c DBB2     		uxtb	r3, r3
+ 176              		.loc 1 33 8
+ 177 001e 202B     		cmp	r3, #32
+ 178 0020 1CD1     		bne	.L8
+  34:Core/Src/microros_transports.c ****         ret = HAL_UART_Transmit_DMA(uart, buf, len);
+ 179              		.loc 1 34 15
+ 180 0022 7B68     		ldr	r3, [r7, #4]
+ 181 0024 9BB2     		uxth	r3, r3
+ 182 0026 1A46     		mov	r2, r3
+ 183 0028 B968     		ldr	r1, [r7, #8]
+ 184 002a 7869     		ldr	r0, [r7, #20]
+ 185 002c FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 186 0030 0346     		mov	r3, r0
+ 187 0032 FB74     		strb	r3, [r7, #19]
+  35:Core/Src/microros_transports.c ****         while (ret == HAL_OK && uart->gState != HAL_UART_STATE_READY){
+ 188              		.loc 1 35 15
+ 189 0034 02E0     		b	.L9
+ 190              	.L11:
+ 191              	.LBB6:
+  36:Core/Src/microros_transports.c ****         osDelay(1);
+ 192              		.loc 1 36 9
+ 193 0036 0120     		movs	r0, #1
+ 194 0038 FFF7FEFF 		bl	osDelay
+ 195              	.L9:
+ 196              	.LBE6:
+  35:Core/Src/microros_transports.c ****         while (ret == HAL_OK && uart->gState != HAL_UART_STATE_READY){
+ 197              		.loc 1 35 15
+ 198 003c FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ARM GAS  /tmp/ccFxZ57g.s 			page 5
+
+
+ 199 003e 002B     		cmp	r3, #0
+ 200 0040 05D1     		bne	.L10
+  35:Core/Src/microros_transports.c ****         while (ret == HAL_OK && uart->gState != HAL_UART_STATE_READY){
+ 201              		.loc 1 35 37 discriminator 1
+ 202 0042 7B69     		ldr	r3, [r7, #20]
+ 203 0044 93F83930 		ldrb	r3, [r3, #57]
+ 204 0048 DBB2     		uxtb	r3, r3
+  35:Core/Src/microros_transports.c ****         while (ret == HAL_OK && uart->gState != HAL_UART_STATE_READY){
+ 205              		.loc 1 35 30 discriminator 1
+ 206 004a 202B     		cmp	r3, #32
+ 207 004c F3D1     		bne	.L11
+ 208              	.L10:
+  37:Core/Src/microros_transports.c ****         }
+  38:Core/Src/microros_transports.c **** 
+  39:Core/Src/microros_transports.c ****         return (ret == HAL_OK) ? len : 0;
+ 209              		.loc 1 39 38
+ 210 004e FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 211 0050 002B     		cmp	r3, #0
+ 212 0052 01D1     		bne	.L12
+ 213              		.loc 1 39 38 is_stmt 0 discriminator 1
+ 214 0054 7B68     		ldr	r3, [r7, #4]
+ 215 0056 02E0     		b	.L14
+ 216              	.L12:
+ 217              		.loc 1 39 38 discriminator 2
+ 218 0058 0023     		movs	r3, #0
+ 219 005a 00E0     		b	.L14
+ 220              	.L8:
+  40:Core/Src/microros_transports.c ****     }else{
+  41:Core/Src/microros_transports.c ****         return 0;
+ 221              		.loc 1 41 16 is_stmt 1
+ 222 005c 0023     		movs	r3, #0
+ 223              	.L14:
+  42:Core/Src/microros_transports.c ****     }
+  43:Core/Src/microros_transports.c **** }
+ 224              		.loc 1 43 1
+ 225 005e 1846     		mov	r0, r3
+ 226 0060 1837     		adds	r7, r7, #24
+ 227              	.LCFI13:
+ 228              		.cfi_def_cfa_offset 8
+ 229 0062 BD46     		mov	sp, r7
+ 230              	.LCFI14:
+ 231              		.cfi_def_cfa_register 13
+ 232              		@ sp needed
+ 233 0064 80BD     		pop	{r7, pc}
+ 234              		.cfi_endproc
+ 235              	.LFE135:
+ 237              		.section	.text.freertos_serial_read,"ax",%progbits
+ 238              		.align	1
+ 239              		.global	freertos_serial_read
+ 240              		.syntax unified
+ 241              		.thumb
+ 242              		.thumb_func
+ 243              		.fpu fpv4-sp-d16
+ 245              	freertos_serial_read:
+ 246              	.LFB136:
+  44:Core/Src/microros_transports.c **** 
+  45:Core/Src/microros_transports.c **** size_t freertos_serial_read(struct uxrCustomTransport* transport, uint8_t* buf, size_t len, int tim
+ARM GAS  /tmp/ccFxZ57g.s 			page 6
+
+
+ 247              		.loc 1 45 119
+ 248              		.cfi_startproc
+ 249              		@ args = 4, pretend = 0, frame = 24
+ 250              		@ frame_needed = 1, uses_anonymous_args = 0
+ 251              		@ link register save eliminated.
+ 252 0000 80B4     		push	{r7}
+ 253              	.LCFI15:
+ 254              		.cfi_def_cfa_offset 4
+ 255              		.cfi_offset 7, -4
+ 256 0002 87B0     		sub	sp, sp, #28
+ 257              	.LCFI16:
+ 258              		.cfi_def_cfa_offset 32
+ 259 0004 00AF     		add	r7, sp, #0
+ 260              	.LCFI17:
+ 261              		.cfi_def_cfa_register 7
+ 262 0006 F860     		str	r0, [r7, #12]
+ 263 0008 B960     		str	r1, [r7, #8]
+ 264 000a 7A60     		str	r2, [r7, #4]
+ 265 000c 3B60     		str	r3, [r7]
+  46:Core/Src/microros_transports.c ****     UART_HandleTypeDef * uart = (UART_HandleTypeDef*) transport->args;
+ 266              		.loc 1 46 26
+ 267 000e FB68     		ldr	r3, [r7, #12]
+ 268 0010 D3F88C32 		ldr	r3, [r3, #652]
+ 269 0014 3B61     		str	r3, [r7, #16]
+ 270              	.LBB7:
+ 271              	.LBB8:
+ 272              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
+   1:Drivers/CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @version  V5.0.4
+   5:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @date     09. April 2018
+   6:Drivers/CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:Drivers/CMSIS/Include/cmsis_gcc.h **** /*
+   8:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
+   9:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  10:Drivers/CMSIS/Include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  12:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:Drivers/CMSIS/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:Drivers/CMSIS/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  16:Drivers/CMSIS/Include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  18:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:Drivers/CMSIS/Include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:Drivers/CMSIS/Include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:Drivers/CMSIS/Include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:Drivers/CMSIS/Include/cmsis_gcc.h ****  * limitations under the License.
+  23:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+  24:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  25:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  28:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+ARM GAS  /tmp/ccFxZ57g.s 			page 7
+
+
+  31:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  34:Drivers/CMSIS/Include/cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __has_builtin
+  36:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  38:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  39:Drivers/CMSIS/Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ASM
+  41:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  43:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __INLINE
+  44:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __INLINE                               inline
+  45:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  46:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  49:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE                 
+  50:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif                                           
+  52:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  55:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __USED
+  56:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __WEAK
+  59:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  61:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
+  62:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+  63:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  64:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  67:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  70:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+  71:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:Drivers/CMSIS/Include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  78:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  86:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ARM GAS  /tmp/ccFxZ57g.s 			page 8
+
+
+  88:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+  93:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  94:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ 101:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 102:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ 109:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 110:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 113:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 116:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 117:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 118:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+ 119:Drivers/CMSIS/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 120:Drivers/CMSIS/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+ 121:Drivers/CMSIS/Include/cmsis_gcc.h ****   @{
+ 122:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 123:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 124:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 125:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+ 126:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+ 127:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 128:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 129:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
+ 130:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 131:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+ 132:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 133:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 134:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 135:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 136:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+ 137:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
+ 138:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 139:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 140:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
+ 141:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 142:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+ 273              		.loc 2 142 3
+ 274              		.syntax unified
+ARM GAS  /tmp/ccFxZ57g.s 			page 9
+
+
+ 275              	@ 142 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 276 0016 72B6     		cpsid i
+ 277              	@ 0 "" 2
+ 278              		.thumb
+ 279              		.syntax unified
+ 280              	.LBE8:
+ 281              	.LBE7:
+  47:Core/Src/microros_transports.c **** 
+  48:Core/Src/microros_transports.c ****     __disable_irq();
+  49:Core/Src/microros_transports.c ****     dma_tail = UART_DMA_BUFFER_SIZE - __HAL_DMA_GET_COUNTER(uart->hdmarx);
+ 282              		.loc 1 49 39
+ 283 0018 3B69     		ldr	r3, [r7, #16]
+ 284 001a 5B6B     		ldr	r3, [r3, #52]
+ 285 001c 1B68     		ldr	r3, [r3]
+ 286 001e 5B68     		ldr	r3, [r3, #4]
+ 287              		.loc 1 49 37
+ 288 0020 C3F50063 		rsb	r3, r3, #2048
+ 289              		.loc 1 49 14
+ 290 0024 144A     		ldr	r2, .L20
+ 291 0026 1360     		str	r3, [r2]
+ 292              	.LBB9:
+ 293              	.LBB10:
+ 131:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 294              		.loc 2 131 3
+ 295              		.syntax unified
+ 296              	@ 131 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 297 0028 62B6     		cpsie i
+ 298              	@ 0 "" 2
+ 299              		.thumb
+ 300              		.syntax unified
+ 301              	.LBE10:
+ 302              	.LBE9:
+  50:Core/Src/microros_transports.c ****     __enable_irq();
+  51:Core/Src/microros_transports.c **** 
+  52:Core/Src/microros_transports.c ****     size_t wrote = 0;
+ 303              		.loc 1 52 12
+ 304 002a 0023     		movs	r3, #0
+ 305 002c 7B61     		str	r3, [r7, #20]
+  53:Core/Src/microros_transports.c ****     while ((dma_head != dma_tail) && (wrote < len)){
+ 306              		.loc 1 53 11
+ 307 002e 11E0     		b	.L16
+ 308              	.L18:
+  54:Core/Src/microros_transports.c ****         buf[wrote] = dma_buffer[dma_head];
+ 309              		.loc 1 54 32
+ 310 0030 124B     		ldr	r3, .L20+4
+ 311 0032 1A68     		ldr	r2, [r3]
+ 312              		.loc 1 54 12
+ 313 0034 B968     		ldr	r1, [r7, #8]
+ 314 0036 7B69     		ldr	r3, [r7, #20]
+ 315 0038 0B44     		add	r3, r3, r1
+ 316              		.loc 1 54 32
+ 317 003a 1149     		ldr	r1, .L20+8
+ 318 003c 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 319              		.loc 1 54 20
+ 320 003e 1A70     		strb	r2, [r3]
+  55:Core/Src/microros_transports.c ****         dma_head = (dma_head + 1) % UART_DMA_BUFFER_SIZE;
+ 321              		.loc 1 55 30
+ARM GAS  /tmp/ccFxZ57g.s 			page 10
+
+
+ 322 0040 0E4B     		ldr	r3, .L20+4
+ 323 0042 1B68     		ldr	r3, [r3]
+ 324 0044 0133     		adds	r3, r3, #1
+ 325              		.loc 1 55 35
+ 326 0046 C3F30A03 		ubfx	r3, r3, #0, #11
+ 327              		.loc 1 55 18
+ 328 004a 0C4A     		ldr	r2, .L20+4
+ 329 004c 1360     		str	r3, [r2]
+  56:Core/Src/microros_transports.c ****         wrote++;
+ 330              		.loc 1 56 14
+ 331 004e 7B69     		ldr	r3, [r7, #20]
+ 332 0050 0133     		adds	r3, r3, #1
+ 333 0052 7B61     		str	r3, [r7, #20]
+ 334              	.L16:
+  53:Core/Src/microros_transports.c ****         buf[wrote] = dma_buffer[dma_head];
+ 335              		.loc 1 53 22
+ 336 0054 094B     		ldr	r3, .L20+4
+ 337 0056 1A68     		ldr	r2, [r3]
+ 338 0058 074B     		ldr	r3, .L20
+ 339 005a 1B68     		ldr	r3, [r3]
+  53:Core/Src/microros_transports.c ****         buf[wrote] = dma_buffer[dma_head];
+ 340              		.loc 1 53 11
+ 341 005c 9A42     		cmp	r2, r3
+ 342 005e 03D0     		beq	.L17
+  53:Core/Src/microros_transports.c ****         buf[wrote] = dma_buffer[dma_head];
+ 343              		.loc 1 53 35 discriminator 1
+ 344 0060 7A69     		ldr	r2, [r7, #20]
+ 345 0062 7B68     		ldr	r3, [r7, #4]
+ 346 0064 9A42     		cmp	r2, r3
+ 347 0066 E3D3     		bcc	.L18
+ 348              	.L17:
+  57:Core/Src/microros_transports.c ****     }
+  58:Core/Src/microros_transports.c ****     
+  59:Core/Src/microros_transports.c ****     return wrote;
+ 349              		.loc 1 59 12
+ 350 0068 7B69     		ldr	r3, [r7, #20]
+  60:Core/Src/microros_transports.c **** }
+ 351              		.loc 1 60 1
+ 352 006a 1846     		mov	r0, r3
+ 353 006c 1C37     		adds	r7, r7, #28
+ 354              	.LCFI18:
+ 355              		.cfi_def_cfa_offset 4
+ 356 006e BD46     		mov	sp, r7
+ 357              	.LCFI19:
+ 358              		.cfi_def_cfa_register 13
+ 359              		@ sp needed
+ 360 0070 5DF8047B 		ldr	r7, [sp], #4
+ 361              	.LCFI20:
+ 362              		.cfi_restore 7
+ 363              		.cfi_def_cfa_offset 0
+ 364 0074 7047     		bx	lr
+ 365              	.L21:
+ 366 0076 00BF     		.align	2
+ 367              	.L20:
+ 368 0078 00000000 		.word	dma_tail
+ 369 007c 00000000 		.word	dma_head
+ 370 0080 00000000 		.word	dma_buffer
+ARM GAS  /tmp/ccFxZ57g.s 			page 11
+
+
+ 371              		.cfi_endproc
+ 372              	.LFE136:
+ 374              		.text
+ 375              	.Letext0:
+ 376              		.file 3 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/machine/_default_types.h"
+ 377              		.file 4 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_stdint.h"
+ 378              		.file 5 "/home/mego/microros_ws/firmware/toolchain/lib/gcc/arm-none-eabi/8.3.1/include/stddef.h"
+ 379              		.file 6 "/home/mego/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/install/micr
+ 380              		.file 7 "/home/mego/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/install/micr
+ 381              		.file 8 "/home/mego/microros_ws/firmware/freertos_apps/stm32MakefileTest/../../mcu_ws/install/micr
+ 382              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
+ 383              		.file 10 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 384              		.file 11 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 385              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 386              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 387              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 388              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 389              		.file 16 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/_types.h"
+ 390              		.file 17 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/reent.h"
+ 391              		.file 18 "/home/mego/microros_ws/firmware/toolchain/arm-none-eabi/include/sys/lock.h"
+ARM GAS  /tmp/ccFxZ57g.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 microros_transports.c
+     /tmp/ccFxZ57g.s:18     .bss.dma_buffer:0000000000000000 $d
+     /tmp/ccFxZ57g.s:21     .bss.dma_buffer:0000000000000000 dma_buffer
+     /tmp/ccFxZ57g.s:24     .bss.dma_head:0000000000000000 $d
+     /tmp/ccFxZ57g.s:27     .bss.dma_head:0000000000000000 dma_head
+     /tmp/ccFxZ57g.s:30     .bss.dma_tail:0000000000000000 $d
+     /tmp/ccFxZ57g.s:33     .bss.dma_tail:0000000000000000 dma_tail
+     /tmp/ccFxZ57g.s:36     .text.freertos_serial_open:0000000000000000 $t
+     /tmp/ccFxZ57g.s:44     .text.freertos_serial_open:0000000000000000 freertos_serial_open
+     /tmp/ccFxZ57g.s:87     .text.freertos_serial_open:0000000000000028 $d
+     /tmp/ccFxZ57g.s:92     .text.freertos_serial_close:0000000000000000 $t
+     /tmp/ccFxZ57g.s:99     .text.freertos_serial_close:0000000000000000 freertos_serial_close
+     /tmp/ccFxZ57g.s:140    .text.freertos_serial_write:0000000000000000 $t
+     /tmp/ccFxZ57g.s:147    .text.freertos_serial_write:0000000000000000 freertos_serial_write
+     /tmp/ccFxZ57g.s:238    .text.freertos_serial_read:0000000000000000 $t
+     /tmp/ccFxZ57g.s:245    .text.freertos_serial_read:0000000000000000 freertos_serial_read
+     /tmp/ccFxZ57g.s:368    .text.freertos_serial_read:0000000000000078 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Receive_DMA
+HAL_UART_DMAStop
+HAL_UART_Transmit_DMA
+osDelay
