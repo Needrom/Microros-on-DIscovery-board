@@ -1,5 +1,5 @@
 # Microros-on-DIscovery-board
-stm32 discovery board from zhengdianyuanzi
+stm32 discovery board from zhengdianyuanzi to control Panasonic A6 servo controller
 
 ## Prepare
 1. copy config/freertos/stm32MakefileTest To $(ROS2_WORKSPACE)/src/micro_ros_setup/config/freertos/
