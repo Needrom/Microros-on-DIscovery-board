@@ -44,7 +44,8 @@ void MX_TIM9_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN Prototypes */
-
+void Set_OnePulseMode();
+void Set_NormalMode();
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

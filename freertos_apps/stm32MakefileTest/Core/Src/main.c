@@ -25,6 +25,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "retarget.h"
@@ -47,6 +48,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t timerCount = 0;
+uint8_t timerFlag = 0;
 
 /* USER CODE END PV */
 
@@ -94,8 +97,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM9_Init();
   MX_TIM6_Init();
+  MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-//  Retarget_Init(&huart1);
+  Retarget_Init(&huart6);
 //  HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
   HAL_TIM_Base_Start_IT(&htim6);
 
@@ -165,54 +169,6 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-typedef struct {
-        int cnt_10ms;
-        int btn_press;
-        int value;
-}BUTTON;
-
-BUTTON button_pin2 = {0};
-BUTTON button_pin3 = {0};
-BUTTON button_pin4 = {0};
-
-
-
-//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-//        static unsigned char ledState = 0;
-//        if(htim == (&htim6)){
-////              if(cnt_10ms++ >= 100){
-////                      cnt_10ms = 0;
-////                      printf("pin read :%d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));
-////              }
-//                //printf("into the %s \r\n", __func__);
-//                if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == 0){
-//                        if(button_pin2.cnt_10ms++ >= 8 && button_pin2.btn_press == 0){
-//                                button_pin2.btn_press = 1;
-//                                //printf("btn press \r\n");
-//                                HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, button_pin2.value);
-//                                button_pin2.value = ~button_pin2.value;
-//                        }
-//                } else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3) == 0){
-//                        button_pin3.cnt_10ms++;
-//                        if(button_pin3.cnt_10ms++ >= 8 && button_pin3.btn_press == 0){
-//                                button_pin3.btn_press = 1;
-//
-//                                //function code
-//                                TIM6->ARR += 10;
-//                                if(TIM6->ARR >= 500){
-//                                        TIM6->ARR = 50;
-//                                }
-//                                //printf("current htim9.Period is : %d \r\n", TIM6->ARR);
-//                        }
-//                } else {
-//                        button_pin2.cnt_10ms = 0;
-//                        button_pin2.btn_press = 0;
-//
-//                        button_pin3.cnt_10ms = 0;
-//                        button_pin3.btn_press = 0;
-//                }
-//        }
-//}
 
 /* USER CODE END 4 */
 
@@ -224,34 +180,29 @@ BUTTON button_pin4 = {0};
   * @param  htim : TIM handle
   * @retval None
   */
-int timeCount_10s = 0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
-  static uint16_t period = 0;
+//  static uint16_t period = 0;
   if(htim == &htim6){
-	if(timeCount_10s++ >= 100){
-//  		printf("period : %d \r\n", period);
-//		TIM9->ARR = period;
-//		period += 10;
-//		if(period >= 499){
-//			period = 0;
-//		}	
-  	} 
+	if(timerCount++ >= 3 * 2){
+		timerFlag = 1;
+		timerCount = 0;
+	} 
   }
-
+//
 //  static unsigned char ledState = 0;
 //  if(htim->Instance == TIM6)
 //  {
-////              if(cnt_10ms++ >= 100){
-////                      cnt_10ms = 0;
-////                      printf("pin read :%d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));
-////              }
-//                //printf("into the %s \r\n", __func__);
+//              if(cnt_10ms++ >= 100){
+//                      cnt_10ms = 0;
+//                      printf("pin read :%d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));
+//              }
+//                printf("into the %s \r\n", __func__);
 //                if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == 0){
 //                        if(button_pin2.cnt_10ms++ >= 8 && button_pin2.btn_press == 0){
 //                                button_pin2.btn_press = 1;
-//                                //printf("btn press \r\n");
+//                                printf("btn2 press \r\n");
 //                                HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, button_pin2.value);
 //                                button_pin2.value = ~button_pin2.value;
 //                        }
@@ -259,6 +210,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //                        button_pin3.cnt_10ms++;
 //                        if(button_pin3.cnt_10ms++ >= 8 && button_pin3.btn_press == 0){
 //                                button_pin3.btn_press = 1;
+//				printf("btn3 press \r\n");
 //
 //                                //function code
 //                                TIM6->ARR += 10;
@@ -267,7 +219,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //                                }
 //                                //printf("current htim9.Period is : %d \r\n", TIM6->ARR);
 //                        }
-//                } else {
+//                } else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_4) == 0){
+//			
+//		
+//		} else {
 //                        button_pin2.cnt_10ms = 0;
 //                        button_pin2.btn_press = 0;
 //

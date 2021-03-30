@@ -43,7 +43,8 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+extern uint8_t timerCount;
+extern uint8_t timerFlag;
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

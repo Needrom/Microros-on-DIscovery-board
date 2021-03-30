@@ -75,7 +75,7 @@ void MX_TIM9_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 50;
+  sConfigOC.Pulse = 250;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim9, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
@@ -176,6 +176,43 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 
 /* USER CODE BEGIN 1 */
 void Set_OnePulseMode(){
+	TIM_OC_InitTypeDef sConfigOC = {0};
+
+	if(HAL_TIM_OnePulse_Init(&htim9, TIM_OPMODE_SINGLE) != HAL_OK){
+		Error_Handler();
+	}	
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	sConfigOC.Pulse = 100;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	if(HAL_TIM_PWM_ConfigChannel(&htim9, &sConfigOC, TIM_CHANNEL_1) != HAL_OK){
+		Error_Handler();
+	}
+
+	HAL_TIM_MspPostInit(&htim9);
+}
+
+void Set_NormalMode(){
+	TIM_OC_InitTypeDef sConfigOC = {0};
+
+	//DeInit One Pulse Mode
+//	if(HAL_TIM_OnePulse_DeInit(&htim9) != HAL_OK){
+//		Error_Handler();
+//	}
+      	
+	if (HAL_TIM_PWM_Init(&htim9) != HAL_OK)
+  	{
+    		Error_Handler();
+  	}
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	sConfigOC.Pulse = 100;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	if(HAL_TIM_PWM_ConfigChannel(&htim9, &sConfigOC, TIM_CHANNEL_1) != HAL_OK){
+		Error_Handler();
+	}
+
+	HAL_TIM_MspPostInit(&htim9);
 }
 /* USER CODE END 1 */
 

@@ -9,6 +9,7 @@
 #define X4_Connector_Pin_6  GPIO_PIN_6
 #define X4_Connector_Pin_4  GPIO_PIN_5
 #define X4_Connector_Pin_31 GPIO_PIN_0
+#define X4_Connector_Pin_6  GPIO_PIN_6
 
 #define X4_Connector_PortF   	GPIOF
 

@@ -14,7 +14,11 @@ void X4_ConnectorInit(X4_Connector *__x4_connector){
 	}
 	
 	x4_connector = __x4_connector;
+
+	//TODO: disable servo output in here and enable at the end
 	
+	
+
 	return 0;
 }
 
@@ -22,16 +26,24 @@ void X4_ConnectorState_Tmr(){
 	
 }
 
+void X4_MotorDir(uint8_t pinState){
+	if(pinState){
+		HAL_GPIO_WritePin(X4_Connector_PortE, X4_Connector_Pin_6, GPIO_PIN_RESET);
+	} else {
+		HAL_GPIO_WritePin(X4_Connector_PortE, X4_Connector_Pin_6, GPIO_PIN_SET);
+	}
+}
+
 void X4_NegativeForbit(){
-	X4_Pin_Write(GPIOE, X4_NegativeForbit_Pin, GPIO_PIN_SET);
+	X4_Pin_Write(X4_Connector_PortE, X4_NegativeForbit_Pin, GPIO_PIN_SET);
 } 
 
 void X4_PostiveForbit(){
-	X4_Pin_Write(GPIOE, X4_PostiveForbit_Pin, GPIO_PIN_SET);
+	X4_Pin_Write(X4_Connector_PortE, X4_PostiveForbit_Pin, GPIO_PIN_SET);
 }
 
 void X4_ClearAlarm(){
-	X4_Pin_Write(GPIOE, X4_ServoAlarmClear_Pin, GPIO_PIN_SET);
+	X4_Pin_Write(X4_Connector_PortE, X4_ServoAlarmClear_Pin, GPIO_PIN_SET);
 }
 
 /* GPIO中断回调
@@ -44,14 +56,14 @@ void X4_ConnectorCallBack(uint16_t GPIO_Pin){
     if(X4_Connector_Pin_37 == GPIO_Pin){
     	HAL_Delay(10);
 	if(HAL_GPIO_ReadPin(X4_Connector_PortF, X4_Connector_Pin_37) == GPIO_PIN_RESET){
-		printf("pin 37 get signal \r\n");
+		//printf("pin 37 get signal \r\n");
 	}
     }
     
     if(X4_Connector_Pin_35 == GPIO_Pin){
     	HAL_Delay(10);
 	if(HAL_GPIO_ReadPin(X4_Connector_PortF, X4_Connector_Pin_37) == GPIO_PIN_RESET){
-		printf("pin 35 get signal \r\n");
+		//printf("pin 35 get signal \r\n");
 	}
     }
 }

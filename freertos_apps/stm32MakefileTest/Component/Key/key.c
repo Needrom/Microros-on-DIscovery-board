@@ -9,33 +9,50 @@ uint8_t key_0_State = 0;
 uint8_t key_1_State = 0;
 uint8_t key_2_State = 0;
 
+void __weak Key_2_Callback(){
+	
+}
+
+void __weak Key_1_Callback(){
+
+}
+
+void __weak Key_0_Callback(){
+
+}
+
 void Key_CallBack(uint16_t GPIO_Pin)
 {
-	printf("GPIO_Pin : %d \r\n");
-	if(Key_0 == GPIO_Pin){
-		HAL_Delay(10);
-		if(HAL_GPIO_ReadPin(Key_GPIO_Port, Key_0) == GPIO_PIN_RESET){
-			//Button 0 Push Down
-			printf("Key 0 Down \r\n");
-		}
-	}
-
-	if(Key_1 == GPIO_Pin){
-		HAL_Delay(10);
-		if(HAL_GPIO_ReadPin(Key_GPIO_Port, Key_1) == GPIO_PIN_RESET){
-			//Button 1 Push Down
-			printf("Key 1 Down \r\n");
-		}
-	}
-
-	if(Key_2 == GPIO_Pin){
-		HAL_Delay(10);
-		if(HAL_GPIO_ReadPin(Key_GPIO_Port, Key_2) == GPIO_PIN_RESET){
-			//Button 2 Push Down
-			printf("Key 2 Down \r\n");
-		}
-	}
-
-	HAL_Delay(100);	
-	__HAL_GPIO_EXTI_CLEAR_IT(GPIO_Pin);
+    HAL_Delay(100);      
+    switch(GPIO_Pin)
+    {
+        case GPIO_PIN_0:
+//            if(WK_UP==1) 
+//            {
+//				LED1=!LED1;				
+//				LED0=!LED1;
+//            }
+            break;
+        case GPIO_PIN_2:
+            if(ReadPin(Key_2) == 0)  
+	    {
+                Key_2_Callback();
+		//printf("Pin 2 Down \r\n");   
+            }
+            break;
+        case GPIO_PIN_3:
+            if(ReadPin(Key_1)==0)  
+	    {
+		Key_1_Callback();
+               	//printf("Pin 3 Down \r\n");
+            }
+            break;
+        case GPIO_PIN_4:
+            if(ReadPin(Key_0)==0)  
+            {
+		Key_0_Callback();
+		//printf("Pin 4 Down \r\n");           
+	    }
+            break;
+    }
 }

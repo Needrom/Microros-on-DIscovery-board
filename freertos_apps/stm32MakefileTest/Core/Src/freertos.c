@@ -150,7 +150,9 @@ void StartDefaultTask(void *argument)
     freertos_serial_close, 
     freertos_serial_write, 
     freertos_serial_read); 
-#elif defined(MICRO_XRCEDDS_UDP)
+  printf("Init uxr serial \r\n");
+#elif defined(RMW_UXRCE_TRANSPORT_UDP)
+//#elif defined(MICRO_XRCEDDS_UDP)
   printf("Ethernet Initialization \r\n");
 
   printf("Waiting for IP \r\n");
@@ -192,11 +194,11 @@ void StartDefaultTask(void *argument)
   osThreadAttr_t attributes;
   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
   attributes.name = "microROS_app";
-  attributes.stack_size = 3 * 10000;
+  attributes.stack_size = 25000;
   attributes.priority = (osPriority_t)osPriorityNormal1;
   printf("before appMain \r\n");
-//  osThreadNew(appMain, NULL, &attributes);
-  Retarget_Init(&huart1);
+  osThreadNew(appMain, NULL, &attributes);
+//  Retarget_Init(&huart1);
   osDelay(500);
   char ptrTaskList[500];
   vTaskList(ptrTaskList);
@@ -209,42 +211,87 @@ void StartDefaultTask(void *argument)
   TaskHandle_t xHandle;
   xHandle = xTaskGetHandle("microROS_app");
 
-  PWM_SetMode(PWM_OPM); 
+  PWM_SetMode(PWM_NOR); 
   
+  HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
+
+  int eRunningStateCount = 0;
+  int eSuspendedStateCount = 0;
+  int eBlockedStateCount = 0;
   for(;;)
   {
 //    printf("into the printf \r\n");
+     
+      //GPIO test in CheckGPIO();
     osDelay(1);
-//    HAL_TIM_OnePulse_Start(&htim9, TIM_CHANNEL_1);
-    CheckGPIO();
-//    if (eTaskGetState(xHandle) != eSuspended && availableNetwork)
-//    if(0)
-//    {
-//    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-//	osDelay(150);
-//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-//	osDelay(150);	
-//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-//	osDelay(150);
-//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-//	osDelay(150);
+//    CheckGPIO();
+
+  //Check for the Task detail.
+//  osDelay(3000);
+//  PrintfTaskList(ptrTaskList);
+
+    //Check eTaskGetState
+//    if(eTaskGetState(xHandle) == eRunning){
+//    	//counting running
+//	eRunningStateCount++;
+//    } else if(eTaskGetState(xHandle) == eSuspended){
+//    	eSuspendedStateCount++;
+//    } else if(eTaskGetState(xHandle) == eBlocked){
+//    	eBlockedStateCount++;
 //    }
-//    else {
-//        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-//	osDelay(1000);
-//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-//	osDelay(1000);	
-//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-//	osDelay(1000);
-//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-//	osDelay(1000);
+//
+//    if(timerFlag == 1){
+//    	timerFlag = 0;
+//	printf("eRunning: %d eSuspended: %d eBlocked: %d \r\n", 
+//							eRunningStateCount,
+//							eSuspendedStateCount,
+//							eBlockedStateCount);
 //    }
+
+
+    if (eTaskGetState(xHandle) != eSuspended && availableNetwork && eTaskGetState(xHandle) != eRunning)
+    {
+    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+	osDelay(150);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+	osDelay(150);	
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+	osDelay(150);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+	osDelay(150);
+    } else {
+        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+	osDelay(1000);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+	osDelay(1000);	
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+	osDelay(1000);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+	osDelay(1000);
+    } 
   }
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+int PrintfTaskList(char * _ptrTaskList){
+  
+  if(_ptrTaskList == NULL){
+  	return -1;
+  }
+	
+  osDelay(3000);
+  vTaskList(_ptrTaskList);
+  printf("**********************************\n");
+  printf("Task  State   Prio    Stack    Num\n");
+  printf("**********************************\n");
+  printf(_ptrTaskList);
+  printf("**********************************\n");
+
+  return 0;
+}
+
 void CheckGPIO(){
 	//printf("PE2: %d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2));
 	//printf("PE3: %d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));

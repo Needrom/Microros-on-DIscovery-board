@@ -55,6 +55,7 @@ size_t freertos_serial_read(struct uxrCustomTransport* transport, uint8_t* buf, 
         dma_head = (dma_head + 1) % UART_DMA_BUFFER_SIZE;
         wrote++;
     }
-    
+
+//    printf("%s\t\n", buf);    
     return wrote;
 }
