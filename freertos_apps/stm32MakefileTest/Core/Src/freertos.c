@@ -85,6 +85,23 @@ void StartDefaultTask(void *argument);
 extern void MX_LWIP_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
+/* Hook prototypes */
+void configureTimerForRunTimeStats(void);
+unsigned long getRunTimeCounterValue(void);
+
+/* USER CODE BEGIN 1 */
+/* Functions needed when configGENERATE_RUN_TIME_STATS is on */
+__weak void configureTimerForRunTimeStats(void)
+{
+
+}
+
+__weak unsigned long getRunTimeCounterValue(void)
+{
+return 0;
+}
+/* USER CODE END 1 */
+
 /**
   * @brief  FreeRTOS initialization
   * @param  None
@@ -240,41 +257,53 @@ void StartDefaultTask(void *argument)
 //    	eBlockedStateCount++;
 //    }
 //
-//    if(timerFlag == 1){
-//    	timerFlag = 0;
-//	printf("eRunning: %d eSuspended: %d eBlocked: %d \r\n", 
-//							eRunningStateCount,
-//							eSuspendedStateCount,
-//							eBlockedStateCount);
-//    }
+
+    char *timeRunStat[500];
+    if(timerFlag == 1){
+    	timerFlag = 0;
+	vTaskGetRunTimeStats(timeRunStat);
+    	printf("task \t\t time \t\t duty \t\t");
+	printf("%s \r\n", timeRunStat);
+    }
 
 
-    if (eTaskGetState(xHandle) != eSuspended && availableNetwork && eTaskGetState(xHandle) != eRunning)
-    {
-    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-	osDelay(150);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-	osDelay(150);	
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-	osDelay(150);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-	osDelay(150);
-    } else {
-        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
-	osDelay(1000);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-	osDelay(1000);	
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
-	osDelay(1000);
-	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
-	osDelay(1000);
-    } 
+//    if (eTaskGetState(xHandle) != eSuspended && availableNetwork && eTaskGetState(xHandle) != eRunning)
+//    {
+//    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+//	osDelay(150);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+//	osDelay(150);	
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+//	osDelay(150);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+//	osDelay(150);
+//    } else {
+//        HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);    
+//	osDelay(1000);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+//	osDelay(1000);	
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_SET);    
+//	osDelay(1000);
+//	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, GPIO_PIN_RESET);
+//	osDelay(1000);
+//    } 
+
+
   }
+
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void vApplicationStackOverflowHook( TaskHandle_t xTask, signed char *pcTaskName )
+
+{
+
+    printf("Task %s stack OverFlow \r\n", pcTaskName);
+
+}
+
 int PrintfTaskList(char * _ptrTaskList){
   
   if(_ptrTaskList == NULL){

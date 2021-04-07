@@ -98,6 +98,7 @@ int main(void)
   MX_TIM9_Init();
   MX_TIM6_Init();
   MX_USART6_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   Retarget_Init(&huart6);
 //  HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
@@ -169,7 +170,9 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void __weak TimeForRunTimeStats_IRQHandler(void){
+	
+}
 /* USER CODE END 4 */
 
  /**
@@ -185,9 +188,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 //  static uint16_t period = 0;
   if(htim == &htim6){
-	if(timerCount++ >= 3 * 2){
+	TimeForRunTimeStats_IRQHandler();
+	if(timerCount++ >= 10000){
 		timerFlag = 1;
 		timerCount = 0;
+		printf("test printf \r\n");
 	} 
   }
 //

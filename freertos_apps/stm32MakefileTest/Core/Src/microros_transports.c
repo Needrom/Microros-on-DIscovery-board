@@ -28,11 +28,15 @@ bool freertos_serial_close(struct uxrCustomTransport * transport){
 
 size_t freertos_serial_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len, uint8_t * err){
     UART_HandleTypeDef * uart = (UART_HandleTypeDef*) transport->args;
+    int timeout = 0;
 
     HAL_StatusTypeDef ret;
     if (uart->gState == HAL_UART_STATE_READY){
         ret = HAL_UART_Transmit_DMA(uart, buf, len);
         while (ret == HAL_OK && uart->gState != HAL_UART_STATE_READY){
+//		if(timeout > HAL_MAX_DELAY){
+//			break;
+//		}
         osDelay(1);
         }
 

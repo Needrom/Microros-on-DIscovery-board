@@ -21,7 +21,7 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
-
+int FreeRTOSRunTimeTicks;
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim6;
@@ -214,6 +214,18 @@ void Set_NormalMode(){
 
 	HAL_TIM_MspPostInit(&htim9);
 }
+
+void ConfigureTimeForRunTimeStats(void)
+{
+	FreeRTOSRunTimeTicks = 0;
+//	MX_TIM6_Init();	//20khz
+}
+
+void TimeForRunTimeStats_IRQHandler(void)	//中端服务函数
+{
+	FreeRTOSRunTimeTicks++;
+}
+
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

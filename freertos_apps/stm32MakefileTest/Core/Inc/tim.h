@@ -35,7 +35,8 @@ extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim9;
 
 /* USER CODE BEGIN Private defines */
-
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()	ConfigureTimeForRunTimeStats()
+#define portGET_RUN_TIME_COUNTER_VALUE()			FreeRTOSRunTimeTicks
 /* USER CODE END Private defines */
 
 void MX_TIM6_Init(void);
