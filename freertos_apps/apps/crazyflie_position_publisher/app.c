@@ -7,7 +7,7 @@
 #include <geometry_msgs/msg/point32.h>
 
 #include <rcutils/allocator.h>
-
+#include <rmw_uros/options.h>
 
 #include "config.h"
 #include "log.h"
@@ -57,6 +57,16 @@ void appMain(){
         DEBUG_PRINT("Error on default allocators (line %d)\n",__LINE__);
         vTaskSuspend( NULL );
     }
+
+    const uint8_t radio_channel = 65;
+    rmw_uros_set_custom_transport( 
+        true, 
+        (void *) &radio_channel, 
+        crazyflie_serial_open, 
+        crazyflie_serial_close, 
+        crazyflie_serial_write, 
+        crazyflie_serial_read
+    ); 
 
     rcl_allocator_t allocator = rcl_get_default_allocator();
 	rclc_support_t support;

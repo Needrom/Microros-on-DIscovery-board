@@ -24,11 +24,11 @@ rcl_publisher_t ping_publisher;
 rcl_publisher_t pong_publisher;
 rcl_subscription_t ping_subscriber;
 rcl_subscription_t pong_subscriber;
-rcl_subscription_t string_subscriber;
 
 std_msgs__msg__Header incoming_ping;
 std_msgs__msg__Header outcoming_ping;
 std_msgs__msg__Header incoming_pong;
+
 std_msgs__msg__String test_data_String;
 
 int device_id;
@@ -81,14 +81,6 @@ void pong_subscription_callback(const void * msgin)
 	}
 }
 
-void string_subscription_callback(const void * msgin){
-	const std_msgs__msg__String * msg = (const std_msgs__msg__Header *)msgin;
-	if(msg == NULL){
-		printf("Callback : msg NULL \r\n");
-	} else {
-		printf("Callback : I Heard : %s \r\n", msg->data.data);
-	}
-}
 
 void appMain(void *argument)
 {
@@ -116,10 +108,6 @@ void appMain(void *argument)
 	RCCHECK(rclc_subscription_init_best_effort(&pong_subscriber, &node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
 
-	
-// Create a best effort String subscriber
-	RCCHECK(rclc_subscription_init_best_effort(&string_subscriber, &node,
-		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/microROS/String"));
 
 // Create a 3 seconds ping timer timer,
 	rcl_timer_t timer;
@@ -134,9 +122,6 @@ void appMain(void *argument)
 		&ping_subscription_callback, ON_NEW_DATA));
 	RCCHECK(rclc_executor_add_subscription(&executor, &pong_subscriber, &incoming_pong,
 		&pong_subscription_callback, ON_NEW_DATA));
-
-	RCCHECK(rclc_executor_add_subscription(&executor, &string_subscriber, &test_data_String,
-		&string_subscription_callback, ON_NEW_DATA));
 
 // Create and allocate the pingpong messages
 	char outcoming_ping_buffer[STRING_BUFFER_LEN];
