@@ -29,7 +29,7 @@ rcl_subscription_t string_subscriber;
 std_msgs__msg__Header incoming_ping;
 std_msgs__msg__Header outcoming_ping;
 std_msgs__msg__Header incoming_pong;
-std_msgs__msg__String test_data_String;
+std_msgs__msg__String incoming_string;
 
 int device_id;
 int seq_no;
@@ -118,8 +118,11 @@ void appMain(void *argument)
 
 	
 // Create a best effort String subscriber
-	RCCHECK(rclc_subscription_init_best_effort(&string_subscriber, &node,
-		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/microROS/String"));
+	std_msgs__msg__String__init(&incoming_string);
+	string_subscriber  = rcl_get_zero_initialized_subscription();
+//	RCCHECK(rclc_subscription_init_best_effort(&string_subscriber, &node,
+//		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/microROS/String"));
+	RCCHECK(rclc_subscription_init_default(&string_subscriber, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "/microROS/String"));
 
 // Create a 3 seconds ping timer timer,
 	rcl_timer_t timer;
@@ -128,14 +131,14 @@ void appMain(void *argument)
 
 // Create executor
 	rclc_executor_t executor;
-	RCCHECK(rclc_executor_init(&executor, &support.context, 3, &allocator));
+	RCCHECK(rclc_executor_init(&executor, &support.context, 4, &allocator));
 	RCCHECK(rclc_executor_add_timer(&executor, &timer));
 	RCCHECK(rclc_executor_add_subscription(&executor, &ping_subscriber, &incoming_ping,
 		&ping_subscription_callback, ON_NEW_DATA));
 	RCCHECK(rclc_executor_add_subscription(&executor, &pong_subscriber, &incoming_pong,
 		&pong_subscription_callback, ON_NEW_DATA));
 
-	RCCHECK(rclc_executor_add_subscription(&executor, &string_subscriber, &test_data_String,
+	RCCHECK(rclc_executor_add_subscription(&executor, &string_subscriber, &incoming_string,
 		&string_subscription_callback, ON_NEW_DATA));
 
 // Create and allocate the pingpong messages
@@ -150,6 +153,13 @@ void appMain(void *argument)
 	char incoming_pong_buffer[STRING_BUFFER_LEN];
 	incoming_pong.frame_id.data = incoming_pong_buffer;
 	incoming_pong.frame_id.capacity = STRING_BUFFER_LEN;
+
+	//Todo allocate string messages
+//	rosidl_runtime_c__String incoming_string_buffer[STRING_BUFFER_LEN];
+//	incoming_string.data = incoming_string_buffer;
+//	incoming_string.capacity = STRING_BUFFER_LEN;
+
+
 
 	device_id = rand();
 	
