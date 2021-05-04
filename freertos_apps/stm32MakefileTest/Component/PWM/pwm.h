@@ -25,6 +25,6 @@ void PWM_Init();
 void PWM_SetMode(PWM_Mode_t _mode);
 void PWM_SpeedSet(uint32_t _rpm);
 void PWM_TIM_SetPeriod(uint32_t _period);
-void PWM_LocationSet(uint32_t _period);
+uint32_t PWM_LocationSet(uint32_t _period);
 
 #endif

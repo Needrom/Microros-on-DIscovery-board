@@ -38,6 +38,7 @@ typedef struct{
 
 void X4_ConnectorInit(X4_Connector *__x4_connector);
 void X4_ClearAlarm();
+void X4_DeClearAlarm();
 void X4_PostiveForbit();
 void X4_NegativeForbit();
 #endif 

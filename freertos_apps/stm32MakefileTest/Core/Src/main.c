@@ -99,6 +99,10 @@ int main(void)
   MX_TIM6_Init();
   MX_USART6_UART_Init();
   MX_USART3_UART_Init();
+  MX_TIM4_Init();
+  MX_TIM5_Init();
+  MX_TIM2_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   Retarget_Init(&huart6);
 //  HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
@@ -195,48 +199,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		printf("test printf \r\n");
 	} 
   }
-//
-//  static unsigned char ledState = 0;
-//  if(htim->Instance == TIM6)
-//  {
-//              if(cnt_10ms++ >= 100){
-//                      cnt_10ms = 0;
-//                      printf("pin read :%d \r\n", HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3));
-//              }
-//                printf("into the %s \r\n", __func__);
-//                if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_2) == 0){
-//                        if(button_pin2.cnt_10ms++ >= 8 && button_pin2.btn_press == 0){
-//                                button_pin2.btn_press = 1;
-//                                printf("btn2 press \r\n");
-//                                HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, button_pin2.value);
-//                                button_pin2.value = ~button_pin2.value;
-//                        }
-//                } else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3) == 0){
-//                        button_pin3.cnt_10ms++;
-//                        if(button_pin3.cnt_10ms++ >= 8 && button_pin3.btn_press == 0){
-//                                button_pin3.btn_press = 1;
-//				printf("btn3 press \r\n");
-//
-//                                //function code
-//                                TIM6->ARR += 10;
-//                                if(TIM6->ARR >= 500){
-//                                        TIM6->ARR = 50;
-//                                }
-//                                //printf("current htim9.Period is : %d \r\n", TIM6->ARR);
-//                        }
-//                } else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_4) == 0){
-//			
-//		
-//		} else {
-//                        button_pin2.cnt_10ms = 0;
-//                        button_pin2.btn_press = 0;
-//
-//                        button_pin3.cnt_10ms = 0;
-//                        button_pin3.btn_press = 0;
-//                }
-//
-//  }
 
+  if(htim->Instance == TIM3)
+  {
+    if(__HAL_TIM_GET_FLAG(&htim3, TIM_FLAG_CC1) != RESET)
+    {
+      __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_CC1);
+
+      HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+
+      HAL_TIM_Base_Stop_IT(&htim3);
+    }
+  } 
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM1) {

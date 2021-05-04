@@ -43,9 +43,9 @@
 #include "retarget.h"
 #include "../../Component/Key/key.h"
 #include "../../Component/PWM/pwm.h"
+#include "../../Component/Motor_App/motor_app.h"
 
 #include "tim.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -208,6 +208,15 @@ void StartDefaultTask(void *argument)
   	printf("freeRTOS allocator success \r\n");
   }
 
+  /* the second thread */
+  osThreadAttr_t attributes_second;
+  memset(&attributes_second, 0x0, sizeof(osThreadAttr_t));
+  attributes_second.name = "motor_app";
+  attributes_second.stack_size = 5000;
+  attributes_second.priority = (osPriority_t)osPriorityNormal;
+  osThreadNew(Motor_App, NULL, &attributes_second);
+  osDelay(500);
+
   osThreadAttr_t attributes;
   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
   attributes.name = "microROS_app";
@@ -240,9 +249,8 @@ void StartDefaultTask(void *argument)
 //    printf("into the printf \r\n");
      
       //GPIO test in CheckGPIO();
-    osDelay(1);
+    osDelay(100);
 //    CheckGPIO();
-
   //Check for the Task detail.
 //  osDelay(3000);
 //  PrintfTaskList(ptrTaskList);
@@ -258,14 +266,14 @@ void StartDefaultTask(void *argument)
 //    }
 //
 
-    char *timeRunStat[500];
-    if(timerFlag == 1){
-    	timerFlag = 0;
-	vTaskGetRunTimeStats(timeRunStat);
-    	printf("task \t\t time \t\t duty \t\t");
-	printf("%s \r\n", timeRunStat);
-    }
-
+//    char *timeRunStat[500];
+//    if(timerFlag == 1){
+//    	timerFlag = 0;
+//	vTaskGetRunTimeStats(timeRunStat);
+//    	printf("task \t\t time \t\t duty \t\t");
+//	printf("%s \r\n", timeRunStat);
+//    }
+//
 
 //    if (eTaskGetState(xHandle) != eSuspended && availableNetwork && eTaskGetState(xHandle) != eRunning)
 //    {

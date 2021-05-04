@@ -1,5 +1,7 @@
 #include"pwm.h"
 
+uint32_t pwm_count = 0;
+
 void PWM_Init(){
 
 }
@@ -13,11 +15,17 @@ void PWM_SetMode(PWM_Mode_t _mode){
 	}
 }
 
-void PWM_LocationSet(uint32_t _period){
+uint32_t PWM_LocationSet(uint32_t _period){
+	/* test var here */
+	uint32_t count = 0;
+	/* test var end */
 	for(int i = 0; i < _period; i++){
 		__HAL_TIM_ENABLE(&htim9);
 		HAL_TIM_OnePulse_Start(&htim9, TIM_CHANNEL_1);
+		++count;
 	}
+
+	return count;
 }
 
 void PWM_SpeedSet(uint32_t _rpm){
